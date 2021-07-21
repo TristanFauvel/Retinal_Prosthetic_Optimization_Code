@@ -1,0 +1,10 @@
+Codes = {'Naive', 'Control', 'Optimized', 'Optimal', 'Optimal_misspecified', 'Optimized_misspecified'};
+Naive= zeros(6,1);
+Control= zeros(6,1);
+Optimized= zeros(6,1);
+Optimal= zeros(6,1);
+Optimal_misspecified = zeros(6,1);
+Optimized_misspecified = zeros(6,1);
+T = table(logical(Naive), logical(Control), logical(Optimized), logical(Optimal),logical(Optimal_misspecified),logical(Optimized_misspecified),...
+          'VariableNames',Codes,...
+          'RowNames',Codes)
