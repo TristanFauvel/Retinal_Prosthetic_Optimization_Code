@@ -3,9 +3,8 @@ plot_example_classification_1d;
 preference_learning_GP; 
 kernels_examples; 
 plot_kernel_approximation; 
-BO_figure_thesis; 
-BO_figure_thesis_hyperparametrs;
-
+BO_principle
+BO_hyperparameters_effect 
 plot_GP_sampling; 
 
 BBO_figure_thesis; 
@@ -20,3 +19,5 @@ duels_analysis;
 plot_duels_analysis;
 duels_analysis_ranking;
 duels_analysis_conditional_vs_normal;
+
+
