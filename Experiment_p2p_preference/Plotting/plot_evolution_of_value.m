@@ -24,6 +24,8 @@ values_random = NaN(numel(indices_preference_random), maxiter);
 values_kss = NaN(numel(indices_preference_kss), maxiter);
 
 unknown_hyp = 0;
+post = [];
+regularization = 'nugget';
 
 % for j = 1:numel(indices_preference_kss)
 %     i = indices_preference_kss(j);
@@ -49,9 +51,9 @@ for j = 1:numel(indices_preference_kss)
     end
     switch task
         case 'preference'
-            [~, value_opt, ~,~] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
         case 'E'
-            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
+            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
     end
     values_kss(j,:) = value_opt;
 end
@@ -67,9 +69,9 @@ for j = 1:numel(indices_preference_random)
     end
     switch task
         case 'preference'
-            [~, value_opt, ~,~] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, experiment.modeltype, post, regularization);
         case 'E'
-            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
+            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
     end
     values_random(j,:) = value_opt;
 end

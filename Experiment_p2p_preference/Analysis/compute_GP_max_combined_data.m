@@ -30,7 +30,9 @@ nd = d;
 options.method = 'sd';
 options.verbose = 1;
 ncandidates= 10;
-
+post = [];
+regularization = 'nugget';
+modeltype = 'exp_prop';
 if compute_all
     %% Compute the estimates of the best parameters (this is done in the analysis part to save time during the experiment)
     x_best = NaN(nd,maxiter);       
@@ -48,7 +50,7 @@ if compute_all
             waitbar(i/maxiter,wbar,'Computing best parameters...');
             
         end
-        [~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, 'modeltype', modeltype);
+        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regulzarization);
         
     else
         for i=1:maxiter
@@ -60,7 +62,7 @@ if compute_all
             x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x, kernelfun, modeltype), lb_norm, ub_norm, ncandidates, init_guess,options);
             waitbar(i/maxiter,wbar,'Computing best parameters...');
         end
-        [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, 'modeltype', modeltype);
+        [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, modeltype, post, regularization);
         values = mu_y;
     end
     
@@ -71,11 +73,11 @@ else
         init_guess = [];
         x_best_norm = multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm, ctrain, x, kernelfun, x0,modeltype), lb_norm, ub_norm, ncandidates,init_guess, options);
         
-        [~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, 'modeltype', modeltype);
+        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
     elseif strcmp(task, 'LandoltC') || strcmp(task, 'Vernier') || strcmp(task, 'E')
         init_guess = [];
         x_best_norm = multistart_minConf(@(x)to_maximize_mean_GP(theta, xtrain_norm, ctrain, x, kernelfun, modeltype), lb_norm, ub_norm, ncandidates, init_guess,options);
-        [values, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, 'modeltype', modeltype);
+        [values, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, modeltype, post, regularization);
        
     end
 end
@@ -94,7 +96,7 @@ return
 N= 1000;
 figure();
 for k=1:6
-    [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, [ones(k-1,N); linspace(0,1,N); ones(6-k,N)], kernelfun, 'modeltype', modeltype);
+    [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, [ones(k-1,N); linspace(0,1,N); ones(6-k,N)], kernelfun, modeltype, post, regularization);
     subplot(6,1,k)
     plot(linspace(0,1,N), mu_y)
 end
@@ -107,9 +109,8 @@ else
     
 end
 
-[a,b] = negloglike_bin(theta, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype);
-
-mu_c = prediction_bin_preference(theta, xtrain_norm, ctrain, [xtrain_norm(1:d,:);ones(1,maxiter)], kernelfun, kernelname, 'modeltype', modeltype);
+[a,b] = negloglike_bin(theta, xtrain_norm, ctrain, kernelfun, modeltype, post, regularization);
+mu_c = prediction_bin(theta, xtrain_norm, ctrain, [xtrain_norm(1:d,:);ones(1,maxiter)], kernelfun, kernelname, modeltype, post, regularization);
 figure(); plot(mu_c)
 
 
@@ -117,13 +118,13 @@ x_best_norm = (x_best - min_x)./(max_x-min_x);
 N=100;
 xtest = x_best_norm(:,end)*ones(1,N);
 xtest(1,:) = linspace(0,1,N)
-[~, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, xtest, kernelfun, 'modeltype', modeltype);
+[~, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, xtest, kernelfun, modeltype, post, regularization);
 figure();
 plot(xtest(1,:), mu_y)
 
 
 
 
-[~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm(:,1:i); x0.*ones(d,i)], kernelfun, kernelname, 'modeltype', modeltype);
+[~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm(:,1:i); x0.*ones(d,i)], kernelfun, kernelname, modeltype, post, regularization);
 figure()
 plot(values)

@@ -56,6 +56,9 @@ end
 % indices = indices(T.Task == task & T.Acquisition==acquisition & T.Misspecification==misspecification);
 % [a,b] = sort(T(indices,:).Model_Seed);
 % indices = indices(b);
+post = [];
+regularization = 'nugget';
+
 for i =1:numel(indices)
     index = indices(i);
     subject = char(T(index,:).Subject);
@@ -69,16 +72,15 @@ for i =1:numel(indices)
         
         %   try
         if strcmp(exp, 'optimal')
-            [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [(experiment.model_params(experiment.ib)-experiment.lb')./(experiment.ub'-experiment.lb'); experiment.x0.*ones(experiment.d,1)], experiment.kernelfun, 'modeltype', experiment.modeltype);
-        elseif strcmp(exp, 'control')
+            [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [(experiment.model_params(experiment.ib)-experiment.lb')./(experiment.ub'-experiment.lb'); experiment.x0.*ones(experiment.d,1)], experiment.kernelfun, experiment.modeltype, post, regularization);        elseif strcmp(exp, 'control')
             xparams = experiment.xtrain(1:experiment.d,1);
             xparams =[(xparams-experiment.lb')./(experiment.ub'-experiment.lb'); experiment.x0.*ones(experiment.d,1)];
-            [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, xparams, experiment.kernelfun, 'modeltype', experiment.modeltype);
+            [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, xparams, experiment.kernelfun, experiment.modeltype, post, regularization);
         else
             if strcmp(task, 'preference')
-                [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], experiment.kernelfun, 'modeltype', experiment.modeltype);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], experiment.kernelfun, experiment.modeltype, post, regularization);
             else
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
             end
         end
         val(i) = v(end);

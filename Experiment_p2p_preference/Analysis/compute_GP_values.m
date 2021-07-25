@@ -9,9 +9,9 @@ cd([code_directory,'/Experiment_p2p_preference'])
 
 x0 = 0.5*ones(d,1);
 if strcmp(task, 'preference')
-    [~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, 'modeltype', modeltype);
+    [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, modeltype, post, regularization);
 elseif strcmp(task, 'LandoltC') || strcmp(task, 'Vernier') || strcmp(task, 'E')
-    [values, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, 'modeltype', modeltype);
+    [values, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, modeltype, post, regularization);
 end
 
 return

@@ -33,7 +33,8 @@ kernel_list = {'ARD', 'RQ', 'Matern52', 'Matern32', 'Polynomial'};
 modeltype = 'exp_prop';
 maxiter = experiment.maxiter;
 update_theta = 1;
-
+post = [];
+regularization = 'nugget';
 if loading
     filename = "C:\Users\tfauvel\Documents\Retinal_prosthetic_optimization\Data\Dataset_E_seed_6_theta.mat";
     load(filename,'ktheta')
@@ -108,7 +109,7 @@ for i = 1:numel(kernel_list)
     theta = ktheta{i};
     kernelfun = base_kernelfun;
     
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, x_train_norm_data, c_train_data, x_test_norm_data, kernelfun, 'modeltype', modeltype);
+    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, x_train_norm_data, c_train_data, x_test_norm_data, kernelfun, modeltype, post, regularization);
     mu_c = mu_c';
     
     brier_score(i) = mean((mu_c - c_test_data).^2);

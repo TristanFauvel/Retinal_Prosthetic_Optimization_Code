@@ -12,6 +12,8 @@ ny = experiment.ny;
 viewing_distance = experiment.viewing_distance;
 visual_field_size = experiment.visual_field_size;
 display_size = floor(experiment.display_size);
+post = [];
+regularization = 'nugget';
 
 
 bounds = [0,1];
@@ -198,7 +200,7 @@ plot(x,mu_c); hold on;
 scatter(xtrain, ctrain)
 subplot(2,1,2)
 errorshaded(x,mu_y,sqrt(sigma2_y))
-% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, kernelfun, 'modeltype', modeltype);
+% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, kernelfun, experiment.modeltype, post, regularization);
 % [fitresult, gof] = sigmoid_fit(xtrain, ctrain);
 % pred_fit = fitresult(x);
 % acuity = fitresult.k;

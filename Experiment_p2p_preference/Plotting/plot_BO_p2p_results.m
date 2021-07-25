@@ -69,7 +69,7 @@ if d ==2 && strcmp(to_update{1},'rho') && strcmp(to_update{2}, 'lambda')
     
     x_norm = (x - min_x(1:d))./(max_x(1:d)-min_x(1:d));
     
-    [~,  value, ~,~] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_norm; x0.*ones(d,size(x_norm,2))], kernelfun, kernelname, 'modeltype', modeltype);
+    [~,  value, ~,~] = prediction_bin(theta, xtrain_norm, ctrain, [x_norm; x0.*ones(d,size(x_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
     colo= othercolor('GnBu7');
     cmap = gray(256);
     fig=figure('units','normalized','outerposition',[0 0 1 1]);
@@ -312,7 +312,7 @@ if strcmp(subject, 'computer')
         x_test_norm =  (x_test - lb')./(ub'- lb');
         
         
-        [~, mu_y, ~,~] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_test_norm; x0.*ones(d,size(x_test_norm,2))], kernelfun, kernelname, 'modeltype', modeltype);
+        [~, mu_y, ~,~] = prediction_bin(theta, xtrain_norm, ctrain, [x_test_norm; x0.*ones(d,size(x_test_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
         y= NaN(1,ntest);
         for i=1:ntest
             new_x = range(i);
@@ -431,7 +431,7 @@ end
 x_best_norm  = NaN(d,maxiter);
 x_best_norm = (x_best(ib,:) - lb')./(ub'- lb');
 
-[~, value_opt, ~,~] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, 'modeltype', modeltype);
+[~, value_opt, ~,~] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
 
 fig=figure('units','normalized','outerposition',[0 0 1 1]);
 fig.Color =  [1 1 1];
@@ -464,6 +464,8 @@ set(gca,'xlim',[1,maxiter])
 
 
 
+post = [];
+regularization = 'nugget';
 
 %% This is to test the ability of the model to predict preferences
 if strcmp(task, 'preference')
@@ -480,9 +482,9 @@ if strcmp(task, 'preference')
         idtest= nset(((i-1)*setsize+1):i*setsize);
         idtrain =setdiff(1:n,idtest);
         if strcmp(task, 'preference')
-            [mu_c, mu_y] =  prediction_bin_preference(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), kernelfun, kernelname,'modeltype', modeltype);
+            [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), kernelfun, kernelname,modeltype, post, regularization);
         elseif strcmp(task, 'LandoltC')
-            [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), kernelfun,'modeltype', modeltype);
+            [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), kernelfun, modeltype, post, regularization);
             
         end
         predictions(i,:)= mu_c;
@@ -637,7 +639,7 @@ k=0;
 % end
 % 
 if ~any(isnan(rt))
-    [mu_c, mu_y] =  prediction_bin_preference(theta, xtrain_norm, ctrain, xtrain_norm, kernelfun, kernelname,'modeltype', modeltype);
+    [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm, ctrain, xtrain_norm, kernelfun, kernelname, modeltype, post, regularization);
     
     figure()
     scatter(rt,abs(mu_c-0.5))

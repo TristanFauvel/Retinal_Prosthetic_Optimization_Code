@@ -36,6 +36,9 @@ if compute_all %% We do not want to recompute the inferred best encoder at the e
 else
     imax = maxiter;
 end
+post = [];
+regularization = 'nugget';
+
 if compute_all
     %% Compute the estimates of the best parameters (this is done in the analysis part to save time during the experiment)
     x_best = experiment.x_best; %x_best.*ones(numel(model_params),maxiter);
@@ -61,7 +64,7 @@ if compute_all
             else
                 init_guess = x_best_norm(:,i-1);
             end
-            [~, ~, ~,~,~,~,~,~,~,~,post] = prediction_bin_preference(theta, xtrain_norm(:,1:i), ctrain(1:i), [x0.*ones(d,size(x_best_norm,2)); x0.*ones(d,size(x_best_norm,2))], kernelfun, 'modeltype', modeltype, 'post', []);
+            [~, ~, ~,~,~,~,~,~,~,~,post] = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [x0.*ones(d,size(x_best_norm,2)); x0.*ones(d,size(x_best_norm,2))], kernelfun, 'modeltype', modeltype, 'post', []);
 
             x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,1:i), ctrain(1:i), x, kernelfun, x0,modeltype, post), lb_norm, ub_norm, ncandidates,init_guess, options);
             
@@ -70,9 +73,9 @@ if compute_all
         end
         %         theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,30, theta, options_theta);
         
-        [~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, 'modeltype', modeltype, 'post', []);
+        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, 'modeltype', modeltype, 'post', []);
    
-%         [~,test] = prediction_bin_preference(theta, xtrain_norm(:,1:i), ctrain(1:i), [linspace(0,1,25); x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, 'modeltype', modeltype);
+%         [~,test] = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [linspace(0,1,25); x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
 % figure(); plot(test)
     else
         for i=1:imax
@@ -92,14 +95,14 @@ if compute_all
             else
                 init_guess = x_best_norm(:,i-1);
             end
-            [~, ~,~,~,~,~,~,~,~,~,post] = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun, 'modeltype', modeltype);
+            [~, ~,~,~,~,~,~,~,~,~,post] = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun, modeltype, post, regularization);
 
             x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x, kernelfun, modeltype, post), lb_norm, ub_norm, ncandidates, init_guess,options);
 %             waitbar(i/imax,wbar,'Computing best parameters...');
         end
         theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,30, theta, options_theta);
         
-        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, 'modeltype', modeltype, 'post', []);
+        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, modeltype, post, regularization);
     end
     
 else
@@ -107,14 +110,14 @@ else
     
     if strcmp(task, 'preference')
         init_guess = [];
-        [~, ~,~,~,~,~,~,~,~,~,post] = prediction_bin_preference(theta, xtrain_norm, ctrain,xtrain_norm(:,end), kernelfun, 'modeltype', modeltype, 'post', post);
+        [~, ~,~,~,~,~,~,~,~,~,post] = prediction_bin(theta, xtrain_norm, ctrain,xtrain_norm(:,end), kernelfun, modeltype, post, regularization);
         x_best_norm = multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm, ctrain, x, kernelfun, x0,modeltype, post), lb_norm, ub_norm, ncandidates,init_guess, options);
-        [~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, 'modeltype', modeltype, 'post', post);
+        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, modeltype, post, regularization);
     elseif strcmp(task, 'LandoltC') || strcmp(task, 'Vernier') || strcmp(task, 'E')
         init_guess = [];
-        [~, ~,~,~,~,~,~,~,~,~,post] = prediction_bin(theta, xtrain_norm, ctrain,xtrain_norm(:,end), kernelfun, 'modeltype', modeltype, 'post', post);
+        [~, ~,~,~,~,~,~,~,~,~,post] = prediction_bin(theta, xtrain_norm, ctrain,xtrain_norm(:,end), kernelfun, modeltype, post, regularization);
         x_best_norm = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm, ctrain, x, kernelfun, modeltype, post), lb_norm, ub_norm, ncandidates, init_guess,options);
-        [values, mu_y] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, 'modeltype', modeltype, 'post', post);
+        [values, mu_y] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, kernelfun, modeltype, post, regularization);
         
     end
 end
@@ -156,7 +159,7 @@ end
 N= 1000;
 figure();
 for k=1:6
-    [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, [ones(k-1,N); linspace(0,1,N); ones(6-k,N)], kernelfun, 'modeltype', modeltype, 'post', post);
+    [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, [ones(k-1,N); linspace(0,1,N); ones(6-k,N)], kernelfun, modeltype, post, regularization);
     subplot(6,1,k)
     plot(linspace(0,1,N), mu_y)
 end
@@ -169,9 +172,9 @@ else
     
 end
 
-[a,b] = negloglike_bin(theta, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype);
+[a,b] = negloglike_bin(theta, xtrain_norm, ctrain, kernelfun, modeltype, post, regularization);
 
-mu_c = prediction_bin_preference(theta, xtrain_norm, ctrain, [xtrain_norm(1:d,:);ones(1,imax)], kernelfun, 'modeltype', modeltype,'post', post);
+mu_c = prediction_bin(theta, xtrain_norm, ctrain, [xtrain_norm(1:d,:);ones(1,imax)], kernelfun, modeltype, post, regularization);
 figure(); plot(mu_c)
 
 
@@ -179,13 +182,13 @@ x_best_norm = (x_best - min_x)./(max_x-min_x);
 N=100;
 xtest = x_best_norm(:,end)*ones(1,N);
 xtest(1,:) = linspace(0,1,N)
-[~, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, xtest, kernelfun, 'modeltype', modeltype, 'post', post);
+[~, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, xtest, kernelfun, modeltype, post, regularization);
 figure();
 plot(xtest(1,:), mu_y)
 
 
 
 
-[~, values] = prediction_bin_preference(theta, xtrain_norm, ctrain, [x_best_norm(:,1:i); x0.*ones(d,i)], kernelfun, 'modeltype', modeltype);
+[~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm(:,1:i); x0.*ones(d,i)], kernelfun, modeltype, post, regularization);
 figure()
 plot(values)

@@ -185,6 +185,8 @@ experiment.params = params;
 experiment.ib = ib;
 theta = theta_init;
 
+post = [];
+regularization = 'nugget';
 
 % c = 0 or 1
 if strcmp(modeltype, 'exp_prop')
@@ -405,7 +407,7 @@ while ~ stopping_criterion
         new_x = [x_duel1;x_duel2];
     else
         if strcmp(task, 'preference')
-            [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin_preference(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun);
+            [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun);
         else
             [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun);            
         end
@@ -415,7 +417,7 @@ while ~ stopping_criterion
                 %theta_old = [theta_old, theta];
                 init_guess = theta;
                 theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
-                [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin_preference(theta, xtrain_norm(:,1:i), ctrain(1:i), new_duel, kernelfun);
+                [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), new_duel, kernelfun);
                 
             end
             if strcmp(task, 'preference')

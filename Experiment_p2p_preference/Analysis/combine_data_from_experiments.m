@@ -104,7 +104,7 @@ switch kernelname
     case 'ARD';
          theta  =[ -0.4043; 1.1637];
 end
-[mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta, x_train_norm_data(:, training_set), c_train_data(training_set), x_train_norm_data, kernelfun, kernelname, 'modeltype', modeltype);
+[mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, x_train_norm_data(:, training_set), c_train_data(training_set), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
 
 c_train_data = c_train_data(:);
 
@@ -127,7 +127,7 @@ accuracy = (TP+ TN)/(FP+ FN + TP + TN);
 % 
 % for i = 1:maxiter
 %     theta_i = experiment.hyps(i,:);    
-%     [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta_i, x_train_norm_data(:, training_set), c_train_data(training_set), x_train_norm_data, kernelfun, kernelname, 'modeltype', modeltype);
+%     [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_i, x_train_norm_data(:, training_set), c_train_data(training_set), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
 %     data_set = training_set;
 %     rmse_train(i) = sqrt(mean((mu_c(data_set) - c_train_data(data_set)).^2));
 %     data_set = test_set;
@@ -149,7 +149,7 @@ rmse_train = NaN(1,numel(training_set));
 rmse_test = NaN(1,numel(training_set));
 
 for i = 1:numel(training_set)
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta, x_train_norm_data(:, training_set(1:i)), c_train_data(training_set(1:i)), x_train_norm_data, kernelfun, kernelname, 'modeltype', modeltype);
+    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, x_train_norm_data(:, training_set(1:i)), c_train_data(training_set(1:i)), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
     data_set = training_set;
     rmse_train(i) = sqrt(mean((mu_c(data_set) - c_train_data(data_set)).^2));
     data_set = test_set;
@@ -171,7 +171,7 @@ rmse_train = NaN(1,maxiter);
 rmse_test = NaN(1,maxiter);
 
 for i = 1:maxiter
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, 'modeltype', modeltype);
+    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
     data_set = training_set;
     rmse_train(i) = sqrt(mean((mu_c(data_set) - c_train_data(data_set)).^2));
     data_set = test_set;
@@ -195,7 +195,7 @@ rmse_test = NaN(1,maxiter);
 
 for i = 1:maxiter
         theta_i = experiment.hyps(i,:);    
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, 'modeltype', modeltype);
+    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
     data_set = training_set;
     rmse_train(i) = sqrt(mean((mu_c(data_set) - c_train_data(data_set)).^2));
     data_set = test_set;
@@ -225,7 +225,7 @@ rmse_test = NaN(1,maxiter);
 
 for i = 1:maxiter
     theta_i = multistart_minConf(@(hyp)negloglike_bin(hyp, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, 'modeltype', modeltype);
+    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
     data_set = training_set;
     rmse_train(i) = sqrt(mean((mu_c(data_set) - c_train_data(data_set)).^2));
     data_set = test_set;
@@ -272,10 +272,10 @@ for k = 1:size(Tr,1)
     load(filename, 'experiment');
     
     for i = 1:maxiter
-        [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta_true, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i),xtest, kernelfun, kernelname, 'modeltype', modeltype);
+        [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_true, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i),xtest, kernelfun, kernelname, modeltype, post, regularization);
         rmse_true_theta(k,i) = sqrt(mean((mu_c - ctest(:)).^2));
         theta_i = multistart_minConf(@(hyp)negloglike_bin(hyp, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
-        [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i),xtest, kernelfun, kernelname, 'modeltype', modeltype);
+        [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i),xtest, kernelfun, kernelname, modeltype, post, regularization);
         rmse_exp_theta(k,i) = sqrt(mean((mu_c - ctest(:)).^2));
     end
 end
@@ -342,7 +342,7 @@ end
 rmse = NaN(1,80);
 
 for i = 1:80
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin_preference(theta, xtrain_kss(:,1:i),ctrain_kss(:,1:i), xtrain_rand, kernelfun, kernelname, 'modeltype', modeltype);
+    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, xtrain_kss(:,1:i),ctrain_kss(:,1:i), xtrain_rand, kernelfun, kernelname, modeltype, post, regularization);
     rmse(i) = sqrt(mean((mu_c- ctrain_rand(:)).^2));
 end
 

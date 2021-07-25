@@ -32,6 +32,9 @@ end
 % indices = indices(T.Task == task & T.Acquisition==acquisition & T.Misspecification==misspecification);
 % [a,b] = sort(T(indices,:).Model_Seed);
 % indices = indices(b);
+post = [];
+regularization = 'nugget';
+
 for i =1:N
     index = indices(i);
     subject = char(T(index,:).Subject);
@@ -45,9 +48,9 @@ for i =1:N
         
         %   try
             if strcmp(task, 'preference')
-                [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], experiment.kernelfun, 'modeltype', experiment.modeltype);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], experiment.kernelfun, 'modeltype', experiment.modeltype);
             else
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
             end
         val(:,i) = v;
         %    end

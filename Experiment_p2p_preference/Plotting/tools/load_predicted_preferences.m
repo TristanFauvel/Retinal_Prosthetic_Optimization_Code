@@ -74,14 +74,14 @@ for i =1:numel(indices)
         
         %   try
         if strcmp(exp, 'optimal')
-            [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [(experiment.model_params(experiment.ib)-experiment.lb')./(experiment.ub'-experiment.lb'); experiment.x0.*ones(experiment.d,1)], experiment.kernelfun, 'modeltype', experiment.modeltype);
+            [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [(experiment.model_params(experiment.ib)-experiment.lb')./(experiment.ub'-experiment.lb'); experiment.x0.*ones(experiment.d,1)], experiment.kernelfun, 'modeltype', experiment.modeltype);
         elseif strcmp(exp, 'control')
             xparams = experiment.xtrain(1:experiment.d,1);
             xparams =[(xparams-experiment.lb')./(experiment.ub'-experiment.lb'); experiment.x0.*ones(experiment.d,1)];
-            [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, xparams, experiment.kernelfun, 'modeltype', experiment.modeltype);
+            [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, xparams, experiment.kernelfun, 'modeltype', experiment.modeltype);
         else
             if strcmp(task, 'preference')
-                [~, v] = prediction_bin_preference(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], experiment.kernelfun, 'modeltype', experiment.modeltype);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], experiment.kernelfun, 'modeltype', experiment.modeltype);
             else
                 [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
             end
