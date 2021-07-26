@@ -39,9 +39,9 @@ for j=1:2
 %                         disp('stop')
 %                     end
                     
-                    for j=1:numel(fields_to_rem)
+                    for lp=1:numel(fields_to_rem)
                         try
-                            experiment = rmfield(experiment,fields_to_rem{j});
+                            experiment = rmfield(experiment,fields_to_rem{lp});
                         end
                     end
                     save([folder, '/', filename], 'experiment')
