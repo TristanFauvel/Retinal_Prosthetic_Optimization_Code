@@ -173,7 +173,7 @@ switch(kernelname)
 end
 
 if ~strcmp(task, 'preference')
-    kernelfun = @(theta, x,xp,training) base_kernelfun(theta, x(1:d,:),xp(1:d,:),training);
+    kernelfun = @(theta, x,xp,training, regularization) base_kernelfun(theta, x(1:d,:),xp(1:d,:),training, regularization);
 end
 
 theta_lb = -10*ones(size(theta_init));
@@ -217,7 +217,7 @@ switch task
         
         lb_norm = zeros(d,1);
         ub_norm = ones(d,1);
-        kernelfun = @(theta, xi, xj, training) preference_kernelfun(theta, base_kernelfun, xi, xj, training);
+        kernelfun = @(theta, xi, xj, training, regularization) preference_kernelfun(theta, base_kernelfun, xi, xj, training, regularization);
         
         x0 = zeros(d,1);
         condition.x0 = zeros(d,1);
@@ -406,18 +406,14 @@ while ~ stopping_criterion
         x_duel2 = xtrain(d+1:end, i+1);
         new_x = [x_duel1;x_duel2];
     else
-        if strcmp(task, 'preference')
-            [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun);
-        else
-            [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), xtrain_norm(:,end), kernelfun);            
-        end
+            post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], kernelfun, modeltype, [], regularization);
         if i >= nopt
             %Optimization of hyperparameters
             if mod(i, update_period) ==1
                 %theta_old = [theta_old, theta];
                 init_guess = theta;
                 theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
-                [~,~,~,~,~,~,~,~,~,~,post] =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), new_duel, kernelfun);
+                post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], kernelfun, modeltype, [], regularization);
                 
             end
             if strcmp(task, 'preference')

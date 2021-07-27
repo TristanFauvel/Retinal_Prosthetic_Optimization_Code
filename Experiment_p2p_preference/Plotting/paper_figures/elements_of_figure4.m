@@ -8,16 +8,15 @@ graphics_style_paper;
 data_directory = [experiment_path,'/Data'];
 figures_folder = [experiment_path,'/Figures'];
 reload = 0;
-[VA_E_optimized_preference_acq, VA_Snellen_optimized_preference_acq, VA_E_optimal,VA_Snellen_optimal, VA_E_optimized_preference_random,VA_Snellen_optimized_preference_random, VA_E_optimized_preference_acq_misspecification, VA_Snellen_optimized_preference_acq_misspecification, VA_E_optimal_misspecification,VA_Snellen_optimal_misspecification, VA_E_optimized_E_TS,VA_Snellen_optimized_E_TS, VA_E_control,VA_Snellen_control, VA_E_naive, VA_Snellen_naive] = load_VA_results(reload)
-% [Pref_vs_E_training, Pref_vs_E_test, acq_vs_random_training, acq_vs_random_test, acq_vs_opt_training, acq_vs_opt_test, optimized_misspecified_vs_optimized_training, optimized_misspecified_vs_optimized_test,optimized_miss_vs_opt_miss_test, optimized_miss_vs_opt_miss_training, acq_vs_control_test, acq_vs_control_training, optimized_vs_naive_training, optimized_vs_naive_test, optimized_miss_vs_control_training, optimized_miss_vs_control_test, optimized_miss_vs_naive_training, optimized_miss_vs_naive_test, control_vs_naive_training, E_vs_naive_training,E_vs_control_training,opt_miss_vs_control_training]  = load_preferences(reload)
- [Pref_vs_E_training, Pref_vs_E_test, acq_vs_random_training, acq_vs_random_test, acq_vs_opt_training, acq_vs_opt_test, optimized_misspecified_vs_optimized_training, optimized_misspecified_vs_optimized_test,optimized_miss_vs_opt_miss_test, optimized_miss_vs_opt_miss_training, acq_vs_control_test, acq_vs_control_training, optimized_vs_naive_training, optimized_vs_naive_test, optimized_miss_vs_control_training, optimized_miss_vs_control_test, optimized_miss_vs_naive_training, optimized_miss_vs_naive_test, control_vs_naive_training, E_vs_naive_training,E_vs_control_training,opt_miss_vs_control_training]  = load_combined_preferences(reload)
+VA= load_VA_results(reload, data_directory, data_table_file);
+p  = load_preferences(reload,data_directory, data_table_file);
 
-[val_optimized_preference_acq_evolution_combined, val_optimized_preference_random_evolution_combined] = load_values_evolution_combined_data(reload);
+val = load_values_evolution_combined_data(reload);
 
 boxp = 1;
 
-VA_scale_E= [min([VA_E_optimized_preference_acq,VA_E_optimized_preference_random,VA_E_control]), max([VA_E_optimized_preference_acq,VA_E_optimized_preference_random,VA_E_control])];
-VA_scale_Snellen=[min([VA_Snellen_optimized_preference_acq,VA_Snellen_optimized_preference_random,VA_Snellen_control]), max([VA_Snellen_optimized_preference_acq,VA_Snellen_optimized_preference_random,VA_Snellen_control])];
+VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
+VA_scale_Snellen=[min([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control]), max([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control])];
 
 VA_scale = [min(VA_scale_E(1), VA_scale_Snellen(1)),max(VA_scale_E(2), VA_scale_Snellen(2))];
 VA_scale = [VA_scale;VA_scale];
@@ -248,10 +247,10 @@ options.error= 'std';
 options.line_width = linewidth;
 options.color_area = C(1,:);%./255;    % Blue theme
 options.color_line = C(1,:);%./255;
-h1=plot_areaerrorbar(val_optimized_preference_acq_evolution_combined', options); hold on;
+h1=plot_areaerrorbar(val.optimized_preference_acq_evolution_combined', options); hold on;
 options.color_area = C(2,:);%./255;    % Orange theme
 options.color_line = C(2,:);%./255;
-h2=plot_areaerrorbar(val_optimized_preference_random_evolution_combined', options); hold on;
+h2=plot_areaerrorbar(val.optimized_preference_random_evolution_combined', options); hold on;
 legendstr={'Challenge','', 'Random', '', 'Challenge miss.', ''};
 legend([h1 h2], 'Challenge', 'Random', 'Challenge miss.', 'location', 'northwest');
 box off
@@ -275,16 +274,16 @@ ylabels = {'Fraction preferred',''};
 layout = tiledlayout(1,2, 'TileSpacing', 'tight', 'padding','compact');
 h = nexttile();
 i=i+1;
-x = acq_vs_random_training;
-y = acq_vs_random_test;
+x = p.acq_vs_random_training;
+y = p.acq_vs_random_test;
 tail = 'both';
 scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 
 nexttile()
 i=i+1;
-x =acq_vs_opt_training;
-y= acq_vs_opt_test;
+x =p.acq_vs_opt_training;
+y= p.acq_vs_opt_test;
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
     text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
@@ -302,7 +301,7 @@ fig.Name = 'Fraction preferred';
 xlabels = {'Naive','Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-Y = {optimized_vs_naive_training, acq_vs_control_training, acq_vs_random_training, acq_vs_opt_training};
+Y = {p.optimized_vs_naive_training, p.acq_vs_control_training, p.acq_vs_random_training, p.acq_vs_opt_training};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq');
  i=i+1;

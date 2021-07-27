@@ -5,11 +5,12 @@ add_directories
 
 graphics_style_paper;
 
+
 data_directory = [experiment_path,'/Data'];
 figures_folder = [experiment_path,'/Figures'];
 reload = 0;
-[VA_E_optimized_preference_acq, VA_Snellen_optimized_preference_acq, VA_E_optimal,VA_Snellen_optimal, VA_E_optimized_preference_random,VA_Snellen_optimized_preference_random, VA_E_optimized_preference_acq_misspecification, VA_Snellen_optimized_preference_acq_misspecification, VA_E_optimal_misspecification,VA_Snellen_optimal_misspecification, VA_E_optimized_E_TS,VA_Snellen_optimized_E_TS, VA_E_control,VA_Snellen_control] = load_VA_results(reload);
-[Pref_vs_E_training, Pref_vs_E_test, acq_vs_random_training, acq_vs_random_test, acq_vs_opt_training, acq_vs_opt_test, optimized_misspecified_vs_optimized_training, optimized_misspecified_vs_optimized_test]  = load_preferences(reload);
+VA= load_VA_results(reload, data_directory, data_table_file);
+p  = load_preferences(reload,data_directory, data_table_file);
 
 
 T = load(data_table_file).T;
@@ -22,10 +23,10 @@ N = numel(indices);
 seeds_data = T(indices,:).Model_Seed;
 seeds = unique(seeds_data);
 
-acq_vs_random_test_paired = zeros(2, numel(seeds));
-acq_vs_random_training_paired= zeros(2, numel(seeds));
-acq_vs_opt_test_paired= zeros(2, numel(seeds));
-acq_vs_opt_training_paired= zeros(2, numel(seeds));
+p.acq_vs_random_test_paired = zeros(2, numel(seeds));
+p.acq_vs_random_training_paired= zeros(2, numel(seeds));
+p.acq_vs_opt_test_paired= zeros(2, numel(seeds));
+p.acq_vs_opt_training_paired= zeros(2, numel(seeds));
 
 Pref_vs_E_test_paired = zeros(2, numel(seeds));
 Pref_vs_E_test= zeros(2, numel(seeds));
@@ -33,48 +34,48 @@ optimized_misspecified_vs_optimized_training_paired = zeros(2, numel(seeds));
 optimized_misspecified_vs_optimized_test_paired = zeros(2, numel(seeds));
 
 for i = 1:numel(seeds)
-    acq_vs_random_test_paired(:,i) = acq_vs_random_test(seeds_data== seeds(i));
-    acq_vs_random_training_paired(:,i) = acq_vs_random_training(seeds_data == seeds(i));
-    acq_vs_opt_test_paired(:,i) = acq_vs_opt_test(seeds_data == seeds(i));
-    acq_vs_opt_training_paired(:,i) = acq_vs_opt_training(seeds_data == seeds(i));
+    p.acq_vs_random_test_paired(:,i) = p.acq_vs_random_test(seeds_data== seeds(i));
+    p.acq_vs_random_training_paired(:,i) = p.acq_vs_random_training(seeds_data == seeds(i));
+    p.acq_vs_opt_test_paired(:,i) = p.acq_vs_opt_test(seeds_data == seeds(i));
+    p.acq_vs_opt_training_paired(:,i) = p.acq_vs_opt_training(seeds_data == seeds(i));
     Pref_vs_E_test_paired(:,i) = Pref_vs_E_test_paired(seeds_data== seeds(i));
     Pref_vs_E_test(:,i)= Pref_vs_E_test(seeds_data== seeds(i));
     optimized_misspecified_vs_optimized_training_paired(:,i) = optimized_misspecified_vs_optimized_training_paired(seeds_data== seeds(i));
     optimized_misspecified_vs_optimized_test_paired(:,i) = optimized_misspecified_vs_optimized_test_paired(seeds_data== seeds(i));
 end
 
-paired_VA_E_optimized_preference_acq= zeros(2, numel(seeds));
-paired_VA_E_optimal =  zeros(2, numel(seeds));
-paired_VA_Snellen_optimized_preference_acq= zeros(2, numel(seeds));
-paired_VA_Snellen_optimal =  zeros(2, numel(seeds));
+paired_VA.VA_E_optimized_preference_acq= zeros(2, numel(seeds));
+paired_VA.VA_E_optimal =  zeros(2, numel(seeds));
+paired_VA.VA_Snellen_optimized_preference_acq= zeros(2, numel(seeds));
+paired_VA.VA_Snellen_optimal =  zeros(2, numel(seeds));
 paired_control_E =zeros(2, numel(seeds));
 paired_control_Snellen =zeros(2, numel(seeds));
 
-paired_VA_E_optimized_preference_random = zeros(2, numel(seeds));
-paired_VA_Snellen_optimized_preference_random= zeros(2, numel(seeds));
-paired_VA_E_optimized_preference_acq_misspecification  = zeros(2, numel(seeds));
-paired_VA_Snellen_optimized_preference_acq_misspecification= zeros(2, numel(seeds));
-paired_VA_E_optimal_misspecification= zeros(2, numel(seeds));
-paired_VA_Snellen_optimal_misspecification= zeros(2, numel(seeds));
-paired_VA_E_optimized_E_TS= zeros(2, numel(seeds));
-paired_VA_Snellen_optimized_E_TS = zeros(2, numel(seeds));
+paired_VA.VA_E_optimized_preference_random = zeros(2, numel(seeds));
+paired_VA.VA_Snellen_optimized_preference_random= zeros(2, numel(seeds));
+paired_VA.VA_E_optimized_preference_acq_misspecification  = zeros(2, numel(seeds));
+paired_VA.VA_Snellen_optimized_preference_acq_misspecification= zeros(2, numel(seeds));
+paired_VA.VA_E_optimal_misspecification= zeros(2, numel(seeds));
+paired_VA.VA_Snellen_optimal_misspecification= zeros(2, numel(seeds));
+paired_VA.VA_E_optimized_E_TS= zeros(2, numel(seeds));
+paired_VA.VA_Snellen_optimized_E_TS = zeros(2, numel(seeds));
 
 for i = 1:numel(seeds)
-    paired_VA_E_optimized_preference_acq(:,i) = VA_E_optimized_preference_acq(seeds_data == seeds(i))';
-    paired_VA_Snellen_optimized_preference_acq(:,i) = VA_Snellen_optimized_preference_acq(seeds_data == seeds(i))';
-    paired_VA_E_optimal(:,i) = VA_E_optimal(seeds_data == seeds(i))';
-    paired_VA_Snellen_optimal(:,i) = VA_Snellen_optimal(seeds_data == seeds(i))';
-    paired_control_E(:,i) = VA_E_control(seeds_data == seeds(i))';
-    paired_control_Snellen(:,i) = VA_Snellen_control(seeds_data == seeds(i))';
+    paired_VA.VA_E_optimized_preference_acq(:,i) = VA.VA_E_optimized_preference_acq(seeds_data == seeds(i))';
+    paired_VA.VA_Snellen_optimized_preference_acq(:,i) = VA.VA_Snellen_optimized_preference_acq(seeds_data == seeds(i))';
+    paired_VA.VA_E_optimal(:,i) = VA.VA_E_optimal(seeds_data == seeds(i))';
+    paired_VA.VA_Snellen_optimal(:,i) = VA.VA_Snellen_optimal(seeds_data == seeds(i))';
+    paired_control_E(:,i) = VA.VA_E_control(seeds_data == seeds(i))';
+    paired_control_Snellen(:,i) = VA.VA_Snellen_control(seeds_data == seeds(i))';
     
-    paired_VA_E_optimized_preference_random(:,i) = VA_E_optimized_preference_random(seeds_data == seeds(i))';
-    paired_VA_Snellen_optimized_preference_random(:,i)= VA_Snellen_optimized_preference_random(seeds_data == seeds(i))';
-    paired_VA_E_optimized_preference_acq_misspecification(:,i) = VA_E_optimized_preference_acq_misspecification(seeds_data == seeds(i))';
-    paired_VA_Snellen_optimized_preference_acq_misspecification(:,i) = VA_Snellen_optimized_preference_acq_misspecification(seeds_data == seeds(i))';
-    paired_VA_E_optimal_misspecification(:,i) = VA_E_optimal_misspecification(seeds_data == seeds(i))';
-    paired_VA_Snellen_optimal_misspecification(:,i) = VA_Snellen_optimal_misspecification(seeds_data == seeds(i))';
-    paired_VA_E_optimized_E_TS(:,i) = VA_E_optimized_E_TS(seeds_data == seeds(i))';
-    paired_VA_Snellen_optimized_E_TS(:,i) =  VA_Snellen_optimized_E_TS(seeds_data == seeds(i))';
+    paired_VA.VA_E_optimized_preference_random(:,i) = VA.VA_E_optimized_preference_random(seeds_data == seeds(i))';
+    paired_VA.VA_Snellen_optimized_preference_random(:,i)= VA.VA_Snellen_optimized_preference_random(seeds_data == seeds(i))';
+    paired_VA.VA_E_optimized_preference_acq_misspecification(:,i) = VA.VA_E_optimized_preference_acq_misspecification(seeds_data == seeds(i))';
+    paired_VA.VA_Snellen_optimized_preference_acq_misspecification(:,i) = VA.VA_Snellen_optimized_preference_acq_misspecification(seeds_data == seeds(i))';
+    paired_VA.VA_E_optimal_misspecification(:,i) = VA.VA_E_optimal_misspecification(seeds_data == seeds(i))';
+    paired_VA.VA_Snellen_optimal_misspecification(:,i) = VA.VA_Snellen_optimal_misspecification(seeds_data == seeds(i))';
+    paired_VA.VA_E_optimized_E_TS(:,i) = VA.VA_E_optimized_E_TS(seeds_data == seeds(i))';
+    paired_VA.VA_Snellen_optimized_E_TS(:,i) =  VA.VA_Snellen_optimized_E_TS(seeds_data == seeds(i))';
 end
 
 
@@ -88,14 +89,14 @@ legend_pos = [-0.18,1.15];
 % tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','tight');
 % 
 % nexttile
-% x = [acq_vs_random_test_paired(1,:), acq_vs_opt_test_paired(1,:)];
-% y = [acq_vs_random_test_paired(2,:), acq_vs_opt_test_paired(2,:)];
+% x = [p.acq_vs_random_test_paired(1,:), p.acq_vs_opt_test_paired(1,:)];
+% y = [p.acq_vs_random_test_paired(2,:), p.acq_vs_opt_test_paired(2,:)];
 % scatter_plot(x, y, tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 % text(legend_pos(1), legend_pos(2),'$\bf{A}$','Units','normalized','Fontsize', letter_font)
 % title('Optimization set')
 % nexttile
-% x = [acq_vs_random_training_paired(1,:), acq_vs_opt_training_paired(1,:)];
-% y = [acq_vs_random_training_paired(2,:), acq_vs_opt_training_paired(2,:)];
+% x = [p.acq_vs_random_training_paired(1,:), p.acq_vs_opt_training_paired(1,:)];
+% y = [p.acq_vs_random_training_paired(2,:), p.acq_vs_opt_training_paired(2,:)];
 % scatter_plot(x, y, tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 % text(legend_pos(1), legend_pos(2),'$\bf{A}$','Units','normalized','Fontsize', letter_font)
 % title('Transfer set')
@@ -115,39 +116,39 @@ fig.Name = "subject_to_subject_optimization_variability";
 tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','tight');
 nexttile
 i=i+1;
-scatter_plot(acq_vs_random_training_paired(1,:),acq_vs_random_training_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(p.acq_vs_random_training_paired(1,:),p.acq_vs_random_training_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 % title('Challenge vs Random, test')
 nexttile
 i=i+1;
-scatter_plot(acq_vs_random_test_paired(1,:),acq_vs_random_test_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(p.acq_vs_random_test_paired(1,:),p.acq_vs_random_test_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 % title('Challenge vs Random, training')
 nexttile
 i=i+1;
-scatter_plot(acq_vs_opt_test_paired(1,:),acq_vs_opt_test_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(p.acq_vs_opt_test_paired(1,:),p.acq_vs_opt_test_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 % title('Challenge vs Ground truth, test')
 nexttile
 i=i+1;
-scatter_plot(acq_vs_opt_training_paired(1,:),acq_vs_opt_training_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(p.acq_vs_opt_training_paired(1,:),p.acq_vs_opt_training_paired(2,:), tail,'Subject  1', 'Subject  2',pref_scale, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 % title('Challenge vs Ground truth, training')
 nexttile
 i=i+1;
-scatter_plot(paired_VA_E_optimized_preference_acq(1,:),paired_VA_E_optimized_preference_acq(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1,'color', C(1,:)); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(paired_VA.VA_E_optimized_preference_acq(1,:),paired_VA.VA_E_optimized_preference_acq(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1,'color', C(1,:)); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 nexttile
 i=i+1;
-scatter_plot(paired_VA_Snellen_optimized_preference_acq(1,:),paired_VA_Snellen_optimized_preference_acq(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1,'color', C(2,:)); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(paired_VA.VA_Snellen_optimized_preference_acq(1,:),paired_VA.VA_Snellen_optimized_preference_acq(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1,'color', C(2,:)); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 nexttile
 i=i+1;
-scatter_plot(paired_VA_E_optimized_E_TS(1,:),paired_VA_E_optimized_E_TS(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1, 'color', C(1,:)); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(paired_VA.VA_E_optimized_E_TS(1,:),paired_VA.VA_E_optimized_E_TS(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1, 'color', C(1,:)); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 nexttile
 i=i+1;
-scatter_plot(paired_VA_Snellen_optimized_E_TS(1,:),paired_VA_Snellen_optimized_E_TS(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1, 'color', C(2,:)); %H1 : x – y come from a distribution with median greater than 0
+scatter_plot(paired_VA.VA_Snellen_optimized_E_TS(1,:),paired_VA.VA_Snellen_optimized_E_TS(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1, 'color', C(2,:)); %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 folder = 'C:\Users\tfauvel\Documents\PhD\Figures\Paper_figures\Figure9\';

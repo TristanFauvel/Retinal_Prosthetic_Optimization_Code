@@ -1,21 +1,21 @@
-function [VA_E_optimized_preference_acq, VA_Snellen_optimized_preference_acq, VA_E_optimal,VA_Snellen_optimal, VA_E_optimized_preference_random,VA_Snellen_optimized_preference_random, VA_E_optimized_preference_acq_misspecification, VA_Snellen_optimized_preference_acq_misspecification, VA_E_optimal_misspecification,VA_Snellen_optimal_misspecification, VA_E_optimized_E_TS,VA_Snellen_optimized_E_TS, VA_E_control,VA_Snellen_control, VA_E_naive, VA_Snellen_naive] = load_VA_results(reload, data_directory, data_table_file)
+function VA = load_VA_results(reload, data_directory, data_table_file)
 filename = [data_directory,'/VA.mat'];
 if reload == 1 %full reload
     N = -1;
-    [VA_E_optimized_preference_acq, VA_Snellen_optimized_preference_acq]= load_VA('preference', 'maxvar_challenge', 0,N, data_table_file, data_directory);
-    [VA_E_optimal,VA_Snellen_optimal] = load_VA([], 'optimal', 0,N, data_table_file, data_directory);
-
-    [VA_E_optimized_preference_random,VA_Snellen_optimized_preference_random] = load_VA('preference', 'random', 0,N, data_table_file, data_directory);
-    [VA_E_optimized_preference_acq_misspecification, VA_Snellen_optimized_preference_acq_misspecification] = load_VA('preference', 'maxvar_challenge', 1, N, data_table_file, data_directory);
-    [VA_E_optimal_misspecification,VA_Snellen_optimal_misspecification] = load_VA([], 'optimal', 1, N, data_table_file, data_directory);
-    [VA_E_optimized_E_TS,VA_Snellen_optimized_E_TS] = load_VA('E', 'TS_binary', 0, N, data_table_file, data_directory);
-    [VA_E_control,VA_Snellen_control] = load_VA([], 'control', 0, N, data_table_file, data_directory);
-    [VA_E_naive,VA_Snellen_naive] = load_VA([], 'naive', 0, N, data_table_file, data_directory);
-    save(filename, 'VA_E_optimized_preference_acq', 'VA_Snellen_optimized_preference_acq', 'VA_E_optimal','VA_Snellen_optimal', 'VA_E_optimized_preference_random','VA_Snellen_optimized_preference_random', 'VA_E_optimized_preference_acq_misspecification', 'VA_Snellen_optimized_preference_acq_misspecification', 'VA_E_optimal_misspecification','VA_Snellen_optimal_misspecification', 'VA_E_optimized_E_TS','VA_Snellen_optimized_E_TS', 'VA_E_control','VA_Snellen_control', 'VA_E_naive', 'VA_Snellen_naive');
+    [VA.VA_E_optimized_preference_acq, VA.VA_Snellen_optimized_preference_acq]= load_VA('preference', 'maxvar_challenge', 0,N, data_table_file, data_directory);
+    [VA.VA_E_optimal,VA.VA_Snellen_optimal] = load_VA([], 'optimal', 0,N, data_table_file, data_directory);
+    
+    [VA.VA_E_optimized_preference_random,VA.VA_Snellen_optimized_preference_random] = load_VA('preference', 'random', 0,N, data_table_file, data_directory);
+    [VA.VA_E_optimized_preference_acq_misspecification, VA.VA_Snellen_optimized_preference_acq_misspecification] = load_VA('preference', 'maxvar_challenge', 1, N, data_table_file, data_directory);
+    [VA.VA_E_optimal_misspecification,VA.VA_Snellen_optimal_misspecification] = load_VA([], 'optimal', 1, N, data_table_file, data_directory);
+    [VA.VA_E_optimized_E_TS,VA.VA_Snellen_optimized_E_TS] = load_VA('E', 'TS_binary', 0, N, data_table_file, data_directory);
+    [VA.VA_E_control,VA.VA_Snellen_control] = load_VA([], 'control', 0, N, data_table_file, data_directory);
+    [VA.VA_E_naive,VA.VA_Snellen_naive] = load_VA([], 'naive', 0, N, data_table_file, data_directory);
+    save(filename, 'VA')
 elseif reload==0 %use saved data
-    load(filename,'VA_E_optimized_preference_acq', 'VA_Snellen_optimized_preference_acq', 'VA_E_optimal','VA_Snellen_optimal', 'VA_E_optimized_preference_random','VA_Snellen_optimized_preference_random', 'VA_E_optimized_preference_acq_misspecification', 'VA_Snellen_optimized_preference_acq_misspecification', 'VA_E_optimal_misspecification','VA_Snellen_optimal_misspecification', 'VA_E_optimized_E_TS','VA_Snellen_optimized_E_TS', 'VA_E_control','VA_Snellen_control', 'VA_E_naive', 'VA_Snellen_naive');
+    load(filename,'VA')
 elseif reload == 2 %only reload the last experiments
-    load(filename,'VA_E_optimized_preference_acq', 'VA_Snellen_optimized_preference_acq', 'VA_E_optimal','VA_Snellen_optimal', 'VA_E_optimized_preference_random','VA_Snellen_optimized_preference_random', 'VA_E_optimized_preference_acq_misspecification', 'VA_Snellen_optimized_preference_acq_misspecification', 'VA_E_optimal_misspecification','VA_Snellen_optimal_misspecification', 'VA_E_optimized_E_TS','VA_Snellen_optimized_E_TS', 'VA_E_control','VA_Snellen_control', 'VA_E_naive', 'VA_Snellen_naive');
+    load(filename,'VA');
     N = 4;
     [new_VA_E_optimized_preference_acq, new_VA_Snellen_optimized_preference_acq]= load_VA('preference', 'maxvar_challenge', 0, N, data_table_file, data_directory);
     [new_VA_E_optimal,new_VA_Snellen_optimal] = load_VA([], 'optimal', 0,N, data_table_file, data_directory);
@@ -26,28 +26,28 @@ elseif reload == 2 %only reload the last experiments
     [new_VA_E_control,new_VA_Snellen_control] = load_VA([], 'control', 0,N, data_table_file, data_directory);
     [new_VA_E_naive,new_VA_Snellen_naive] = load_VA([], 'naive', 0,N, data_table_file, data_directory);
     
-    VA_E_optimized_preference_acq= [VA_E_optimized_preference_acq, new_VA_E_optimized_preference_acq];
-    VA_Snellen_optimized_preference_acq = [VA_Snellen_optimized_preference_acq, new_VA_Snellen_optimized_preference_acq];
-    VA_E_optimal = [VA_E_optimal, new_VA_E_optimal];
-    VA_Snellen_optimal= [VA_Snellen_optimal, new_VA_Snellen_optimal];
-    VA_E_optimized_preference_random= [VA_E_optimized_preference_random, new_VA_E_optimized_preference_random];
-    VA_Snellen_optimized_preference_random= [VA_Snellen_optimized_preference_random, new_VA_Snellen_optimized_preference_random];
-    VA_E_optimized_preference_acq_misspecification= [VA_E_optimized_preference_acq_misspecification, new_VA_E_optimized_preference_acq_misspecification];
-    VA_Snellen_optimized_preference_acq_misspecification= [VA_Snellen_optimized_preference_acq_misspecification, new_VA_Snellen_optimized_preference_acq_misspecification];
-    VA_E_optimal_misspecification= [VA_E_optimal_misspecification, new_VA_E_optimal_misspecification];
-    VA_Snellen_optimal_misspecification= [VA_Snellen_optimal_misspecification, new_VA_Snellen_optimal_misspecification];
-    VA_E_optimized_E_TS= [VA_E_optimized_E_TS, new_VA_E_optimized_E_TS];
-    VA_Snellen_optimized_E_TS= [VA_Snellen_optimized_E_TS, new_VA_Snellen_optimized_E_TS];
-    VA_E_control= [VA_E_control, new_VA_E_control];
-    VA_Snellen_control= [VA_Snellen_control, new_VA_Snellen_control];
-    VA_E_naive= [VA_E_naive, new_VA_E_naive];
-    VA_Snellen_naive= [VA_Snellen_naive, new_VA_Snellen_naive];
-    save(filename, 'VA_E_optimized_preference_acq', 'VA_Snellen_optimized_preference_acq', 'VA_E_optimal','VA_Snellen_optimal', 'VA_E_optimized_preference_random','VA_Snellen_optimized_preference_random', 'VA_E_optimized_preference_acq_misspecification', 'VA_Snellen_optimized_preference_acq_misspecification', 'VA_E_optimal_misspecification','VA_Snellen_optimal_misspecification', 'VA_E_optimized_E_TS','VA_Snellen_optimized_E_TS', 'VA_E_control','VA_Snellen_control', 'VA_E_naive', 'VA_Snellen_naive');    
+    VA.VA_E_optimized_preference_acq= [VA.VA_E_optimized_preference_acq, new_VA_E_optimized_preference_acq];
+    VA.VA_Snellen_optimized_preference_acq = [VA.VA_Snellen_optimized_preference_acq, new_VA_Snellen_optimized_preference_acq];
+    VA.VA_E_optimal = [VA.VA_E_optimal, new_VA_E_optimal];
+    VA.VA_Snellen_optimal= [VA.VA_Snellen_optimal, new_VA_Snellen_optimal];
+    VA.VA_E_optimized_preference_random= [VA.VA_E_optimized_preference_random, new_VA_E_optimized_preference_random];
+    VA.VA_Snellen_optimized_preference_random= [VA.VA_Snellen_optimized_preference_random, new_VA_Snellen_optimized_preference_random];
+    VA.VA_E_optimized_preference_acq_misspecification= [VA.VA_E_optimized_preference_acq_misspecification, new_VA_E_optimized_preference_acq_misspecification];
+    VA.VA_Snellen_optimized_preference_acq_misspecification= [VA.VA_Snellen_optimized_preference_acq_misspecification, new_VA_Snellen_optimized_preference_acq_misspecification];
+    VA.VA_E_optimal_misspecification= [VA.VA_E_optimal_misspecification, new_VA_E_optimal_misspecification];
+    VA.VA_Snellen_optimal_misspecification= [VA.VA_Snellen_optimal_misspecification, new_VA_Snellen_optimal_misspecification];
+    VA.VA_E_optimized_E_TS= [VA.VA_E_optimized_E_TS, new_VA_E_optimized_E_TS];
+    VA.VA_Snellen_optimized_E_TS= [VA.VA_Snellen_optimized_E_TS, new_VA_Snellen_optimized_E_TS];
+    VA.VA_E_control= [VA.VA_E_control, new_VA_E_control];
+    VA.VA_Snellen_control= [VA.VA_Snellen_control, new_VA_Snellen_control];
+    VA.VA_E_naive= [VA.VA_E_naive, new_VA_E_naive];
+    VA.VA_Snellen_naive= [VA.VA_Snellen_naive, new_VA_Snellen_naive];
+    save(filename, 'VA')
 end
 end
 
 function [VA_E, VA_Snellen]= load_VA(task, exp, misspecification, n, data_table_file, data_directory)
-
+%% Careful : this function assumes that the table is ordered by subjects and seeds
 T = load(data_table_file).T;
 if n ~= -1
     T=T(end-n+1:end,:);
@@ -66,25 +66,21 @@ if strcmp(exp, 'optimal') || strcmp(exp, 'control') || strcmp(exp, 'naive')
 else
     acquisition = exp;
 end
-% indices = 1:size(T,1);
-% indices = indices(T.Task == task & T.Acquisition==acquisition & T.Misspecification==misspecification);
-% [a,b] = sort(T(indices,:).Model_Seed);
-% indices = indices(b);
+% t = T(T.Task == task & T.Acquisition==acquisition & T.Misspecification==misspecification,:);
 
-for i =1:N
-    
-    index = indices(i);
-    subject = char(T(index,:).Subject);
-    model_seed = T(index,:).Model_Seed;
-    %     filename = [data_directory, '/Data_Experiment_p2p_',char(T(index,:).Task),'/', char(T(index,:).Subject), '/', char(T(index,:).Subject), '_', char(T(index,:).Acquisition), '_experiment_',num2str(T(index,:).Index)];
+k = 0;
+while k<N
+    k=k+1;
+    i = indices(k);
+    subject = char(T(i,:).Subject);
+    model_seed = T(i,:).Model_Seed;
     j = T(T.Subject == subject & T.Task == task & T.Acquisition == acquisition & T.Misspecification == misspecification & T.Model_Seed == model_seed,:).Index;
     va_snellen = NaN;
     va_e = NaN;
-    if ~isempty(j)
-        filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j)];
+    
+    for l= 1:numel(j)
+        filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j(l))];
         load(filename, 'experiment');
-        
-        
         if strcmp(exp, 'optimal')
             if isfield(experiment, 'E_VA_optimal')
                 va_e = experiment.E_VA_optimal;
@@ -114,9 +110,10 @@ for i =1:N
                 va_snellen = experiment.Snellen_VA_optimized;
             end
         end
-        VA_E(i) = va_e;
-        VA_Snellen(i) = va_snellen;
+        VA_E(k+l-1) = va_e;
+        VA_Snellen(k+l-1) = va_snellen;
     end
+    k=k+l-1;
 end
 end
 

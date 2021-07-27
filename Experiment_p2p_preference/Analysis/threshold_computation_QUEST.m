@@ -1,7 +1,7 @@
 function  [visual_performance, max_val, threshold_intercept, slope, QP, measure] = threshold_computation_QUEST(filename, test, measure)
 
 load(filename, 'experiment');
-plotting = 1;
+plotting = 0;
 recompute_QP = 1;
 switch measure.task
     case 'Snellen'

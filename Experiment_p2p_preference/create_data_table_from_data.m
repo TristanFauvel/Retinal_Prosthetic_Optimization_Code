@@ -6,8 +6,8 @@ data_table_file = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data/
 data_folder = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data/Raw_Data_v1';
 data_table_file = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data/Data_v1/data_table_v1.mat';
 
-% data_folder = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data';
-% data_table_file = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data';
+data_folder = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data/Raw_Data';
+data_table_file = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data/data_table.mat';
 
 f1 = '/Data_Experiment_p2p_E';
 f2 = '/Data_Experiment_p2p_preference';
