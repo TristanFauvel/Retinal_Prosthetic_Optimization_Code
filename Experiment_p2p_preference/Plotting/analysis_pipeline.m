@@ -6,22 +6,23 @@ T = load(data_table_file).T;
 
 %Analyze data and save results in the processed data directory
 n  = size(T,1);
-% n = 4*1;
-% T = T(end-n+1:end,:);
+n = 4*1;
+T = T(end-n+1:end,:);
 for i=1:n
     disp(i)
-%     raw_filename =  [raw_data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
+    raw_filename =  [raw_data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
      filename = [data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
 %     if ~isdir([data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/'])
 %        mkdir([data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/']) 
 %     end
-%     [status,message,messageId] = copyfile(raw_filename, filename);
-%     save(filename, 'experiment') % Create the processed data file.
+%      [status,message,messageId] = copyfile(raw_filename, filename);
+        load(raw_filename, 'experiment')
+     save(filename, 'experiment') % Create the processed data file.
      analyze_experiment(filename, 'for_all', 1)
 end
 
-to_compute_thresholds_QUEST(T, 'E', data_table_file, data_directory)
 to_compute_thresholds_QUEST(T, 'Snellen', data_table_file, data_directory)
+to_compute_thresholds_QUEST(T, 'E', data_table_file, data_directory)
 
 reload = 1; %  1: to reload all the data, 2: to add only the last experiment
 load_VA_results(reload, data_directory, data_table_file)

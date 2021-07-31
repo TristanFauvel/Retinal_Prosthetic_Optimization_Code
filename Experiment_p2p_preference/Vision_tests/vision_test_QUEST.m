@@ -19,47 +19,40 @@ switch task
     case 'E'
         nalt = 4;
         Stimuli_folder =  [Stimuli_folder,'/E'];
-        ne = 50;
-        e_range=linspace(0,0.1,ne); %error rate range
-        threshold = 0.8;
+%         ne = 50;
+%         e_range=linspace(0,0.1,ne); %error rate range
         maxNTrials = 50;
     case 'Eneg'
         nalt = 4;
         Stimuli_folder =  [Stimuli_folder,'/E'];
         ne = 50;
         e_range=linspace(0,0.1,ne); %error rate range
-        threshold = 0.8;
         maxNTrials = 50;
     case 'Snellen'
         nalt = 26;
         Stimuli_folder =  [Stimuli_folder,'/letters'];
-        threshold = 0.5;
         maxNTrials = 80;
 end
-
-b = norminv(1/nalt,0,1);
+threshold = 0.5*(1+1/nalt);
+gamma = 1/nalt;
 stim_res = 255;
 
 switch test
     case 'CS'
         bounds = [0,1];
-        %         param_ub = log10((norminv(threshold)-b)*stim_res); % Maxmum slope it is possible to measure given min stimulus intensity
-        %         param_lb = log10((norminv(threshold)-b)/bounds(2)); % Minimum slope it is possible to measure given max stimulus intensity
-        param_ub = (norminv(threshold)-b)*stim_res; % Maxmum slope it is possible to measure given min stimulus intensity
-        param_lb = (norminv(threshold)-b)/bounds(2); % Minimum slope it is possible to measure given max stimulus intensity
+        param_ub = (norminv(threshold)-gamma)*stim_res; % Maxmum slope it is possible to measure given min stimulus intensity
+        param_lb = (norminv(threshold)-gamma)/bounds(2); % Minimum slope it is possible to measure given max stimulus intensity
         a_range = linspace(param_lb,param_ub,2000);
-        
     case 'VA'
         stim_var = 'angular_diameter';
-        %         bounds = [0.01, display_size(1)]; %size range for the letter (in px)
-        %         param_ub = log10((norminv(threshold)-b)/bounds(1)); % Maxmum slope it is possible to measure given min stimulus intensity
-        %         param_lb = log10((norminv(threshold)-b)/bounds(2)); % Minimum slope it is possible to measure given max stimulus intensity
         bounds = [10/60, min(experiment.visual_field_size)]; %size range for the letter
-        param_ub = (norminv(threshold)-b); % Maxmum slope it is possible to measure given min stimulus intensity
-        param_lb = -3; % Minimum slope it is possible to measure given max stimulus intensity
-        a_range = logspace(param_lb,log10(param_ub),2000);
-        
-        
+%         param_ub = (norminv(threshold)-gamma); % Maxmum slope it is possible to measure given min stimulus intensity
+%         param_lb = -3; % Minimum slope it is possible to measure given max stimulus intensity
+
+        param_lb = [0,-10];
+    param_ub = [1, 0];
+    a_range = linspace(param_lb(1), param_ub(1), 200);
+    b_range = linspace(param_lb(2), param_ub(2),200);
 end
 
 lb = bounds(1);
@@ -68,31 +61,55 @@ x = linspace(lb,ub,stim_res);
 stimDomain = x;
 respDomain = [0 1];
 
-if strcmp(task,'Snellen')
-    F = @(x,a)([1-(normcdf(a.*x+b)),normcdf(a.*x+b)])';
-    paramDomain = {a_range};
-    y1 = unifpdf(paramDomain{1},param_lb,param_ub);
-    y1 = y1./sum(y1);
-    priors = {y1};
-    
-else
-    F = @(x,a,e)([1-((1-e)*normcdf(a.*x+b)+e/nalt),(1-e)*normcdf(a.*x+b)+e/nalt])';
-    paramDomain = {a_range, e_range};
-    y1 = unifpdf(paramDomain{1},param_lb,param_ub);
-    y1 = y1./sum(y1);
-    y2 = betapdf(paramDomain{2},1,20);
-    y2 = y2./sum(y2);
-    priors = {y1, y2};
-end
+% if strcmp(task,'Snellen')
+%     F = @(x,a)([1-(normcdf(a.*x+b)),normcdf(a.*x+b)])';
+%     paramDomain = {a_range};
+%     y1 = unifpdf(paramDomain{1},param_lb,param_ub);
+%     y1 = y1./sum(y1);
+%     priors = {y1};
+%
+% else
+%     F = @(x,a,e)([1-((1-e)*normcdf(a.*x+b)+e/nalt),(1-e)*normcdf(a.*x+b)+e/nalt])';
+%     paramDomain = {a_range, e_range};
+%     y1 = unifpdf(paramDomain{1},param_lb,param_ub);
+%     y1 = y1./sum(y1);
+%     y2 = betapdf(paramDomain{2},1,20);
+%     y2 = y2./sum(y2);
+%     priors = {y1, y2};
+% end
+%
+
+
+c = @(b) (gamma-normcdf(b))./(1-normcdf(b));
+% if strcmp(task,'Snellen')
+    p = @(x,a,b) c(b) + (1-c(b))*normcdf(a*x+b);
+    F = @(x,a, b)([1-p(x,a, b), p(x,a, b)])';
+    paramDomain = {a_range,b_range};
+    ya = unifpdf(paramDomain{1},param_lb(1),param_ub(1));
+    ya = ya./sum(ya);
+    yb = unifpdf(paramDomain{2},param_lb(2),param_ub(2));
+    yb = yb./sum(yb);
+    priors = {ya, yb};
+% else
+%     p = @(x,a,b,e) c(b) + (1-c(b)-e)*normcdf(a*x+b);
+%     F = @(x,a, b)([1-p(x,a, b), p(x,a, b)])';
+%     paramDomain = {a_range, b_range, e_range};
+%     ya = unifpdf(paramDomain{1},param_lb,param_ub);
+%     ya = ya./sum(ya);
+%     yb = unifpdf(paramDomain{2},param_lb(2),param_ub(2));
+%     yb = yb./sum(yb);
+%     ye = betapdf(paramDomain{3},1,20);
+%     ye = ye./sum(ye);
+%     priors = {ya, yb, ye};
+% end
+% 
+
 
 stop_rule = 'entropy';
 stop_criterion = 2.5;
 minNTrials = 10;
 
-% x_norm = (x-lb)./(ub-lb);
-
 try
-    %load([experiment_directory, '/QPlikelihoods_', task, '_', test], 'QP');
     load([experiment_path, '/QPlikelihoods_', task, '_', test], 'QP');
 catch
     QP = QuestPlus(F, stimDomain, paramDomain, respDomain, stop_rule, stop_criterion, minNTrials, maxNTrials);
@@ -174,7 +191,7 @@ measure.task = task;
 measure.nalt = nalt ;
 measure.Stimuli_folder =Stimuli_folder;
 measure.threshold = threshold;
-measure.b = b;
+measure.gamma = gamma;
 measure.stim_res = stim_res;
 measure.bounds = bounds;
 measure.param_ub = param_ub;

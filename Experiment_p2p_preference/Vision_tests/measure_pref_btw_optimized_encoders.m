@@ -4,10 +4,11 @@ function measure_pref_btw_optimized_encoders(filename1,filename2, control)
 %to the random acquisition
 exp1 = load(filename1, 'experiment');
 exp1 = exp1.experiment;
-W_optimized_1 = encoder(exp1.x_best(:, end), exp1,1,0);
-W_opt = encoder(exp1.model_params, exp1,1,1);
 
-    W_naive = naive_encoder(exp1);
+
+W_optimized_1 = encoder(exp1.x_best(:, end), exp1,1,0);
+[W_opt, exp1.M ] = encoder(exp1.model_params, exp1,1,1);
+W_naive = naive_encoder(exp1);
 
 if ~strcmp(control, 'misspecified')
     xparams = exp1.model_params;

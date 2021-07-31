@@ -95,7 +95,7 @@ if nargin > 3 && optimal_magnitude == 1
     S=S(:);
 
     %[P,pmax] = vision_model(Mest,W,S);
-    [P,pmax] = vision_model(M,W,S); %assumes we know the true model;
+    [P,pmax] = vision_model(Mest,W,S); %assumes we know the true model;
 
     magnitude_factor = 255/pmax;
 end

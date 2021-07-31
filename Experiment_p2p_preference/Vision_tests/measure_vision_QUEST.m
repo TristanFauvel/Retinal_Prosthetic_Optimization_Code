@@ -10,7 +10,7 @@ UNPACK_STRUCT(opts, false)
 
 % tasks= {'Snellen', 'E'}
 load(filename, 'experiment');
-add_cBOexp_directories;
+add_directories;
 
 if ~isfield(experiment, 'M')
     ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)

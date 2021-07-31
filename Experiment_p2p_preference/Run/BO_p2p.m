@@ -409,7 +409,7 @@ while ~ stopping_criterion
             post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], kernelfun, modeltype, [], regularization);
         if i >= nopt
             %Optimization of hyperparameters
-            if mod(i, update_period) ==1
+            if mod(i, update_period) ==0
                 %theta_old = [theta_old, theta];
                 init_guess = theta;
                 theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
