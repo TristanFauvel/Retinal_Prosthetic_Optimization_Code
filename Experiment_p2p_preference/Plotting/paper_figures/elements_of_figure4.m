@@ -9,7 +9,7 @@ data_directory = [experiment_path,'/Data'];
 figures_folder = [experiment_path,'/Figures'];
 reload = 0;
 VA= load_VA_results(reload, data_directory, data_table_file);
-p  = load_preferences(reload,data_directory, data_table_file);
+pref  = load_preferences(reload,data_directory, data_table_file);
 
 val = load_values_evolution_combined_data(reload);
 
@@ -54,16 +54,23 @@ image_size = [im_ny, im_nx];
 
 
 Stimuli_folder =  [Stimuli_folder,'/letters'];
-S = load_stimuli_letters(experiment)
+S = load_stimuli_letters(exp)
     
+if ~isfield(exp, 'M')
+    ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)
+    optimal_magnitude = 0;
+    pymod = [];
+    [~, exp.M] = encoder(exp.true_model_params, exp,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+end
+
 best_params = exp.model_params*ones(1,exp.maxiter);
 best_params(exp.ib,:) = exp.x_best(exp.ib,:);
-g = @(x, optimal_magnitude) loss_function(exp.M, x, S, experiment, 'optimal_magnitude', optimal_magnitude);
+g = @(x, optimal_magnitude) loss_function(exp.M, x, S, exp, 'optimal_magnitude', optimal_magnitude);
 [~,p_after_optim] = g(best_params(:,end), []);
 [~,p_opt] = g(exp.model_params, 1);
 
 %% Compute the naive encoder
-Wi=  naive_encoder(experiment);
+Wi=  naive_encoder(exp);
 
 range = [2.^(1:floor(log2(exp.maxiter))), exp.maxiter];
 nk = numel(range);
@@ -89,7 +96,7 @@ for k = 1:nk
     xm = exp.model_params;
     xm(exp.ib) = exp.xtrain(1:exp.d,range(k));
     [~,percept] = g(xm, []);
-    letter = letter2number(experiment.displayed_stim{k});
+    letter = letter2number(exp.displayed_stim{k});
     p1 = [p1, percept(:,letter)];
     xm = exp.model_params;
     xm(exp.ib) = exp.xtrain((exp.d+1):end,range(k));
@@ -247,10 +254,10 @@ options.error= 'std';
 options.line_width = linewidth;
 options.color_area = C(1,:);%./255;    % Blue theme
 options.color_line = C(1,:);%./255;
-h1=plot_areaerrorbar(val.optimized_preference_acq_evolution_combined', options); hold on;
+h1=plot_areaerrorbar(val.optimized_preference_acq_evolution', options); hold on;
 options.color_area = C(2,:);%./255;    % Orange theme
 options.color_line = C(2,:);%./255;
-h2=plot_areaerrorbar(val.optimized_preference_random_evolution_combined', options); hold on;
+h2=plot_areaerrorbar(val.optimized_preference_random_evolution', options); hold on;
 legendstr={'Challenge','', 'Random', '', 'Challenge miss.', ''};
 legend([h1 h2], 'Challenge', 'Random', 'Challenge miss.', 'location', 'northwest');
 box off
@@ -265,7 +272,7 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
 %%
 
-fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 height(1)]);
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 fheight(1)]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred';
 xlabels = {'Control', 'Random','Ground truth'};
@@ -274,16 +281,16 @@ ylabels = {'Fraction preferred',''};
 layout = tiledlayout(1,2, 'TileSpacing', 'tight', 'padding','compact');
 h = nexttile();
 i=i+1;
-x = p.acq_vs_random_training;
-y = p.acq_vs_random_test;
+x = pref.acq_vs_random_training;
+y = pref.acq_vs_random_test;
 tail = 'both';
 scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 
 nexttile()
 i=i+1;
-x =p.acq_vs_opt_training;
-y= p.acq_vs_opt_test;
+x =pref.acq_vs_opt_training;
+y= pref.acq_vs_opt_test;
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
     text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
@@ -301,7 +308,7 @@ fig.Name = 'Fraction preferred';
 xlabels = {'Naive','Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-Y = {p.optimized_vs_naive_training, p.acq_vs_control_training, p.acq_vs_random_training, p.acq_vs_opt_training};
+Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq');
  i=i+1;

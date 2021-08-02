@@ -7,9 +7,9 @@ id = 5;
 data_directory = [experiment_path,'/Data'];
 figures_folder = [experiment_path,'/Figures'];
 reload = 0;
-VA = load_VA_results(reload);
-%[Pref_vs_E_training, Pref_vs_E_test, p.acq_vs_random_training, p.acq_vs_random_test, p.acq_vs_opt_training, p.acq_vs_opt_test, optimized_misspecified_vs_optimized_training, optimized_misspecified_vs_optimized_test,optimized_miss_vs_opt_miss_test, optimized_miss_vs_opt_miss_training, p.acq_vs_control_test, p.acq_vs_control_training]  = load_preferences(reload);
-p= load_combined_preferences(reload);
+VA = load_VA_results(reload, data_directory, data_table_file);
+%[Pref_vs_E_training, Pref_vs_E_test, pref.acq_vs_random_training, pref.acq_vs_random_test, pref.acq_vs_opt_training, pref.acq_vs_opt_test, optimized_misspecified_vs_optimized_training, optimized_misspecified_vs_optimized_test,optimized_miss_vs_opt_miss_test, optimized_miss_vs_opt_miss_training, pref.acq_vs_control_test, pref.acq_vs_control_training]  = load_preferences(reload);
+pref= load_preferences(reload, data_directory, data_table_file);
 
 boxp = 1;
 
@@ -56,37 +56,37 @@ I = imread([folder,'/Snellen_chart_and_TumblingE_tasks.png']);
 %%%%%%%%%%%%%%%%%%%%%%
 % nexttile()
 % i=i+1;
-% x = p.acq_vs_control_training;
-% y = p.acq_vs_control_test;
+% x = pref.acq_vs_control_training;
+% y = pref.acq_vs_control_test;
 % tail = 'both';
 % scatter_plot(x,y, tail,['Fraction preferred ' newline '(Opt. set)'], ['Fraction preferred' newline '(Trans. set)'],pref_scale, 'title_str', 'Control');  %H1 : x – y come from a distribution with median different than 0
 % text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 % 
 % nexttile()
 % i=i+1;
-% x = p.acq_vs_random_training;
-% y = p.acq_vs_random_test;
+% x = pref.acq_vs_random_training;
+% y = pref.acq_vs_random_test;
 % tail = 'both';
 % scatter_plot(x,y, tail,['Fraction preferred' newline '(Opt. set)'], '',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
 % text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 % 
 % nexttile()
 % i=i+1;
-% x =p.acq_vs_opt_training;
-% y= p.acq_vs_opt_test;
+% x =pref.acq_vs_opt_training;
+% y= pref.acq_vs_opt_test;
 % tail = 'both'; %'right';
 % scatter_plot(x,y, tail,['Fraction preferred' newline '(Opt. set)'], '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
 % text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 nexttile()
 i=i+1;
-x = [p.acq_vs_control_training, p.acq_vs_random_training, p.acq_vs_opt_training];
-y = [p.acq_vs_control_test, p.acq_vs_random_test, p.acq_vs_opt_test];
+x = [pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training];
+y = [pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test];
 tail = 'both'; %'right';
 scatter_plot(x,y, tail, ['Fraction preferred' newline '(Opt. set)'], ['Fraction preferred' newline '(Trans. set)'], pref_scale,'title_str', ''); % H1: x – y come from a distribution with greater than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-% X = {p.acq_vs_control_training, p.acq_vs_random_training, p.acq_vs_opt_training};
-% Y = {p.acq_vs_control_test, p.acq_vs_random_test, p.acq_vs_opt_test};
+% X = {pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
+% Y = {pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
 % tail = 'both'; %'right';
 % scatter_plot_combined(X,Y, tail, ['Fraction preferred' newline '(Opt. set)'], ['Fraction preferred' newline '(Trans. set)'], pref_scale,'title_str', '', 'categories', {'Control', 'Random', 'Ground truth'}, 'color', C); % H1: x – y come from a distribution with greater than 0
 % text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
@@ -130,7 +130,7 @@ Y{1} = VA.VA_E_optimized_preference_acq;
 X{1} = VA.VA_E_control;
 Y{2} = VA.VA_Snellen_optimized_preference_acq;
 X{2} = VA.VA_Snellen_control;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(control)'],['LogMAR' newline '(challenge)'],VA_scale_Snellen, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X,Y, tail,['LogMAR' newline '(control)'],['LogMAR' newline '(challenge)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 nexttile()
@@ -139,7 +139,7 @@ Y{1} = VA.VA_E_optimized_preference_acq;
 X{1} = VA.VA_E_optimized_preference_random;
 Y{2} = VA.VA_Snellen_optimized_preference_acq;
 X{2} = VA.VA_Snellen_optimized_preference_random;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(random)'],['LogMAR' newline '(challenge)'],VA_scale_Snellen, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X,Y, tail,['LogMAR' newline '(random)'],['LogMAR' newline '(challenge)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 figname  = ['Figure',num2str(id),'_2'];

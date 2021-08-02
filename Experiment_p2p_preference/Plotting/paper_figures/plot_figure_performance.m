@@ -7,7 +7,7 @@ data_directory = [experiment_path,'/Data'];
 figures_folder = [experiment_path,'/Figures'];
 reload = 0;
 VA= load_VA_results(reload, data_directory, data_table_file);
-p  = load_preferences(reload,data_directory, data_table_file);
+pref  = load_preferences(reload,data_directory, data_table_file);
 boxp = 1;
 
 VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
@@ -75,7 +75,7 @@ pos = get(gca, 'Position');
 
 t = nexttile([1,2]);
 i=i+1;
-Y = {p.E_vs_naive_training, E_vs_control_training, 1-p.Pref_vs_E_training};
+Y = {pref.E_vs_naive_training, pref.E_vs_control_training, 1-pref.Pref_vs_E_training};
 xlabels = {'Naive', 'Control', 'Challenge'};
 ylabels = {'Fraction preferred',''};
 h = scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [2,1,1]);

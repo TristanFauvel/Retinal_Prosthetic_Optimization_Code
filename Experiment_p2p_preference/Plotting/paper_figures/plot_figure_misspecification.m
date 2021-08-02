@@ -1,6 +1,5 @@
 function plot_figure_misspecification(id)
 %% Plot the VA results with the misspecified encoder
-add_modules;
 add_directories;
 T = load(data_table_file).T;
 T = T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 1,:);
@@ -24,6 +23,13 @@ UNPACK_STRUCT(experiment, false)
 optimal_magnitude = 1;
 ignore_pickle = 1;
 pymod = [];
+if ~isfield(experiment, 'M')
+    ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)
+    optimal_magnitude = 0;
+    pymod = [];
+    [~, M] = encoder(experiment.true_model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+end
+
 
 [Wopt, Mopt, nx,ny] = encoder(true_model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
 [Wmiss, Mmiss, nx,ny] = encoder(model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
@@ -36,7 +42,7 @@ data_directory = [experiment_path,'/Data'];
 figures_folder = [experiment_path,'/Figures'];
 reload = 0;
 VA= load_VA_results(reload, data_directory, data_table_file);
-p  = load_preferences(reload,data_directory, data_table_file);
+pref  = load_preferences(reload,data_directory, data_table_file);
 boxp = 1;
 
 VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
@@ -151,7 +157,7 @@ h = nexttile(layout1);
 xlabels = {'Miss. vs Control'};
 ylabels = {'Fraction preferred',''};
 
-Y = {p.opt_miss_vs_control_training};
+Y = {pref.opt_miss_vs_control_training};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0);
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)

@@ -2,7 +2,7 @@ function  [visual_performance, max_val, threshold_intercept, slope, QP, measure]
 
 load(filename, 'experiment');
 plotting = 1;
-recompute_QP = 0;
+recompute_QP = 1;
 add_directories;
 
 switch measure.task
@@ -90,7 +90,7 @@ b = p(2);
 %                 QP.initialise(priors);
 %
 %                 save([experiment_path, '/QPlikelihoods_', measure.task, '_', test], 'QP');
-%             end
+%             endc(b)
 %
 %             for i = 1:size(x,2)
 %                 new_x =  x(i);
@@ -106,9 +106,11 @@ b = p(2);
 
 
 % threshold_computation = @(a) (norminv((threshold-e/nalt)/(1-e)) - b)./a;% compute the threshold from the slope
+    c = @(b) (gamma-normcdf(b))./(1-normcdf(b));
 
+va_computation = @(a,b) (1/a)*(norminv(0.5*(1+normcdf(b)))-b);
 if strcmp(test, 'VA')
-    threshold_intercept = -b/a;%threshold_computation(slope);
+    threshold_intercept = va_computation(a,b);% -b/a;%threshold_computation(slope);
     %% Plot the corresponding VA in log(MAR)
     %% THE THRESHOLD IS AN ANGULAR DIAMTER (IN RAD)
     %      va_conversion = @(a) log10(0.2*180/pi*60*a); %the 0.2 factor corresponds to the fact that details are 1/5 of the size of the letter.

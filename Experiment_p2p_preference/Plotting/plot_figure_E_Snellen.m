@@ -1,7 +1,9 @@
 function plot_figure_E_Snellen(id)
 %% Plot the comparisons between Snellen VA and Tumbling E VA.
 reload = 0;
-VA = load_VA_results(reload);
+add_directories;
+
+VA = load_VA_results(reload,data_directory, data_table_file);
 
 graphics_style_paper;
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
