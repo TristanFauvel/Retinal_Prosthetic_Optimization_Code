@@ -1,6 +1,6 @@
 global viewing_distance
 
-lang = 'fr';
+lang = 'en';
 if strcmp(lang, 'en')
     instructions_l1 = 'Thank you for participating in this experiment.';
     instructions_l2 = ['\n\n Please sit at a viewing distance of about ', num2str(floor(100*viewing_distance)), ' cm from the monitor.'];

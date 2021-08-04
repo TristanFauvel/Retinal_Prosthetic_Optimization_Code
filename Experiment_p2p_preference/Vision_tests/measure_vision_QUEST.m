@@ -27,6 +27,8 @@ if isempty(codes)
                 codes = {'optimized', 'control'};
             elseif short_version == 2
                 codes = {'optimal'};
+            elseif short_version == 3
+                codes = {'optimized', 'optimal', 'control'};
             else
                 codes = {'optimized', 'optimal', 'control', 'naive'};
             end

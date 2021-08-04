@@ -136,7 +136,7 @@ measure.QP = QP;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+plotting=0
 if plotting
     graphics_style_paper;
     c = @(b) (gamma-normcdf(b))./(1-normcdf(b));

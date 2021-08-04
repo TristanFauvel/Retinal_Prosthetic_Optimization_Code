@@ -21,18 +21,17 @@ switch task
         Stimuli_folder =  [Stimuli_folder,'/E'];
 %         ne = 50;
 %         e_range=linspace(0,0.1,ne); %error rate range
-        maxNTrials = 50;
     case 'Eneg'
         nalt = 4;
         Stimuli_folder =  [Stimuli_folder,'/E'];
         ne = 50;
         e_range=linspace(0,0.1,ne); %error rate range
-        maxNTrials = 50;
     case 'Snellen'
         nalt = 26;
         Stimuli_folder =  [Stimuli_folder,'/letters'];
-        maxNTrials = 80;
 end
+maxNTrials = 40;
+
 threshold = 0.5*(1+1/nalt);
 gamma = 1/nalt;
 stim_res = 255;
@@ -120,7 +119,7 @@ catch
 end
 
 %% Initialize the experiment
-burnin = 5;
+burnin = 2;
 
 close all;
 graphics_style_paper;
@@ -162,7 +161,8 @@ for i = 1:burnin
     new_x= x(:,idx);
 end
 
-while ~QP.isFinished()
+k=0;
+while ~QP.isFinished() && k < maxNTrials
     again =1;
     while again
         new_x =  QP.getTargetStim();
@@ -183,6 +183,7 @@ while ~QP.isFinished()
         end
     end
     QP.update(new_x, c);
+    k=k+1;
 end
 
 measure.dpcm = dpcm;
