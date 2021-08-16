@@ -6,7 +6,7 @@ T = load(data_table_file).T;
 
 %Analyze data and save results in the processed data directory
 n  = size(T,1);
-n = 4*1;
+n = 4*2;
 T = T(end-n+1:end,:);
 for i=1:n
     disp(i)

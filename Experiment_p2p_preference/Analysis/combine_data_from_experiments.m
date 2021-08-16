@@ -13,7 +13,7 @@ seed  = 6;
 
 
 [x_train_data, x_train_norm_data, c_train_data, theta_data] =  pool_data(subject, seed, 'preference');
-% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, x_train_norm_data, c_train_data, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, x_train_norm_data, c_train_data, model), theta_lb, theta_ub,10, init_guess, options_theta);
 % theta_true  = theta;
 
 % with the ARD kernel :
@@ -90,7 +90,7 @@ options_theta = experiment.options_theta;
 % max((dC_dx(:)-dF(:)).^2)
 
 
-theta = multistart_minConf(@(hyp)negloglike_bin(hyp, x_train_norm_data, c_train_data, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+theta = multistart_minConf(@(hyp)negloglike_bin(hyp, x_train_norm_data, c_train_data, model), theta_lb, theta_ub,10, init_guess, options_theta);
 
 switch kernelname
     case 'RQ'
@@ -224,7 +224,7 @@ rmse_train = NaN(1,maxiter);
 rmse_test = NaN(1,maxiter);
 
 for i = 1:maxiter
-    theta_i = multistart_minConf(@(hyp)negloglike_bin(hyp, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+    theta_i = multistart_minConf(@(hyp)negloglike_bin(hyp, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
     [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), x_train_norm_data, kernelfun, kernelname, modeltype, post, regularization);
     data_set = training_set;
     rmse_train(i) = sqrt(mean((mu_c(data_set) - c_train_data(data_set)).^2));
@@ -274,7 +274,7 @@ for k = 1:size(Tr,1)
     for i = 1:maxiter
         [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_true, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i),xtest, kernelfun, kernelname, modeltype, post, regularization);
         rmse_true_theta(k,i) = sqrt(mean((mu_c - ctest(:)).^2));
-        theta_i = multistart_minConf(@(hyp)negloglike_bin(hyp, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+        theta_i = multistart_minConf(@(hyp)negloglike_bin(hyp, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
         [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta_i, experiment.xtrain_norm(:, 1:i), experiment.ctrain(1:i),xtest, kernelfun, kernelname, modeltype, post, regularization);
         rmse_exp_theta(k,i) = sqrt(mean((mu_c - ctest(:)).^2));
     end

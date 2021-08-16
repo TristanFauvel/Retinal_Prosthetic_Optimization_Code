@@ -2,13 +2,12 @@ regression_tutorial;
 plot_example_classification_1d;
 preference_learning_GP; 
 kernels_examples; 
-plot_kernel_approximation; 
+plot_approximation; 
 BO_principle
 BO_hyperparameters_effect 
 plot_GP_sampling; 
 
-BBO_figure_thesis; 
-PBO_figure_thesis;
+ PBO_figure_thesis;
 report_solution_to_noisy_BO;
 figure_active_sampling;
 figure_sampling_preference; 

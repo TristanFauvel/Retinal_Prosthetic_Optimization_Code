@@ -55,8 +55,8 @@ modeltype = 'exp_prop'; % Approximation model: laplace or exp_prop
 kernelname = 'linear'; % We choose a linear kernel because of the monotonicity of the psychometric curve
 base_kernelfun = @linear_kernelfun;
 
-% kernelfun = @(theta, x0,x,training) mydeal(@sum_kernel, {theta, x0, x, training, base_kernelfun, base_kernelfun, 1, 2, 1:(nd+1), nd+2:nd+4});
-kernelfun = @(theta, x0,x,training) mydeal(@product_kernel, {theta, x0, x, training, base_kernelfun, base_kernelfun, 1, 2, 1:(nd+1), nd+2:nd+4});
+% kernelfun = @(theta, x0,x,training) mydeal(@sum_kernel, {theta, x0, x, training, base_model 1, 2, 1:(nd+1), nd+2:nd+4});
+kernelfun = @(theta, x0,x,training) mydeal(@product_kernel, {theta, x0, x, training, base_model 1, 2, 1:(nd+1), nd+2:nd+4});
 
 theta = [1;1;1;1;1;1];
 
@@ -140,9 +140,9 @@ for i=1:maxiter %x corresponds to the diameter of the C.
     
     if i > nopt
         if i== nopt+1 || mod(i, update_period) ==1
-            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,3, theta,options_theta);
+            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,3, theta,options_theta);
         end
-        new_x = acquisition_fun(x_norm, theta, xtrain_norm, ctrain, kernelfun, modeltype);
+        new_x = acquisition_fun(x_norm, theta, xtrain_norm, ctrain,model);
         new_x = new_x.*(ub-lb)+lb;
     else %When we have not started to train the GP classification model, the acquisition is random
         idx = randsample(size(x,2),1);

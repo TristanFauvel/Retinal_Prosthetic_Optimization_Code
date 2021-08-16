@@ -44,8 +44,19 @@ if reload
                 load(filename_random, 'experiment');
                 exp_rand = experiment;
                 
-                [~, v_challenge] = prediction_bin(exp_challenge.theta, [exp_challenge.xtrain_norm,exp_rand.xtrain_norm], [exp_challenge.ctrain, exp_rand.ctrain], [exp_challenge.x_best_norm; exp_challenge.x0.*ones(exp_challenge.d,size(exp_challenge.x_best_norm,2))], kernelfun, exp_challenge.modeltype, [], regularization);
-                [~, v_rand] = prediction_bin(exp_rand.theta, [exp_challenge.xtrain_norm,exp_rand.xtrain_norm], [exp_challenge.ctrain, exp_rand.ctrain], [exp_rand.x_best_norm; exp_challenge.x0.*ones(exp_challenge.d,size(exp_challenge.x_best_norm,2))], kernelfun, exp_challenge.modeltype, [], regularization);
+                model.kernelfun = kernelfun;
+                model.modeltype = exp_challenge.modeltype;
+                model.regularization = 'nugget';
+                model.link = exp_challenge.link;
+                model.lb_norm= exp_challenge.lb_norm;
+                model.ub_norm = exp_challenge.ub_norm;
+                model.ub = exp_challenge.ub;
+                model.lb = exp_challenge.lb;
+        
+                [~, v_challenge] = prediction_bin(exp_challenge.theta, [exp_challenge.xtrain_norm,exp_rand.xtrain_norm], ...
+                    [exp_challenge.ctrain, exp_rand.ctrain], [exp_challenge.x_best_norm; exp_challenge.x0.*ones(exp_challenge.d,size(exp_challenge.x_best_norm,2))], model, []);
+                [~, v_rand] = prediction_bin(exp_rand.theta, [exp_challenge.xtrain_norm,exp_rand.xtrain_norm], ...
+                    [exp_challenge.ctrain, exp_rand.ctrain], [exp_rand.x_best_norm; exp_challenge.x0.*ones(exp_challenge.d,size(exp_challenge.x_best_norm,2))], model, []);
                 
                 val_combined.optimized_preference_acq_evolution(:,k+l-1) = v_challenge;
                 val_combined.optimized_preference_random_evolution(:,k+l-1) = v_rand;

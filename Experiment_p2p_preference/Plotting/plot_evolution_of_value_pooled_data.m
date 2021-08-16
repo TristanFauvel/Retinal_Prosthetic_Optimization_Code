@@ -61,7 +61,7 @@ for j = 1:numel(indices_preference_kss)
         case 'preference'
             [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, experiment.modeltype, oost, regularization);
         case 'E'
-            [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
+            [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, x_best_norm, experiment.model, post);
     end
     values_kss(j,:) = value_opt;
     mu_c_kss(j,:) = mu_c_opt;

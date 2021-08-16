@@ -53,7 +53,7 @@ for j = 1:numel(indices_preference_kss)
         case 'preference'
             [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
         case 'E'
-            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
+            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.model, post);
     end
     values_kss(j,:) = value_opt;
 end
@@ -71,7 +71,7 @@ for j = 1:numel(indices_preference_random)
         case 'preference'
             [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, experiment.modeltype, post, regularization);
         case 'E'
-            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.kernelfun, experiment.modeltype, post, regularization);
+            [~, value_opt, ~,~] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, x_best_norm, experiment.model, post);
     end
     values_random(j,:) = value_opt;
 end

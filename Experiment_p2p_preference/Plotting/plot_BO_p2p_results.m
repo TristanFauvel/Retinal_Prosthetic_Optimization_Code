@@ -484,7 +484,7 @@ if strcmp(task, 'preference')
         if strcmp(task, 'preference')
             [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), kernelfun, kernelname,modeltype, post, regularization);
         elseif strcmp(task, 'LandoltC')
-            [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), kernelfun, modeltype, post, regularization);
+            [mu_c, mu_y] =  prediction_bin(theta, xtrain_norm(:, idtrain), ctrain(idtrain), xtrain_norm(:,idtest), model, post);
             
         end
         predictions(i,:)= mu_c;

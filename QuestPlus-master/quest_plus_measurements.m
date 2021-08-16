@@ -14,7 +14,7 @@ mistakes = 1:3:25;
 niter = NaN(n,nseeds,numel(mistakes));
 estimates = NaN(n,nseeds,numel(mistakes));
 
-seeds =1:nseeds;
+seeds =1:model.nseeds;
 nalts = [4, 10,100];
 threshold = 0.8;
 for i=1:n
@@ -49,7 +49,7 @@ for i=1:n
     
     for j = 1:numel(mistakes)
         mistake_i = mistakes(j);
-        for k = 1:nseeds
+        for k = 1:model.nseeds
             seed = seeds(k);
             rng(seed)
             

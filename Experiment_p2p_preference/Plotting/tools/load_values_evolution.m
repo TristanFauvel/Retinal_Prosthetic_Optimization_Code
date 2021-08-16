@@ -47,11 +47,18 @@ while k<N
     for l= 1:numel(j)
         filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j(l))];
         load(filename, 'experiment');
-        
+         model.kernelfun = kernelfun;
+        model.modeltype = experiment.modeltype;
+        model.regularization = 'nugget';
+        model.link = experiment.link;
+        model.lb_norm= experiment.lb_norm;
+        model.ub_norm = experiment.ub_norm;
+        model.ub = experiment.ub;
+        model.lb = experiment.lb;
             if strcmp(task, 'preference')
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], kernelfun, experiment.modeltype, [], regularization);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], model, post);
             else
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm,  kernelfun, experiment.modeltype, [], regularization);
+                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm,  model, post);
             end
         val(:,k+l-1) = v;
     end

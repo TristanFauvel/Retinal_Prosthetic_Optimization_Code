@@ -195,7 +195,7 @@ return
 
 %% Compute the value function
 
-% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, kernelfun, modeltype, post, regularization);
+% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, model, post);
 % [fitresult, gof] = sigmoid_fit(xtrain, ctrain);
 % pred_fit = fitresult(x);
 % acuity = fitresult.k;

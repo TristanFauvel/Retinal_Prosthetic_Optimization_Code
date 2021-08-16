@@ -65,7 +65,7 @@ old = x_best_norm(:,i);
 if strcmp(task,'preference')
         x_best_norm(:,i)= multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,i), ctrain(:,i), x, kernelfun, x0,modeltype), lb_norm, ub_norm, 5, [], options_maxmean);
     else
-        x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x, kernelfun, modeltype), lb_norm, ub_norm, 5, [], options_maxmean);
+        x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x,model), lb_norm, ub_norm, 5, [], options_maxmean);
         
 end
 new =x_best_norm(:,i)

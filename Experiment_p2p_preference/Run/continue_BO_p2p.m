@@ -90,7 +90,7 @@ for i=(maxiter+1):new_maxiter
         if mod(i, update_period) ==0
             %theta_old = [theta_old, theta];
             init_guess = theta;
-            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,10, init_guess, options_theta);
         end
         if strcmp(task, 'preference')
             [x_duel1, x_duel2, new_duel] = acquisition_fun(theta, xtrain_norm, ctrain, kernelfun, kernelname, modeltype,max_x, min_x, lb_norm, ub_norm, x0);
@@ -117,7 +117,7 @@ for i=(maxiter+1):new_maxiter
 end
 
 init_guess = theta;
-theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,10, init_guess, options_theta);
 
             
 if ~strcmp(task, 'preference')

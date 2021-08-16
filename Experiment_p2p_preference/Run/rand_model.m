@@ -72,8 +72,8 @@ end
 
 t= [T.rho, T.axlambda, T.rot, T.center_x, T.center_y, magnitude*ones(size(T,1),1), T.beta_sup, T.beta_inf,T.z];
 
-id1 = any(t > max_x,2);
-id2 = any(t < min_x,2);
+id1 = any(t > max_x(:)',2);
+id2 = any(t < min_x(:)',2);
 T= T(~(id1 | id2),:);
 
 nmodels= 2000;

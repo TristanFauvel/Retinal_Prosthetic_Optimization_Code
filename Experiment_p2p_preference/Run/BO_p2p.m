@@ -58,9 +58,6 @@ beta_inf_range = [0.1,1.3];
 z_range =[0,500];
 magnitude_range = [0,300];
 
-min_x = [rho_range(1),lambda_range(1),rot_range(1),center_x_range(1),center_y_range(1),magnitude_range(1),beta_sup_range(1),beta_inf_range(1), z_range(1)];
-max_x = [rho_range(2),lambda_range(2),rot_range(2),center_x_range(2),center_y_range(2),magnitude_range(2),beta_sup_range(2),beta_inf_range(2), z_range(2)];
-
 
 default_values = [200,400,0,0,0,175.8257,-2.5,0.1,0]; %Default parameter values
 
@@ -69,7 +66,7 @@ experiment.p2p_version = p2p_version;
 experiment.default_values=  default_values;
 
 %Sample a perceptual model
-[rho,lambda, rot, center_x, center_y, magnitude, ~, ~,z, lb, ub] = sample_perceptual_model(to_update, default_values, rho_range,lambda_range,rot_range,center_x_range,center_y_range,beta_sup_range,beta_inf_range,z_range,magnitude_range);
+[rho,lambda, rot, center_x, center_y, magnitude, ~, ~,z, lb, ub, model_lb, model_ub] = sample_perceptual_model(to_update, default_values, rho_range,lambda_range,rot_range,center_x_range,center_y_range,beta_sup_range,beta_inf_range,z_range,magnitude_range);
 % Select beta values at one extreme
 beta_sup = beta_sup_range(2);
 beta_inf = beta_inf_range(2);
@@ -186,7 +183,6 @@ experiment.ib = ib;
 theta = theta_init;
 
 post = [];
-regularization = 'nugget';
 
 % c = 0 or 1
 if strcmp(modeltype, 'exp_prop')
@@ -196,9 +192,9 @@ elseif strcmp(modeltype, 'laplace')
 end
 
 
-lb_norm = zeros(size(lb))';
-ub_norm = ones(size(ub))';
 
+lb_norm = zeros(d,1);
+ub_norm = ones(d,1);
 % if strcmp(implant_name, 'Argus II')
 %     im_ny = floor(0.9*ny);
 %     im_nx = floor(0.9*nx);
@@ -214,9 +210,6 @@ ub_norm = ones(size(ub))';
 % experiment.image_size = image_size;
 switch task
     case 'preference'
-        
-        lb_norm = zeros(d,1);
-        ub_norm = ones(d,1);
         kernelfun = @(theta, xi, xj, training, regularization) preference_kernelfun(theta, base_kernelfun, xi, xj, training, regularization);
         
         x0 = zeros(d,1);
@@ -237,7 +230,7 @@ switch task
         bounds = [0,nx-barwidth-1-b];
 end
 
-rand_acq = @() rand_model(max_x, min_x, magnitude_range, experiment, ib,lb_norm, ub_norm,ignore_pickle);
+rand_acq = @() rand_model(model_ub, model_lb, magnitude_range, experiment, ib,lb_norm, ub_norm,ignore_pickle);
 
 rng(seed)
 
@@ -261,7 +254,6 @@ if strcmp(acquisition_fun_name, 'random')
     nopt = maxiter +1;
 end
 
-fx = 10000;
 options_theta.method = 'lbfgs';
 options_theta.verbose = 1;
 update_period = 100000; %;15 ;
@@ -288,29 +280,42 @@ options_maxmean.method = 'sd';
 options_maxmean.verbose = 1;
 
 stopping_criterion =0;
-miniter = maxiter; %20; %minimal number of iterations
 x_best_norm = NaN(d,maxiter);
 
 
+model.regularization = 'nugget';
+model.kernelfun = kernelfun;
+model.link = link;
+model.modeltype = modeltype;
+model.kernelname = kernelname;
+model.condition = condition;
+model.base_kernelfun = base_kernelfun;
+model.lb_norm = lb_norm;
+model.ub_norm = ub_norm; 
+model.theta_lb = theta_lb;
+model.theta_ub = theta_ub;
+model.ub = ub;
+model.lb = lb;
+model.D = numel(lb);
 
 if any(strcmp(func2str(acquisition_fun), {'DTS', 'kernelselfsparring', 'Thompson_challenge'}))
-    if strcmp(kernelname, 'Matern52') || strcmp(kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
-        approximation_method = 'RRGP';
+    if strcmp(model.kernelname, 'Matern52') || strcmp(model.kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
+        approximation.method = 'RRGP';
     else
-        approximation_method = 'SSGP';
+        approximation.method = 'SSGP';
     end
-    nfeatures = 256;
-    [kernel_approx.phi_pref, kernel_approx.dphi_pref_dx, kernel_approx.phi, kernel_approx.dphi_dx]= sample_features_preference_GP(theta, d, kernelname, approximation_method, nfeatures);
+    approximation.approximation.nfeatures = 256;
+    [approximation.phi_pref, approximation.dphi_pref_dx, approximation.phi, approximation.dphi_dx]= sample_features_preference_GP(theta, d, model, approximation);
 elseif any(strcmp(func2str(acquisition_fun), {'TS_binary'}))
- if strcmp(kernelname, 'Matern52') || strcmp(kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
-        approximation_method = 'RRGP';
+    if strcmp(model.kernelname, 'Matern52') || strcmp(model.kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
+        approximation.method = 'RRGP';
     else
-        approximation_method = 'SSGP';
+        approximation.method = 'SSGP';
     end
-    nfeatures = 6561;
-    [kernel_approx.phi, kernel_approx.dphi_dx]= sample_features_GP(theta, d, kernelname, approximation_method, nfeatures);
+    approximation.nfeatures = 6561;
+    [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
 else
-    kernel_approx = [];
+   approximation = [];
 end
 
 
@@ -334,7 +339,7 @@ while ~ stopping_criterion
         x_duel2 = x_duel;
         
         %% Normalize data so that the bound of the search space are 0 and 1.
-        xtrain_norm = (xtrain(:,1:i) - [lb, lb]')./([ub, ub]'- [lb, lb]');
+        xtrain_norm = (xtrain(:,1:i) - [lb; lb])./([ub; ub]- [lb; lb]);
         
         if parallel == 1
             job1 = batch(@encoder,1,{x_duel1,experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod});
@@ -406,20 +411,20 @@ while ~ stopping_criterion
         x_duel2 = xtrain(d+1:end, i+1);
         new_x = [x_duel1;x_duel2];
     else
-            post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], kernelfun, modeltype, [], regularization);
+        post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
         if i >= nopt
             %Optimization of hyperparameters
             if mod(i, update_period) ==0
                 %theta_old = [theta_old, theta];
                 init_guess = theta;
-                theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
-                post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], kernelfun, modeltype, [], regularization);
+                theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
+                post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
                 
             end
             if strcmp(task, 'preference')
-                [x_duel1, x_duel2, new_duel] = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), kernelfun, base_kernelfun, modeltype,ub',lb', lb_norm, ub_norm, condition, post, kernel_approx);
+                [x_duel1, x_duel2, new_duel] = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post,approximation);
             else
-                new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), kernelfun, modeltype,ub', lb', lb_norm, ub_norm, post, kernel_approx);
+                new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i),model, post, approximation);
             end
             
         else %When we have not started to train the GP classification model, the acquisition is random
@@ -435,9 +440,9 @@ while ~ stopping_criterion
     
     if i == maxiter
         if strcmp(task,'preference')
-            x_best_norm(:,i)= multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,1:i), ctrain(:,1:i), x, kernelfun,condition.x0,modeltype, post), lb_norm, ub_norm, 5, [], options_maxmean);
+            x_best_norm(:,i)= multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,1:i), ctrain(:,1:i), x, model, post), lb_norm, ub_norm, 5, [], options_maxmean);
         else
-            x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x, kernelfun, modeltype, post), lb_norm, ub_norm, 5, [], options_maxmean);
+            x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x,model, post), lb_norm, ub_norm, 5, [], options_maxmean);
             
         end
         
@@ -448,10 +453,10 @@ while ~ stopping_criterion
 end
 
 x_best = model_params.*ones(1,maxiter);
-x_best(ib,:) = x_best_norm(ib,:).*(max_x(ib)-min_x(ib))' + min_x(ib)';
+x_best(ib,:) = x_best_norm(ib,:).*(model_ub(ib)-model_lb(ib))  + model_lb(ib) ;
 %
 % init_guess = theta;
-% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,10, init_guess, options_theta);
+% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,10, init_guess, options_theta);
 
 
 if ~strcmp(task, 'preference')
@@ -521,9 +526,9 @@ experiment.lb_norm = lb_norm;
 experiment.link = link;
 experiment.magnitude = magnitude;
 experiment.magnitude_range = magnitude_range;
-experiment.max_x = max_x;
+experiment.model_ub = model_ub;
 experiment.maxiter = maxiter;
-experiment.min_x = min_x;
+experiment.model_lb = model_lb;
 experiment.misspecification = misspecification;
 experiment.model_params = model_params;
 experiment.model_seed = model_seed;
@@ -565,7 +570,7 @@ if strcmp(task, 'preference')
     experiment.letters = letters;
 end
 
-experiment = rmfield(experiment, 'M'); 
+experiment = rmfield(experiment, 'M');
 
 filename = [raw_data_directory, '/Data_Experiment_p2p_',task,'/',subject,'/',subject, '_', acquisition_fun_name, '_experiment_',num2str(index)];
 

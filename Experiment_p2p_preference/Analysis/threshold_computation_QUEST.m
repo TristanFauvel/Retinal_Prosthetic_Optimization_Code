@@ -16,8 +16,7 @@ gamma = 1/nalt;
 if recompute_QP
     x = measure.QP.history_stim;
     y = measure.QP.history_resp;
-    b = measure.b;%
-    param_lb = [0,-10];
+     param_lb = [0,-10];
     param_ub = [1, 0];
     a_range = linspace(param_lb(1), param_ub(1), 200);
     b_range = linspace(param_lb(2), param_ub(2),200);
@@ -106,7 +105,7 @@ b = p(2);
 
 
 % threshold_computation = @(a) (norminv((threshold-e/nalt)/(1-e)) - b)./a;% compute the threshold from the slope
-    c = @(b) (gamma-normcdf(b))./(1-normcdf(b));
+%     c = @(b) (gamma-normcdf(b))./(1-normcdf(b));
 
 va_computation = @(a,b) (1/a)*(norminv(0.5*(1+normcdf(b)))-b);
 if strcmp(test, 'VA')

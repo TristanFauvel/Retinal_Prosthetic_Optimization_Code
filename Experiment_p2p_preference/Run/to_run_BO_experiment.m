@@ -7,14 +7,14 @@ use_ptb3=1; %Wether to use PTB3 or not
 p2p_version = 'latest';
 
 maxiter = 60; %Number of iterations in the BO loop. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-subject = 'IE';
+subject = 'test';
 
 add_modules;
 beep off
 load('subject_seeds_table.mat', 'subject_table')
 model_seeds = subject_table(ismember(subject_table.Name,subject),:).Seeds;
-model_seeds = 12;
-seeds = 12;
+model_seeds = 13;
+seeds = 13;
 %% 
 
 if model_seeds== 6 || model_seeds== 7
@@ -32,7 +32,7 @@ training_preference = 1;
 training_E = 1;
 training_Snellen = 1;
 
-nexp =4; 
+nexp =4; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for model_seed = model_seeds
     for seed = seeds       
         rng(seed)
@@ -279,7 +279,7 @@ RestrictKeysForKbCheck(KbName('Return'));
 KbWait([], 2)
 screen.vbl = Screen('Flip', window);
 
-if use_ptb3 ==1
-    Screen('CloseAll'); %closes the window
-end
-
+% if use_ptb3 ==1
+%     Screen('CloseAll'); %closes the window
+% end
+% !shutdown -h now

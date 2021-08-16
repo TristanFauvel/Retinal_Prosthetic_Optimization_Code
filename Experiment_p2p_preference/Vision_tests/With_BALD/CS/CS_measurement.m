@@ -170,7 +170,7 @@ for a = 1:length(w)
 end
 return
 
-% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain, ctrain, kernelfun, 'modeltype', modeltype), theta_lb, theta_ub,5, theta,options_theta);
+% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain, ctrain, model), theta_lb, theta_ub,5, theta,options_theta);
 
 % theta(2) = 0;
 % theta(3) = sqrt(abs(norminv(0.25)));
@@ -200,7 +200,7 @@ plot(x,mu_c); hold on;
 scatter(xtrain, ctrain)
 subplot(2,1,2)
 errorshaded(x,mu_y,sqrt(sigma2_y))
-% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, kernelfun, experiment.modeltype, post, regularization);
+% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, model, post);
 % [fitresult, gof] = sigmoid_fit(xtrain, ctrain);
 % pred_fit = fitresult(x);
 % acuity = fitresult.k;
