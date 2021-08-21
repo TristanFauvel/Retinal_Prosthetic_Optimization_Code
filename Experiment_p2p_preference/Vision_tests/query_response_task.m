@@ -16,9 +16,13 @@ if size(S,1) == 1 || size(S,2) ==2
 end
 S = imresize(S, [ny, nx], 'method', 'bilinear');
 S=S(:);
+
 if strcmp(task, 'preference')
-    W1 = W{1};
-    W2 = W{2};
+    
+    %% Randomly permute the images
+    flip_order = randperm(2);
+    W1 = W{flip_order(1)};
+    W2 = W{flip_order(2)};
         letter = correct_response;
     [p1, pmax]= vision_model(M,W1,S);
 
@@ -102,6 +106,9 @@ if strcmp(task, 'preference')
         end
         
         screen.vbl = Screen('Flip', window);
+    end
+    if flip_order(1) == 2
+       c = 1-c; 
     end
 else
     p = vision_model(M,W,S);

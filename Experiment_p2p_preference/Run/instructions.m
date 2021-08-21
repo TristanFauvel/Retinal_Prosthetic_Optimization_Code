@@ -1,5 +1,4 @@
 global viewing_distance
-
 lang = 'en';
 if strcmp(lang, 'en')
     instructions_l1 = 'Thank you for participating in this experiment.';
@@ -7,8 +6,8 @@ if strcmp(lang, 'en')
     instructions_l3 = '\n\n Press enter when you are ready to learn the instructions.';
     start_instructions = [instructions_l1, instructions_l2, instructions_l3];
     
-    preference_l1 = 'When images are displayed, indicate the one on which';
-    preference_l2 = '\n you find it easier to recognize the letter printed above by pressing the left or right arrow key.';
+    preference_l1 = 'The image corresponds to a distorted version of a letter (printed above),';
+    preference_l2 = '\n indicate which one you find the most recognizable or least distorted using the left or right arrows.';
     preference_l3 = '\n You can cancel a strike by pressing C.';
     preference_l4 = '\n\n Press enter to start.';
     preference_instructions = [preference_l1 preference_l2 preference_l3 preference_l4];
@@ -33,7 +32,7 @@ elseif strcmp(lang, 'fr')
     start_instructions = [instructions_l1, instructions_l2, instructions_l3];
     
     preference_l1 = 'Quand des images s''affichent, indiquez celle pour laquelle vous trouvez la lettre';
-    preference_l2 = '\n la plus reconnaissable en utilisant les flèches gauche/droite. Cette lettre est affichée au dessus.';
+    preference_l2 = '\n la plus reconnaissable ou la moins déformée, en utilisant les flèches gauche/droite. Cette lettre est affichée au dessus.';
     preference_l3 = '\n Vous pouvez annuler votre réponse en appuyant sur C.';
     preference_l4 = '\n\n Appuyez sur ''entrée'' pour commencer.';
     preference_instructions = [preference_l1 preference_l2 preference_l3 preference_l4];    

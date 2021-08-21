@@ -3,10 +3,12 @@ data_directory = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data';
 raw_data_directory = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data';
 
 T = load(data_table_file).T;
+subject_to_remove = {'KM','TF', 'test', 'CW'}; 
+T = T(all(T.Subject ~= subject_to_remove,2),:);
 
 %Analyze data and save results in the processed data directory
 n  = size(T,1);
-n = 4*2;
+n = 4*1;
 T = T(end-n+1:end,:);
 for i=1:n
     disp(i)
@@ -30,6 +32,24 @@ load_preferences(reload, data_directory, data_table_file)
 load_values(reload, data_directory, data_table_file)
 load_values_evolution(reload, data_directory, data_table_file)
 load_values_evolution_combined_data(reload, data_directory, data_table_file)
+
+
+
+T = load(data_table_file).T;
+subject_to_remove = {'KM','TF', 'test', 'CW'}; 
+T = T(all(T.Subject ~= subject_to_remove,2),:);
+id = 1:size(T,1);
+acquisition= 'maxvar_challenge';
+id = id(T.Acquisition==acquisition & T.Misspecification == 0);
+% id = id(T(id,:).Subject == 'BF');
+N = numel(id);
+for i = 16:N
+    close all
+    index = id(i);
+%     subject_analysis(index,T);
+    subject_analysis(index,T);
+end
+
 
 % id = 1:size(T,1);
 % id = id(T.Acquisition=='maxvar_challenge' & T.Misspecification == 0);

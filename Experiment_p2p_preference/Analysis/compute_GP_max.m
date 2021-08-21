@@ -130,7 +130,7 @@ end
 if ~strcmp(task, 'preference')
     x_best_norm  = x_best_norm(1:d,:);
 end
-p = x_best_norm.*(ub'-lb') + lb';
+p = x_best_norm.*(ub(:)-lb(:)) + lb(:);
 
 if compute_all
     x_best(ib,:) = p;

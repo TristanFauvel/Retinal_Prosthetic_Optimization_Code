@@ -41,10 +41,12 @@ subject = char(T(s_index,:).Subject);
 acquisition = 'random';
 model_seed = T(s_index,:).Model_Seed;
 j = T(T.Subject == subject & T.Task == task & T.Acquisition == acquisition & T.Misspecification == 0 & T.Model_Seed == model_seed,:).Index;
+j = j(1);
+
 filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', 'random', '_experiment_',num2str(j)];
-load(filename, 'experiment');
-best_params_rand= experiment.model_params*ones(1,maxiter);
-best_params_rand(ib,:) = experiment.x_best(ib,:);
+exp_rand = load(filename, 'experiment');
+best_params_rand= exp_rand.model_params*ones(1,maxiter);
+best_params_rand(ib,:) = exp_rand.x_best(ib,:);
 % [~, M, nx,ny] = encoder(true_model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
 % g = @(x) loss_function(M, x, S, experiment);
 [~,p_after_optim_rand] = g(best_params_rand(:,end), []);
@@ -346,7 +348,10 @@ for k = 1:nk
     colormap('gray')
     if save_figures
         sdir = [figure_directory,filename_base , '_comparisons/'];
+        
+        if ~isdir(sdir)
         mkdir(sdir)
+        end
         saveas(fig, [sdir, 'comparison_', num2str(k),'.png'])
     end
 end

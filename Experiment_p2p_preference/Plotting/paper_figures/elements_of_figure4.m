@@ -1,6 +1,7 @@
 function elements_of_figure4(id)
 
 %% Plot the results of the preference-based optimization
+graphics_style_paper;
 
 add_directories
 graphics_style_paper;
@@ -27,9 +28,14 @@ VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
 pref_scale = [0,1;0,1];
 
 %%
+subject_to_remove = {'KM','TF', 'test', 'CW'}; %remove data from participants who did not complete the experiment;
+
 T = load(data_table_file).T;
+T = T(all(T.Subject ~= subject_to_remove,2),:);
 T= T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 0, :);
-index = 7;
+
+
+index = 17;
 filename = [data_directory, '/Data_Experiment_p2p_',char(T(index,:).Task),'/', char(T(index,:).Subject), '/', char(T(index,:).Subject), '_', char(T(index,:).Acquisition), '_experiment_',num2str(T(index,:).Index)];
 
 load(filename, 'experiment')
@@ -54,8 +60,8 @@ image_size = [im_ny, im_nx];
 
 
 Stimuli_folder =  [Stimuli_folder,'/letters'];
-S = load_stimuli_letters(exp)
-    
+S = load_stimuli_letters(exp);
+
 if ~isfield(exp, 'M')
     ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)
     optimal_magnitude = 0;
@@ -83,7 +89,6 @@ end
 
 nl = 10;
 p = vision_model(exp.M,Wi,S);
-graphics_style_paper;
 
 %%
 letter2number = @(c)1+lower(c)-'a';
@@ -104,9 +109,9 @@ for k = 1:nk
     [~,percept] = g(xm, []);
     p2 = [p2, percept(:,letter)];
     
-     [~,percept] = g(exp.x_best(:, range(k)), []);
-
-%     [~,percept] = g(x_best_unknown_hyps(:, range(k)));
+    [~,percept] = g(exp.x_best(:, range(k)), []);
+    
+    %     [~,percept] = g(x_best_unknown_hyps(:, range(k)));
     popt = [popt, percept(:,1)];
 end
 
@@ -131,19 +136,19 @@ for k = 1:nk
     rgbImage1 = cat(3, img1, img1, img1)./255;
     img2 = reshape(p2(:,k),ny,nx);
     rgbImage2 = cat(3, img2, img2, img2)./255;
-
+    
     if exp.ctrain(range(k))
         rgbImage1= addborder(rgbImage1, 3,[1,0,0], 'center');
     else
         rgbImage2= addborder(rgbImage2, 3,[1,0,0], 'center');
     end
-            h = nexttile(layout1, 1+(c-1)*nt);
-
-        hi = imshow(rgbImage1);
-    set(gca,'xtick',[],'ytick',[],'title',[]); 
+    h = nexttile(layout1, 1+(c-1)*nt);
+    
+    hi = imshow(rgbImage1);
+    set(gca,'xtick',[],'ytick',[],'title',[]);
     set(gca,'dataAspectRatio',[1 1 1])
     h.CLim = [0, 255];
-
+    
     if k==1
         text(-0.525641025641026, 1.14553014553015,'Iteration','Units','normalized','Fontsize', letter_font)
     end
@@ -151,26 +156,26 @@ for k = 1:nk
     ylabel(num2str(range(k)));
     hYLabel = get(gca,'YLabel');
     set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-
+    
     h = nexttile(layout1,2+(c-1)*nt);
-
-            imshow(rgbImage2);
+    
+    imshow(rgbImage2);
     axis off
     set(gca,'dataAspectRatio',[1 1 1])
     h.CLim = [0, 255];
     
-     h = nexttile(layout1,3+(c-1)*nt);
+    h = nexttile(layout1,3+(c-1)*nt);
     imshow(reshape(popt(:,k),ny,nx));
     axis off
     set(gca,'dataAspectRatio',[1 1 1])
     h.CLim = [0, 255];
-   
-  
+    
+    
 end
 colormap('gray')
 
 folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
-if ~isdir(folder)
+if ~isfolder(folder)
     mkdir(folder)
 end
 
@@ -181,8 +186,11 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
 
 %
-s_index = 7; %7 11 13
 T = load(data_table_file).T;
+T = T(all(T.Subject ~= subject_to_remove,2),:);
+% s_index = find(T.Subject == 'PC', :)
+s_index = 2;
+T = T(T.Subject == 'PC', :);
 [p_after_optim, p_opt, p_control, p_after_optim_rand, nx,ny] = encoders_comparison(s_index, T);
 mr = 2;
 mc = 4;
@@ -193,7 +201,6 @@ fig.Name = 'Fraction preferred';
 layout3 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
 
 h = nexttile(layout3);
-i=i+1;
 % h = subplot(mr,mc,[1,3])
 imagesc(reshape(p_opt(:,k),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
@@ -203,7 +210,6 @@ title('Ground truth')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h = nexttile(layout3);
-i=i+1;
 % h = subplot(mr,mc,[4,6])
 imagesc(reshape(p_after_optim(:,k),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
@@ -215,7 +221,6 @@ title('MaxVarChallenge')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h = nexttile(layout3);
-i=i+1;
 % h = subplot(mr,mc,[10,12])
 imagesc(reshape(p_after_optim_rand(:,k),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
@@ -227,7 +232,6 @@ title('Random')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h =nexttile(layout3);
-i=i+1;
 % h = subplot(mr,mc,[13,15])
 imagesc(reshape(p_control(:,k),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
@@ -293,7 +297,7 @@ x =pref.acq_vs_opt_training;
 y= pref.acq_vs_opt_test;
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
-    text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 figname  = ['Figure',num2str(id),'_5'];
 savefig(fig, [folder,'/', figname, '.fig'])
@@ -311,7 +315,7 @@ ylabels = {'Fraction preferred',''};
 Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq');
- i=i+1;
+i=i+1;
 text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
 
 figname  = ['Figure',num2str(id),'_3'];

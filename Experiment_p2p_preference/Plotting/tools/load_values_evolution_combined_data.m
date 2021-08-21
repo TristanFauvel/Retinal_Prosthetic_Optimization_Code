@@ -8,7 +8,9 @@ if reload
     kernelfun = @(theta, x,xp,training, regularization) base_kernelfun(theta, x(1:0.5*size(x,1),:),xp(1:0.5*size(x,1),:),training, regularization);
    
     T = load(data_table_file).T;
-    
+    subject_to_remove = {'KM', 'TF', 'test', 'CW'}; %remove data from participants who did not complete the experiment;
+    T = T(all(T.Subject ~= subject_to_remove,2),:);
+
     indices = 1:size(T,1);
     indices = indices(T.Acquisition=='maxvar_challenge' & T.Misspecification == 0);
     N = numel(indices);

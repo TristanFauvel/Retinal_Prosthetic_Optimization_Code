@@ -23,4 +23,19 @@ plot_figure_Value_preference(id)
 % 
 % Tc = [T1;T2];
 % writetable(Tc, 'combined_data.xls')
-save
+
+reload = 0;
+pref  = load_preferences(reload,data_directory, data_table_file);
+data_directory = [experiment_path,'/Data'];
+figures_folder = [experiment_path,'/Figures'];
+
+
+T = load(data_table_file).T;
+T= T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 0, :);
+subject_to_remove = {'KM','TF', 'test', 'CW'}; %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subject_to_remove,2),:);
+
+Acq_vs_random = pref.acq_vs_random_training';
+Subjects = T.Subject;
+table(Subjects, Acq_vs_random)
+

@@ -60,66 +60,68 @@ letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 graphics_style_paper;
 
 tail = 'both';
-mr = 2;
-mc = 4;
+mr = 1;
+mc = 3;
 
-fig=figure('units','centimeters','outerposition',1+f*[0 0 16 0.66*16]);
+fig=figure('units','centimeters','outerposition',1+[0 0 16 0.66*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Ground truth vs misspecified';
 
 layout1 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
 
-% layout2 = tiledlayout(layout1,1,4);
-% layout2.Layout.Tile = 5;
-% layout2.Layout.TileSpan = [1,4];
-
 i=0;
 
-I = imread([paper_figures_folder,'axon_map_model.png']);
-I = imresize(I, 0.09)
-h = nexttile(layout1);
-i=i+1;
-
-%I = imresize(I,3);
-p = image(I)
-axis image
-axis off
-title('True axons map')
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
-I = imread([paper_figures_folder, '/axon_map_model_misspecified.png']);
-h = nexttile(layout1);
-i=i+1;
-
-I = imresize(I, 0.09);
-p = image(I)
-axis image
-axis off
-title('Misspecified axons map')
-
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
 h =nexttile(layout1);
+
 i=i+1;
+ imagesc(reshape(S(:,1),ny,nx));
+set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[],'dataAspectRatio',[1 1 1],'Fontsize', Fontsize)
+ h.CLim = [0, 1];
+colormap(gca,'gray')
+title('Stimulus')
+
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+
+i=i+1;
+h = nexttile(layout1);
  imagesc(reshape(popt(:,k),ny,nx));
-set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
-set(gca,'dataAspectRatio',[1 1 1])
-h.CLim = [0, 255];
+set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[],'dataAspectRatio',[1 1 1],'Fontsize', Fontsize)
+ h.CLim = [0, 255];
 colormap(gca,'gray')
 title('Ground truth')
 
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h = nexttile(layout1);
 i=i+1;
 imagesc(reshape(pmiss(:,k),ny,nx));
-set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
-set(gca,'dataAspectRatio',[1 1 1])
+set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[],'dataAspectRatio',[1 1 1],'Fontsize', Fontsize)
 h.CLim = [0, 255];
 colormap(gca,'gray')
 title('Misspecified')
 
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+figname  = ['Figure',num2str(id)];
+folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
+if ~isdir(folder)
+    mkdir(folder)
+end
+
+savefig(fig, [folder,'/', figname, '_1.fig'])
+exportgraphics(fig, [folder,'/' , figname, '_1.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '_1.png'], 'Resolution', 300);
+
+
+%%
+mr = 1;
+mc = 4;
+i=0;
+
+fig=figure('units','centimeters','outerposition',1+[0 0 16 0.66*16]);
+fig.Color =  [1 1 1];
+fig.Name = 'Ground truth vs misspecified';
+
+layout1 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
 
 h = nexttile(layout1);
 i=i+1;
@@ -174,7 +176,7 @@ if ~isdir(folder)
     mkdir(folder)
 end
 
-savefig(fig, [folder,'/', figname, '.fig'])
-exportgraphics(fig, [folder,'/' , figname, '.pdf']);
-exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+savefig(fig, [folder,'/', figname, '_2.fig'])
+exportgraphics(fig, [folder,'/' , figname, '_2.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '_2.png'], 'Resolution', 300);
 

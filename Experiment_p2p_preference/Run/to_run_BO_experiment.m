@@ -6,19 +6,19 @@ cd('/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_O
 use_ptb3=1; %Wether to use PTB3 or not 
 p2p_version = 'latest';
 
-maxiter = 60; %Number of iterations in the BO loop. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-subject = 'test';
+maxiter = 200; %Number of iterations in the BO loop. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+subject = 'TF_200'; %'CW';  % 7 CW,SC 14 PC 14, CJ 15
 
 add_modules;
 beep off
 load('subject_seeds_table.mat', 'subject_table')
 model_seeds = subject_table(ismember(subject_table.Name,subject),:).Seeds;
-model_seeds = 13;
-seeds = 13;
+model_seeds = 15;
+seeds = 15;
 %% 
 
-if model_seeds== 6 || model_seeds== 7
-    error('Do not use 6 or 7 as the model seed, as it was used to compute the hyperparameters')
+if model_seeds== 6  
+    error('Do not use 6 as the model seed, as it was used to compute the hyperparameters')
 end
 implant_name = 'Argus II'; %'PRIMA'
 
@@ -32,12 +32,12 @@ training_preference = 1;
 training_E = 1;
 training_Snellen = 1;
 
-nexp =4; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+nexp =2;  
 for model_seed = model_seeds
     for seed = seeds       
         rng(seed)
         experiments_order  = randperm(nexp);
-        for k=1:nexp %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        for k=2:nexp %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             if experiments_order(k) ==1
                 acquisition_fun = @maxvar_challenge;
                 acquisition_fun_name = 'maxvar_challenge';
@@ -268,7 +268,7 @@ end
 test_task = 'Snellen';
 for k=1:nexp 
     filename = filenames{experiments_order(k)};
-    measure_vision_QUEST(filename, test_task, measured_var, 'short_version', 1)
+    measure_vision_QUEST(filename, test_task, measured_var, 'short_version', 3)
 end
 
 Screen('TextSize', window, text_size);
@@ -276,7 +276,7 @@ DrawFormattedText(window, ['Thank you !'],...
     'center', 'center', white);
 screen.vbl = Screen('Flip', window);
 RestrictKeysForKbCheck(KbName('Return'));
-KbWait([], 2)
+KbWait([], 10)
 screen.vbl = Screen('Flip', window);
 
 % if use_ptb3 ==1

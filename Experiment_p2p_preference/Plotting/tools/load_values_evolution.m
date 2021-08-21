@@ -14,6 +14,11 @@ end
 
 function  val = load_val(task, exp, misspecification,data_table_file, data_directory)
 T = load(data_table_file).T;
+
+subject_to_remove = {'KM','TF', 'CW', 'test'}; %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subject_to_remove,2),:);
+
+
 base_kernelfun = @Matern52_kernelfun;
        kernelfun = @(theta, x,xp,training, regularization) base_kernelfun(theta, x(1:0.5*size(x,1),:),xp(1:0.5*size(x,1),:),training, regularization);
 

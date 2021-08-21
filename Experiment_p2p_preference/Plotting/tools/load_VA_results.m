@@ -49,6 +49,11 @@ end
 function [VA_E, VA_Snellen]= load_VA(task, exp, misspecification, n, data_table_file, data_directory)
 %% Careful : this function assumes that the table is ordered by subjects and seeds
 T = load(data_table_file).T;
+
+subject_to_remove = {'KM','TF', 'test'}; %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subject_to_remove,2),:);
+
+
 if n ~= -1
     T=T(end-n+1:end,:);
 end

@@ -5,12 +5,13 @@ opts = namevaluepairtostruct(struct( ...
     'stat', 'median',...
     'pval', 1, ...
     'rotation', 0, ...
+    'colorized',false, ...
     'pba', [1,1,1] ...
     ), varargin);
 
 UNPACK_STRUCT(opts, false)
 
-
+stat = 'mean';
 graphics_style_paper;
 N = numel(Yp);
 M = numel(Yp{1});
@@ -18,7 +19,6 @@ y = NaN(1,N);
 n = NaN(1,N);
 
 g = [];
-colorized = true;
 
 
 groups = [];

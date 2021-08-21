@@ -29,6 +29,8 @@ if ~exist([raw_data_directory, '/Data_Experiment_p2p_',task,'/',subject],'dir')
     mkdir([raw_data_directory, '/Data_Experiment_p2p_',task,'/',subject])
 end
 
+
+
 % List the perceptual model parameters
 params = {'rho','lambda', 'rot','center_x', 'center_y', 'magnitude', 'beta_sup', 'beta_inf', 'z'};
 
@@ -37,6 +39,9 @@ params = {'rho','lambda', 'rot','center_x', 'center_y', 'magnitude', 'beta_sup',
 
 if strcmp(implant_name, 'Argus II')
     to_update = {'rho', 'lambda', 'rot', 'center_x', 'center_y', 'magnitude', 'beta_sup', 'beta_inf'};
+    %     to_update = {'rho', 'lambda', 'center_x', 'center_y', 'magnitude', 'beta_sup', 'beta_inf'}; %%%%%%%%%%%%%%%%%%%
+    %     to_update = {'rho', 'lambda', 'rot', 'center_x', 'center_y','beta_sup', 'beta_inf'}; %%%%%%%%%%%%%%%%%%%
+    
 elseif strcmp(implant_name, 'PRIMA')
     to_update = {'rot', 'center_x', 'center_y', 'magnitude'};
 end
@@ -180,13 +185,29 @@ theta = theta_init;
 post = [];
 
 % c = 0 or 1
-link = @normcdf;%inverse link function for the classification model
+if strcmp(modeltype, 'exp_prop')
+    link = @normcdf;%inverse link function for the classification model
+elseif strcmp(modeltype, 'laplace')
+    link = @sigmoid;
+end
+
 
 
 lb_norm = zeros(d,1);
 ub_norm = ones(d,1);
-
-
+% if strcmp(implant_name, 'Argus II')
+%     im_ny = floor(0.9*ny);
+%     im_nx = floor(0.9*nx);
+% elseif strcmp(implant_name, 'PRIMA')
+%     im_ny = floor(0.5*ny);
+%     im_nx = floor(0.5*nx);
+% end
+% image_size = [im_ny, im_nx];
+%
+% [ny - im_ny,nx - im_nx]
+% (display_size./[ny,nx]).*image_size
+%
+% experiment.image_size = image_size;
 switch task
     case 'preference'
         kernelfun = @(theta, xi, xj, training, regularization) preference_kernelfun(theta, base_kernelfun, xi, xj, training, regularization);
@@ -210,7 +231,7 @@ switch task
         bounds = [0,nx-barwidth-1-b];
 end
 
-rand_acq = @() rand_model(model_ub, model_lb, magnitude_range, experiment, ib,ignore_pickle);
+rand_acq = @() rand_model(model_ub, model_lb, magnitude_range, experiment, ib,lb_norm, ub_norm,ignore_pickle);
 
 rng(seed)
 
@@ -228,7 +249,7 @@ end
 %% Initialize the experiment
 ctrain = NaN(1,maxiter);
 
-nopt = 5; % number of time steps before starting using the acquisition function %%%%%%%%%%%%%%%%%%%%%%%%%ù
+nopt = 5; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%; %5  % number of time steps before starting using the acquisition function %%%%%%%%%%%%%%%%%%%%%%%%%ù
 
 if strcmp(acquisition_fun_name, 'random')
     nopt = maxiter +1;
@@ -237,6 +258,12 @@ end
 options_theta.method = 'lbfgs';
 options_theta.verbose = 1;
 update_period = 100000; %;15 ;
+if parallel ==1
+    delete(gcp('nocreate'))
+    p = parpool(2);
+end
+x_rand = [];
+c_rand = [];
 
 rt = NaN(1,maxiter);
 contrast = 1 ;
@@ -262,31 +289,40 @@ model.kernelfun = kernelfun;
 model.link = link;
 model.modeltype = modeltype;
 model.kernelname = kernelname;
-model.base_kernelfun = base_kernelfun;
+ model.base_kernelfun = base_kernelfun;
 model.lb_norm = lb_norm;
-model.ub_norm = ub_norm;
+model.ub_norm = ub_norm; 
 model.theta_lb = theta_lb;
 model.theta_ub = theta_ub;
 model.ub = ub;
 model.lb = lb;
 model.D = numel(lb);
 
-
-if strcmp(model.kernelname, 'Matern52') || strcmp(model.kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
-    approximation.method = 'RRGP';
-else
-    approximation.method = 'SSGP';
-end
-approximation.decoupled_bases = 1;
-approximation.nfeatures = 6561;
-
-if  strcmp(task, 'preference')
+if any(strcmp(func2str(acquisition_fun), {'DTS', 'kernelselfsparring', 'Thompson_challenge'}))
+    if strcmp(model.kernelname, 'Matern52') || strcmp(model.kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
+        approximation.method = 'RRGP';
+    else
+        approximation.method = 'SSGP';
+    end
+    approximation.decoupled_bases = 1;
+    approximation.approximation.nfeatures = 256;
     [approximation.phi_pref, approximation.dphi_pref_dx, approximation.phi, approximation.dphi_dx]= sample_features_preference_GP(theta, d, model, approximation);
-else
+elseif any(strcmp(func2str(acquisition_fun), {'TS_binary'}))
+    if strcmp(model.kernelname, 'Matern52') || strcmp(model.kernelname, 'Matern32') %|| strcmp(kernelname, 'ARD')
+        approximation.method = 'RRGP';
+    else
+        approximation.method = 'SSGP';
+    end
+    approximation.decoupled_bases = 1;
+    approximation.nfeatures = 6561;
     [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
+else
+   approximation = [];
 end
 
 
+
+stop = 8;
 
 while ~ stopping_criterion
     i=i+1;
@@ -307,12 +343,40 @@ while ~ stopping_criterion
         %% Normalize data so that the bound of the search space are 0 and 1.
         xtrain_norm = (xtrain(:,1:i) - [lb; lb])./([ub; ub]- [lb; lb]);
         
-        
-        W{1} = encoder(x_duel1, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
-        W{2} = encoder(x_duel2, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+        if parallel == 1
+            job1 = batch(@encoder,1,{x_duel1,experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod});
+            job2 = batch(@encoder,1,{x_duel2,experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod});
+            
+            while strcmp(job1.State,'running') || strcmp(job2.State,'running')
+                x_duel1_r = rand_acq();
+                x_duel2_r = rand_acq();
+                new_duel= [x_duel1_r; x_duel2_r];
+                x_duel = model_params;
+                x_duel(ib) = x_duel1_r;
+                x_duel1_r = x_duel_r;
+                x_duel(ib) = x_duel2_r;
+                x_duel2_r = x_duel;
+                Wr{1} = encoder(x_duel1_r, experiment,ignore_pickle,optimal_magnitude, 'pymod', pymod);
+                Wr{2} = encoder(x_duel2_r, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+                x_rand = [x_rand, new_duel];
+                c_rand = [c_rand, query_response_task(M, Wr, S, display_size, experiment, task)];
+            end
+            A = fetchOutputs(job1(1));
+            W{1} = A{1};
+            A = fetchOutputs(job2(1));
+            W{2} = A{1};
+        else
+            W{1} = encoder(x_duel1, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+            W{2} = encoder(x_duel2, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+        end
+        %         letter = randsample(letters_range,1);displayed_stim{i} = letters(letter);
         [S,displayed_stim{i}] = compute_stimulus(experiment, task,access_param(i), display_width, display_height, Stimuli_folder, contrast);
+        %         [c, rt(i)] = query_response_task(M, W, S(:,letter), display_size, experiment, task, displayed_stim{i});
         [c, rt(i)] = query_response_task(M, W, S, display_size, experiment, task, displayed_stim{i});
+        
     else
+        
+        
         xtrain(:,i) = new_x;
         new = new_x;
         new_x = model_params;
@@ -321,7 +385,21 @@ while ~ stopping_criterion
         %% Normalize data so that the bound of the search space are 0 and 1.
         xtrain_norm = (xtrain(:,1:i) - lb(:))./(ub(:)- lb(:));
         
-        W= encoder(new_x,experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+        if parallel
+            job = batch(@encoder,1,{new_x(1:d),experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod});
+            while strcmp(job.State,'running')
+                access_param = rand_interval(bounds(1), bounds(2));
+                new_x_r = [rand_acq(); access_param];
+                x_rand = [x_rand, new_x_r];
+                Wr = encoder(new_x_r(1:d), experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+                [S.S,S.correct_response] = compute_stimulus(task,access_param, display_size, Stimuli_folder, contrast);
+                c_rand = [c_rand, query_response_task(M, Wr, S, display_size, experiment, task)];
+            end
+            W = fetchOutputs(job(1));
+            W= W{1};
+        else
+            W= encoder(new_x,experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
+        end
         
         [S.S,S.correct_response] = compute_stimulus(experiment, task,access_param(i), display_width, display_height, Stimuli_folder, contrast);
         [c, rt(i)] = query_response_task(M, W, S.S, display_size, experiment, task,S.correct_response);
@@ -338,21 +416,17 @@ while ~ stopping_criterion
         post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
         if i >= nopt
             %Optimization of hyperparameters
-            if mod(i, update_period) == 0
+            if mod(i, update_period) ==0
                 %theta_old = [theta_old, theta];
                 init_guess = theta;
                 theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
                 post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
-                if  strcmp(task, 'preference')
-                    [approximation.phi_pref, approximation.dphi_pref_dx, approximation.phi, approximation.dphi_dx]= sample_features_preference_GP(theta, d, model, approximation);
-                else
-                    [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
-                end
+                
             end
             if strcmp(task, 'preference')
                 [x_duel1, x_duel2, new_duel] = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post,approximation);
             else
-                new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post, approximation);
+                new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i),model, post, approximation);
             end
             
         else %When we have not started to train the GP classification model, the acquisition is random
@@ -368,18 +442,23 @@ while ~ stopping_criterion
     
     if i == maxiter
         if strcmp(task,'preference')
-            x_best_norm(:,i)= multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,1:i), ctrain(:,1:i), x, model, post), lb_norm, ub_norm, 15, [], options_maxmean);
+            x_best_norm(:,i)= multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,1:i), ctrain(:,1:i), x, model, post), lb_norm, ub_norm, 5, [], options_maxmean);
         else
-            x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x,model, post), lb_norm, ub_norm, 15, [], options_maxmean);
+            x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x,model, post), lb_norm, ub_norm, 5, [], options_maxmean);
+            
         end
+        
     end
-    if i>= maxiter
+    if i>= maxiter % || (i>= miniter && size(unique(x_best_norm(1:d,end-stop+1:end)','rows'),1) == 1)
         stopping_criterion = 1;
     end
 end
 
 x_best = model_params.*ones(1,maxiter);
 x_best(ib,:) = x_best_norm(ib,:).*(model_ub(ib)-model_lb(ib))  + model_lb(ib) ;
+%
+% init_guess = theta;
+% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,10, init_guess, options_theta);
 
 
 if ~strcmp(task, 'preference')
@@ -395,7 +474,13 @@ end
 close all
 
 disp(mean(ctrain))
-
+% w = whos;
+% close all
+% for a = 1:length(w)
+%     if ~strcmp(w(a).name, 'experiment')
+%         experiment.(w(a).name) = eval(w(a).name);
+%     end
+% end
 experiment.display_size = display_size;
 experiment.p2p_version = p2p_version;
 experiment.default_values = default_values;
@@ -409,6 +494,7 @@ experiment.task = task;
 experiment.to_update = to_update;
 experiment.params = params;
 experiment.ib = ib ;
+% experiment.image_size = image_size;
 experiment.Stimuli_folder = Stimuli_folder;
 experiment.acquisition_fun = acquisition_fun;
 experiment.acquisition_fun_name = acquisition_fun_name;
@@ -461,6 +547,7 @@ experiment.rt = rt;
 experiment.seed = seed;
 experiment.stable_perceptual_model_table_file = stable_perceptual_model_table_file;
 experiment.stable_perceptual_models_directory = stable_perceptual_models_directory;
+experiment.stop = stop;
 experiment.stopping_criterion = stopping_criterion;
 experiment.subject = subject;
 experiment.theta = theta;
@@ -475,6 +562,7 @@ experiment.viewing_distance = viewing_distance;
 experiment.visual_field_size = visual_field_size;
 experiment.x_best = x_best;
 experiment.x_best_norm = x_best_norm;
+experiment.x_rand = x_rand;
 experiment.xtrain = xtrain;
 experiment.xtrain_norm = xtrain_norm;
 experiment.z = z;
@@ -507,4 +595,8 @@ t = table(Index, Model_Seed, Seed, Task, Acquisition, Subject,Misspecification, 
 T = load(data_table_file);
 T = [T.T;t];
 save(data_table_file, 'T')
+
+% filename = [data_directory, '/Data_Experiment_p2p_',task,'/',subject,'/',subject, '_', acquisition_fun_name, '_experiment_',num2str(index)];
+% save(filename, 'experiment')
+%
 

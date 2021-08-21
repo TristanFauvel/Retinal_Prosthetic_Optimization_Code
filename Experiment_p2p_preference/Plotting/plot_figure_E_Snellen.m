@@ -10,7 +10,7 @@ letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 i = 0;
 mr = 1;
 mc = 4;
-fig=figure('units','centimeters','outerposition',1+f*[0 0 16 1/2*16]);
+fig=figure('units','centimeters','outerposition',1+[0 0 16 1/2*16]);
 fig.Color =  [1 1 1];
 tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','tight')
 nexttile();

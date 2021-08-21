@@ -3,13 +3,9 @@ add_directories;
 
 filename = [data_directory, '/Data_Experiment_p2p_',char(T(s_index,:).Task),'/', char(T(s_index,:).Subject), '/', char(T(s_index,:).Subject), '_', char(T(s_index,:).Acquisition), '_experiment_',num2str(T(s_index,:).Index)];
 graphics_style_paper;
-
-%%
-save_figures = 1;
-showall = 'yes';
 load(filename)
 UNPACK_STRUCT(experiment, false)
-
+ 
 add_directories;
 
 filename_base = [task,'_', subject, '_', acquisition_fun_name,'_',num2str(s_index)];

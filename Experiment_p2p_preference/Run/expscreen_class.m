@@ -28,7 +28,7 @@ classdef expscreen_class
                                  
             % Skip sync tests for demo purposes only
             PsychDefaultSetup(2);
-            Screen('Preference', 'SkipSyncTests', 1); %0
+            Screen('Preference', 'SkipSyncTests', 0); %0
             %Screen('Preference', 'SkipSyncTests', 1) %%%%%%%%%%%%%%%%%%BE CAREFUL, THIS SHOULD BE MODIFIED  Screen('Preference', 'SkipSyncTests', 0)
             
             % % Here we call some default settings for setting up Psychtoolbox

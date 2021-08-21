@@ -17,6 +17,6 @@ plot_GP_sampling_binary;
 duels_analysis;
 plot_duels_analysis;
 duels_analysis_ranking;
-duels_analysis_conditional_vs_normal;
 
 
+preference_learning_GP_comparison_wo_conditionning

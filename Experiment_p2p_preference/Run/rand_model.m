@@ -1,11 +1,9 @@
-function [new_x, M] = rand_model(max_x, min_x, magnitude_range, experiment, ib, lb_norm, ub_norm, ignore_pickle)
+function [new_x, M] = rand_model(max_x, min_x, magnitude_range, experiment, ib, ignore_pickle)
 add_directories;
 
 if strcmp(experiment.p2p_version, 'stable')
-    perceptual_models_directory = stable_perceptual_models_directory;
     perceptual_model_table_file = stable_perceptual_model_table_file;
 elseif strcmp(experiment.p2p_version, 'latest')
-    perceptual_models_directory = latest_perceptual_models_directory;
     perceptual_model_table_file = latest_perceptual_model_table_file;
 end
 

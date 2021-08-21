@@ -13,9 +13,6 @@ global viewing_distance
 
 angle_to_pixels = @(angle) floor(2*tan(angle*pi/180/2)*viewing_distance*100*dpcm); %angles are in degree
 
-logMAR_to_pixels = @(logMAR) angle_to_pixels(10^logMAR*5); %angles are in degree
-
-
 display_size = angle_to_pixels(experiment.visual_field_size); % Size of the image on screen (in pixels)
 
 switch task
