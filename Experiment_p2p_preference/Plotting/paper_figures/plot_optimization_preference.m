@@ -1,4 +1,4 @@
-function elements_of_figure4(id)
+function plot_optimization_preference 
 
 %% Plot the results of the preference-based optimization
 graphics_style_paper;
@@ -28,10 +28,10 @@ VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
 pref_scale = [0,1;0,1];
 
 %%
-subject_to_remove = {'KM','TF', 'test', 'CW'}; %remove data from participants who did not complete the experiment;
+load('subjects_to_remove.mat', 'subjects_to_remove') %remove data from participants who did not complete the experiment;
 
 T = load(data_table_file).T;
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
 T= T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 0, :);
 
 
@@ -174,12 +174,12 @@ for k = 1:nk
 end
 colormap('gray')
 
-folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
+folder = [paper_figures_folder,'optimization_preference/'];
 if ~isfolder(folder)
     mkdir(folder)
 end
 
-figname  = ['Figure',num2str(id),'_1'];
+figname  = 'optimization_preference';
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
@@ -187,7 +187,7 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
 %
 T = load(data_table_file).T;
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
 % s_index = find(T.Subject == 'PC', :)
 s_index = 2;
 T = T(T.Subject == 'PC', :);
@@ -243,7 +243,7 @@ title('Control')
 colormap('gray')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
-figname  = ['Figure',num2str(id),'_2'];
+figname  = ['optimization_preference','_2'];
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
@@ -268,45 +268,59 @@ box off
 xlabel('Iteration')
 ylabel('Value');
 legend box off
-figname  = ['Figure',num2str(id),'_3'];
+figname  = ['optimization_preference','_3'];
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
 
 %%
+% 
+% fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 fheight(1)]);
+% fig.Color =  [1 1 1];
+% fig.Name = 'Fraction preferred';
+% xlabels = {'Control', 'Random','Ground truth'};
+% ylabels = {'Fraction preferred',''};
+% 
+% layout = tiledlayout(1,2, 'TileSpacing', 'tight', 'padding','compact');
+% h = nexttile();
+% i=i+1;
+% x = pref.acq_vs_random_training;
+% y = pref.acq_vs_random_test;
+% tail = 'both';
+% scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+% 
+% nexttile()
+% i=i+1;
+% x =pref.acq_vs_opt_training;
+% y= pref.acq_vs_opt_test;
+% tail = 'both'; %'right';
+% scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
-fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 fheight(1)]);
+
+i = 0;
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred';
-xlabels = {'Control', 'Random','Ground truth'};
+xlabels = {'Naive','Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-layout = tiledlayout(1,2, 'TileSpacing', 'tight', 'padding','compact');
-h = nexttile();
-i=i+1;
-x = pref.acq_vs_random_training;
-y = pref.acq_vs_random_test;
-tail = 'both';
-scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+Y = {pref.optimized_vs_naive_test, pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
 
-nexttile()
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,0.5,1]);
 i=i+1;
-x =pref.acq_vs_opt_training;
-y= pref.acq_vs_opt_test;
-tail = 'both'; %'right';
-scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
-figname  = ['Figure',num2str(id),'_5'];
+text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+ 
+figname  = ['optimization_preference', '_test'];
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
 %%
 i = 0;
-fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 1/2*16]);
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred';
 xlabels = {'Naive','Control','Random','Ground truth'};
@@ -314,11 +328,11 @@ ylabels = {'Fraction preferred',''};
 
 Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq');
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,0.5,1]);
 i=i+1;
 text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
 
-figname  = ['Figure',num2str(id),'_3'];
+figname  = ['optimization_preference','_training'];
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);

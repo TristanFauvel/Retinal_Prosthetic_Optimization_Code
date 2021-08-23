@@ -1,4 +1,4 @@
-function plot_figure_Value_VA(id)
+function plot_figure_Value_VA
 add_directories;
 reload = 0;
 
@@ -10,14 +10,14 @@ p  = load_preferences(reload,data_directory, data_table_file);
 graphics_style_paper;
 %% Plot the relationship between VA and value
 
-val = load_values(0);
+val = load_values(reload, data_directory, data_table_file);
 
-mr = 1;
+mr = 2;
 mc = 2;
 
 tiledlayout(mr,mc)
 nexttile()
-y = [VA.VA_E_optimized_preference_acq, VA.VA_E_optimized_preference_random;
+y = [VA.VA_E_optimized_preference_acq- VA.VA_E_optimized_preference_random];
 x = val.optimized_preference_acq-val.optimized_preference_random;
 tail = 'both'; %'right';
 scatter_plot(x,y,tail,'VA MaxVarChallenge/Random','value MaxVarChallenge/Random',[], 'equal_axes', 0, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
@@ -44,11 +44,11 @@ tail = 'both'; %'right';
 scatter_plot(x,y,tail,'Preference MaxVarChallenge/Ground truth','VA MaxVarChallenge/Ground truth',[], 'equal_axes', 0, 'linreg', 1); %H1 : x – y come from a distribution with median greater than 0
 title('Tumbling E')
 
-figname  = 'Figure8';
-folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
-if ~isdir(folder)
-    mkdir(folder)
-end
-savefig(fig, [folder,'/', figname, '.fig'])
-exportgraphics(fig, [folder,'/' , figname, '.pdf']);
-exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+% figname  = 'Figure8';
+% folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
+% if ~isdir(folder)
+%     mkdir(folder)
+% end
+% savefig(fig, [folder,'/', figname, '.fig'])
+% exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+% exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);

@@ -3,8 +3,8 @@ data_directory = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data';
 raw_data_directory = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data';
 
 T = load(data_table_file).T;
-subject_to_remove = {'KM','TF', 'test', 'CW'}; 
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+load('subjects_to_remove.mat', 'subjects_to_remove');
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
 %Analyze data and save results in the processed data directory
 n  = size(T,1);
@@ -15,7 +15,7 @@ for i=1:n
     raw_filename =  [raw_data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
      filename = [data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
 %     if ~isdir([data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/'])
-%        mkdir([data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/']) 
+%        mkdir([data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/'])
 %     end
 %      [status,message,messageId] = copyfile(raw_filename, filename);
         load(raw_filename, 'experiment')
@@ -25,6 +25,11 @@ end
 
 to_compute_thresholds_QUEST(T, 'Snellen', data_table_file, data_directory)
 to_compute_thresholds_QUEST(T, 'E', data_table_file, data_directory)
+
+
+subjects_to_remove = {'KM','TF_200', 'CW', 'test'};
+filename = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_Optimization_Code/subjects_to_remove';
+save(filename, 'subjects_to_remove')
 
 reload = 1; %  1: to reload all the data, 2: to add only the last experiment
 load_VA_results(reload, data_directory, data_table_file)
@@ -36,7 +41,7 @@ load_values_evolution_combined_data(reload, data_directory, data_table_file)
 
 
 T = load(data_table_file).T;
-subject_to_remove = {'KM','TF', 'test', 'CW'}; 
+subject_to_remove = load('subjects_to_remove.mat');
 T = T(all(T.Subject ~= subject_to_remove,2),:);
 id = 1:size(T,1);
 acquisition= 'maxvar_challenge';
@@ -60,10 +65,9 @@ end
 % t = T(T.Subject == 'FF',: )
 % t(5,:).Index = 5;
 % t(6,:).Index = 6;
-% 
-% 
+%
+%
 % T(T.Subject == 'FF',: ) = t;
 % i = 5
 % filename = [data_directory, '/Data_Experiment_p2p_',char(t(i,:).Task),'/', char(t(i,:).Subject), '/', char(t(i,:).Subject), '_', char(t(i,:).Acquisition), '_experiment_',num2str(t(i,:).Index)];
 % load(filename, 'experiment');
-

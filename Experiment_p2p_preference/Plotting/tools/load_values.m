@@ -9,7 +9,7 @@ if reload == 1
     val.optimal_misspecification = load_val([], 'optimal', 1, N, data_table_file, data_directory);
     val.optimized_E_TS = load_val('E', 'TS_binary', 0, N, data_table_file, data_directory);
     val.control = load_val([], 'control', 0, N, data_table_file, data_directory);
-    
+
     save(filename,'val')
 elseif reload == 0
     load(filename, 'val')
@@ -29,8 +29,8 @@ end
 
 function  val = load_val(task, exp, misspecification, N, data_table_file, data_directory)
 T = load(data_table_file).T;
-subject_to_remove = {'KM','TF', 'test', 'CW'}; %remove data from participants who did not complete the experiment;
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+load('subjects_to_remove.mat', 'subjects_to_remove') %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
 indices = 1:size(T,1);
 indices = indices(T.Acquisition=='maxvar_challenge' & T.Misspecification == 0);
@@ -84,7 +84,7 @@ while k<N
 
          if strcmp(exp, 'optimal')
             [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, ...
-                [(experiment.model_params(experiment.ib)-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)], model, post);        
+                [(experiment.model_params(experiment.ib)-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)], model, post);
         elseif strcmp(exp, 'control')
             xparams = experiment.xtrain(1:experiment.d,1);
             xparams =[(xparams-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)];
@@ -102,4 +102,3 @@ while k<N
     k=k+l-1;
 end
 end
-

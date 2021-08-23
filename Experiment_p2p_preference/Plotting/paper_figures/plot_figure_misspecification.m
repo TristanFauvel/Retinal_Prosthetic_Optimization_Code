@@ -7,12 +7,9 @@ T = T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 1,:);
 % data_directory = 'C:\Users\tfauvel\Documents\Retinal_Prosthetic_Optimization\Data_former_version';%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T = load('C:\Users\tfauvel\Documents\Retinal_Prosthetic_Optimization\Data_former_version\data_table.mat').T;
 
-color =  [0, 0.4470, 0.7410; 0.8500, 0.3250, 0.0980];
 index = 2;
 task = char(T(index,:).Task);
 subject = char(T(index,:).Subject);
-filename_base = [task,'_', subject, '_', subject,'_',num2str(T(index,:).Index)];
-figure_directory = [data_directory, '/Data_Experiment_p2p_',task,'/',subject,'/Figures/'];
 
 filename = [data_directory, '/Data_Experiment_p2p_',char(T(index,:).Task),'/', char(T(index,:).Subject), '/', char(T(index,:).Subject), '_', char(T(index,:).Acquisition), '_experiment_',num2str(T(index,:).Index)];
 
@@ -101,8 +98,8 @@ h.CLim = [0, 255];
 colormap(gca,'gray')
 title('Misspecified')
 
-figname  = ['Figure',num2str(id)];
-folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
+figname  = 'Misspecification_effect';
+folder = [paper_figures_folder,figname,'/'];
 if ~isdir(folder)
     mkdir(folder)
 end
@@ -170,11 +167,6 @@ text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', le
 % x = VA.VA_Snellen_control;
 % scatter_plot(x,y, tail,'Control','Challenge, miss.',VA_scale_Snellen, 'color', colors_chart(2,:), 'title_str', 'Snellen');  %H1 : x – y come from a distribution with median greater than 0
 % text(-0.18,1.15,'$\bf{H}$','Units','normalized','Fontsize', letter_font)
-figname  = ['Figure',num2str(id)];
-folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
-if ~isdir(folder)
-    mkdir(folder)
-end
 
 savefig(fig, [folder,'/', figname, '_2.fig'])
 exportgraphics(fig, [folder,'/' , figname, '_2.pdf']);

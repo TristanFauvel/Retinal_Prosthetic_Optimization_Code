@@ -4,7 +4,7 @@ if reload == 1 %full reload
     N = -1;
     [VA.VA_E_optimized_preference_acq, VA.VA_Snellen_optimized_preference_acq]= load_VA('preference', 'maxvar_challenge', 0,N, data_table_file, data_directory);
     [VA.VA_E_optimal,VA.VA_Snellen_optimal] = load_VA([], 'optimal', 0,N, data_table_file, data_directory);
-    
+
     [VA.VA_E_optimized_preference_random,VA.VA_Snellen_optimized_preference_random] = load_VA('preference', 'random', 0,N, data_table_file, data_directory);
     [VA.VA_E_optimized_preference_acq_misspecification, VA.VA_Snellen_optimized_preference_acq_misspecification] = load_VA('preference', 'maxvar_challenge', 1, N, data_table_file, data_directory);
     [VA.VA_E_optimal_misspecification,VA.VA_Snellen_optimal_misspecification] = load_VA([], 'optimal', 1, N, data_table_file, data_directory);
@@ -25,7 +25,7 @@ elseif reload == 2 %only reload the last experiments
     [new_VA_E_optimized_E_TS,new_VA_Snellen_optimized_E_TS] = load_VA('E', 'TS_binary', 0,N, data_table_file, data_directory);
     [new_VA_E_control,new_VA_Snellen_control] = load_VA([], 'control', 0,N, data_table_file, data_directory);
     [new_VA_E_naive,new_VA_Snellen_naive] = load_VA([], 'naive', 0,N, data_table_file, data_directory);
-    
+
     VA.VA_E_optimized_preference_acq= [VA.VA_E_optimized_preference_acq, new_VA_E_optimized_preference_acq];
     VA.VA_Snellen_optimized_preference_acq = [VA.VA_Snellen_optimized_preference_acq, new_VA_Snellen_optimized_preference_acq];
     VA.VA_E_optimal = [VA.VA_E_optimal, new_VA_E_optimal];
@@ -50,8 +50,8 @@ function [VA_E, VA_Snellen]= load_VA(task, exp, misspecification, n, data_table_
 %% Careful : this function assumes that the table is ordered by subjects and seeds
 T = load(data_table_file).T;
 
-subject_to_remove = {'KM','TF', 'test'}; %remove data from participants who did not complete the experiment;
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+load('subjects_to_remove.mat', 'subjects_to_remove') %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
 
 if n ~= -1
@@ -82,7 +82,7 @@ while k<N
     j = T(T.Subject == subject & T.Task == task & T.Acquisition == acquisition & T.Misspecification == misspecification & T.Model_Seed == model_seed,:).Index;
     va_snellen = NaN;
     va_e = NaN;
-    
+
     for l= 1:numel(j)
         filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j(l))];
         load(filename, 'experiment');
@@ -121,6 +121,3 @@ while k<N
     k=k+l-1;
 end
 end
-
-
-

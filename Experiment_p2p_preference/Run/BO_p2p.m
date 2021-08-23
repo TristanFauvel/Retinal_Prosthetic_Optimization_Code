@@ -112,13 +112,12 @@ if misspecification
     % We assume some values of the model that are purposedly wrong, so as to
     % misspecify the model
     to_update = {'rho', 'lambda', 'rot', 'center_x', 'center_y','magnitude'};
-    [rho,lambda, rot, center_x, center_y, magnitude, ~, ~,z, lb, ub] = sample_perceptual_model(to_update, default_values, rho_range,lambda_range,rot_range,center_x_range,center_y_range,beta_sup_range,beta_inf_range,z_range,magnitude_range);
+    [~,~,~,~,~,~, ~, ~,~, lb, ub] = sample_perceptual_model(to_update, default_values, rho_range,lambda_range,rot_range,center_x_range,center_y_range,beta_sup_range,beta_inf_range,z_range,magnitude_range);
     
     beta_sup = -2.5;
     beta_inf = 0.1;
     
     model_params = [rho,lambda, rot, center_x, center_y, magnitude,  beta_sup, beta_inf,z]';
-    
     %Precompute the axon map according to the estimated perceptual model (it may not change anymore if beta_sup and beta_inf
     %are not updated)
     encoder(model_params, experiment,1, optimal_magnitude, 'pymod', pymod);
@@ -148,19 +147,16 @@ load(theta_filename,'ktheta')
 
 switch(kernelname)
     case 'Gaussian'
-        base_kernelfun =  @Gaussian_kernelfun;%kernel used within the preference learning kernel, for subject = computer
+        base_kernelfun =  @Gaussian_kernelfun;
         theta_init = -4*ones(2,1);
     case 'ARD'
-        base_kernelfun =  @ARD_kernelfun;%kernel used within the preference learning kernel, for subject = computer
-        %         theta_init = [-0.1011,-10.0000,0.8080,-1.3494,-1.6468,1.6123,-1.7985,-0.2213,1.6397];
+        base_kernelfun =  @ARD_kernelfun;
         theta_init = ktheta{1};
     case 'Matern52'
         base_kernelfun = @Matern52_kernelfun;
-        %         theta_init = [-0.3544;1.6781];
         theta_init = ktheta{3};
     case 'Matern32'
         base_kernelfun = @Matern32_kernelfun;
-        %         theta_init = [-0.0843;2.0791];
         theta_init = ktheta{4};
 end
 
@@ -236,8 +232,7 @@ end
 
 options_theta.method = 'lbfgs';
 options_theta.verbose = 1;
-update_period = 100000; %;15 ;
-
+update_period = 100000;
 rt = NaN(1,maxiter);
 contrast = 1 ;
 i = 0;

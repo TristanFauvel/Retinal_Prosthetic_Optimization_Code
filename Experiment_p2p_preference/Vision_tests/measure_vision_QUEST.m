@@ -57,7 +57,7 @@ for k =1:numel(codes)
             W = encoder(experiment.x_best(:, end), experiment,1,0);
             code = experiment.acquisition_fun_name;
         case 'optimal'
-            W = encoder(experiment.model_params, experiment,1,1);
+            W = encoder(experiment.true_model_params, experiment,1,1);
         case 'control'
             xparams = experiment.model_params;
             xparams(experiment.ib) = experiment.xtrain(experiment.ib,1);

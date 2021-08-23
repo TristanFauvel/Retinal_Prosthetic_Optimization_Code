@@ -1,5 +1,5 @@
 function val_evo = load_values_evolution(reload, data_directory, data_table_file)
-filename = [data_directory, '/values.mat'];
+filename = [data_directory, '/values_evolution.mat'];
 if reload
     val_evo.optimized_preference_acq= load_val('preference', 'maxvar_challenge', 0, data_table_file, data_directory);
     val_evo.optimized_preference_random = load_val('preference', 'random', 0, data_table_file, data_directory);
@@ -15,8 +15,8 @@ end
 function  val = load_val(task, exp, misspecification,data_table_file, data_directory)
 T = load(data_table_file).T;
 
-subject_to_remove = {'KM','TF', 'CW', 'test'}; %remove data from participants who did not complete the experiment;
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+load('subjects_to_remove.mat', 'subjects_to_remove'); %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
 
 base_kernelfun = @Matern52_kernelfun;

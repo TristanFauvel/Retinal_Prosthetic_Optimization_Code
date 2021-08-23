@@ -7,11 +7,13 @@ exp1 = exp1.experiment;
 
 
 W_optimized_1 = encoder(exp1.x_best(:, end), exp1,1,0);
-[W_opt, exp1.M ] = encoder(exp1.model_params, exp1,1,1);
+[~, exp1.M] = encoder(exp1.true_model_params, exp1,1,1);
+W_opt = encoder(exp1.model_params, exp1,1,1);
+
 W_naive = naive_encoder(exp1);
 
 if ~strcmp(control, 'misspecified')
-    xparams = exp1.model_params;
+    xparams = exp1.true_model_params;
     xparams(exp1.ib) = exp1.xtrain(exp1.ib,1);
     W_control = encoder(xparams, exp1,1,0);
 end
@@ -25,7 +27,7 @@ if ~isempty(filename2)
     end    
     
     if strcmp(control, 'misspecified')
-        xparams = exp2.model_params;
+        xparams = exp2.true_model_params;
         xparams(exp2.ib) = exp2.xtrain(exp2.ib,1);
         W_control = encoder(xparams, exp2,1,0);
      end
