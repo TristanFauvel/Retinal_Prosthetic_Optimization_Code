@@ -118,12 +118,12 @@ text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', let
 
 i=1;
 h = nexttile(layout1,i);
-xlabels = {'Control','Misspecified', 'Challenge'};
+xlabels = {'Control miss.', 'Control','Misspecified'};
 ylabels = {'Fraction preferred',''};
 
-Y = {pref.optimized_miss_vs_control_training, pref.optimized_miss_vs_opt_miss_training, pref.optimized_misspecified_vs_optimized_training};
+Y = {pref.optimized_miss_vs_controlmiss_training, pref.optimized_miss_vs_control_training, pref.optimized_miss_vs_opt_miss_training};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 45);
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 45 ,'Ncomp', 13);
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 
 
@@ -144,3 +144,15 @@ savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
+%%
+% figure()
+% xlabels = {'Control miss.', 'Control','Misspecified', 'Challenge'};
+% ylabels = {'Fraction preferred',''};
+% 
+% Y = {mean([pref.optimized_miss_vs_controlmiss_training; pref.optimized_miss_vs_controlmiss_test],1), ...
+%     mean([pref.optimized_miss_vs_control_training; pref.optimized_miss_vs_control_test],1), ...
+%     mean([pref.optimized_miss_vs_opt_miss_training; pref.optimized_miss_vs_control_test],1), ...
+%     mean([pref.optimized_misspecified_vs_optimized_training; pref.optimized_misspecified_vs_optimized_test],1)};
+% 
+% scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 45, 'test', 'Bayes', 'Ncomp', 26);
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)

@@ -33,7 +33,8 @@ ylabels = {'Fraction preferred',''};
 
 Y = {pref.control_vs_naive_training};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,1,1]);
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,1,1], ...
+    'test', 'Bayes', 'Ncomp', 13);
 i=i+1;
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
  

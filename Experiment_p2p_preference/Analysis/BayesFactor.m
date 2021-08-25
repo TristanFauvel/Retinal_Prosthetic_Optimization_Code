@@ -1,34 +1,37 @@
-function BF_10 =  BayesFactor(n,y)
-syms K
-p = 0.5;
+function BF_10 =  BayesFactor(f,n)
+
+%%
+% f = [0.3,0.4,0.3,0.5];
+% n = [5,6,5,4];
+% for i = 1:4
+% y(i) = binornd(n(i), f(i));
+% end
+%%
+
+% n is the vector containing the number of comparisons for each subject
+% f is the vector containing the fraction of 1 for each subject
+syms Ksi
+y = round(n.*f);
+
+V = var(f);
+
+ksi = mean(f);
+syms w
+eqn = V == ksi*(1-ksi)/(1+1/w);
+S = solve(eqn,w);
+w= double(S);%0.05;
+
+% %%%%%%%%%%%%
+% w= 0.05;
+% %%%%%%%%%%%
 G = numel(y);
-%probs = rand(G,1); %H1
-probs = p*ones(G,1); %H0
-y = y*n;
+f1 = @(i, Ksi) prod((1:y(i))-1+Ksi/w,2);
+f2 = @(i, Ksi) prod((1:(n(i)-y(i)))-1+(1-Ksi)/w,2);
+integrand(Ksi) =  prod(f1(1:G, Ksi)'.*f2(1:G, Ksi)');
 
-w= 0.005;
-f1 = @(i) prod((1:y(i))-1+K/w,2);
-f2 = @(i) prod((1:(n-i-y(i)))-1+(1-K)/w,2);
+H1 = int(integrand,Ksi, 0.5,1);
+H0 = int(integrand,Ksi, 0,0.5);
 
+BF_10= double(H1/H0); %A Bayes factor above 1 means than H1 is more strongly supported than H0.
 
-integrand(K) =  prod(((1/prod((1:n)-1+1/w))/(p^n))*f1((1:G)').*f2((1:G)'));
-integral = int(integrand,K, 0,1);
-BF_10 = double(integral); %A Bayes factor above 1 means than H1 is more strongly supported than H0.
-
-% syms K
-% p = 0.5;
-% n = 40;
-% G = 500;
-% %probs = rand(G,1); %H1
-% probs = p*ones(G,1); %H0
-% y =  binornd(n,probs);
-% 
-% w= 0.005;
-% f1 = @(i) prod((1:y(i))-1+K/w,2);
-% f2 = @(i) prod((1:(n-i-y(i)))-1+(1-K)/w,2);
-% 
-% 
-% integrand(K) =  prod(((1/prod((1:n)-1+1/w))/(p^n))*f1((1:G)').*f2((1:G)'));
-% integral = int(integrand,K, 0,1);
-% Bayes_factor_10 = double(integral); %A Bayes factor above 1 means than H1 is more strongly supported than H0.
 

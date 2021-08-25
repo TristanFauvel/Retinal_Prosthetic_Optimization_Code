@@ -53,11 +53,11 @@ experiments_order  =randperm(numel(codes));
 for k =1:numel(codes)
     code = codes{experiments_order(k)};
     switch code
-        case 'optimized'
-            W = encoder(experiment.x_best(:, end), experiment,1,0);
+        case 'optimized' % Select the best encoder found at the end of the optimization
+            W = encoder(experiment.x_best(:, end), experiment,1,0); 
             code = experiment.acquisition_fun_name;
-        case 'optimal'
-            W = encoder(experiment.true_model_params, experiment,1,1);
+        case 'optimal' % Select the best encoder
+            W = encoder(experiment.model_params, experiment,1,1);            
         case 'control'
             xparams = experiment.model_params;
             xparams(experiment.ib) = experiment.xtrain(experiment.ib,1);

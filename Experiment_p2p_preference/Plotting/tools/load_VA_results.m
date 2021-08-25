@@ -14,9 +14,9 @@ if reload == 1 %full reload
     save(filename, 'VA')
 elseif reload==0 %use saved data
     load(filename,'VA')
-elseif reload == 2 %only reload the last experiments
+else %only reload the last experiments
     load(filename,'VA');
-    N = 4;
+    N = 4*reload;
     [new_VA_E_optimized_preference_acq, new_VA_Snellen_optimized_preference_acq]= load_VA('preference', 'maxvar_challenge', 0, N, data_table_file, data_directory);
     [new_VA_E_optimal,new_VA_Snellen_optimal] = load_VA([], 'optimal', 0,N, data_table_file, data_directory);
     [new_VA_E_optimized_preference_random,new_VA_Snellen_optimized_preference_random] = load_VA('preference', 'random', 0,N, data_table_file, data_directory);

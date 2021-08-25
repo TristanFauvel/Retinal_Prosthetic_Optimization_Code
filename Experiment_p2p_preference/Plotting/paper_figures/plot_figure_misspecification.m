@@ -16,23 +16,15 @@ filename = [data_directory, '/Data_Experiment_p2p_',char(T(index,:).Task),'/', c
 load(filename, 'experiment');
 UNPACK_STRUCT(experiment, false)
 
- 
-optimal_magnitude = 1;
-ignore_pickle = 1;
 pymod = [];
-if ~isfield(experiment, 'M')
-    ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)
-    optimal_magnitude = 0;
-    pymod = [];
-    [~, M] = encoder(experiment.true_model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
-end
-
+ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)
+optimal_magnitude = 0;
 
 [Wopt, Mopt, nx,ny] = encoder(true_model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
 [Wmiss, Mmiss, nx,ny] = encoder(model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
 S = load_stimuli_letters(experiment);
-[popt, pmax] = vision_model(M,Wopt,S);
-[pmiss, pmax] = vision_model(M,Wmiss,S);
+[popt, pmax] = vision_model(Mopt,Wopt,S);
+[pmiss, pmax] = vision_model(Mopt,Wmiss,S);
 
 
 data_directory = [experiment_path,'/Data'];
@@ -158,7 +150,7 @@ ylabels = {'Fraction preferred',''};
 
 Y = {pref.opt_miss_vs_control_training};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0);
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0, 'test', 'Bayes', 'Ncomp', 13);
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 
 % 

@@ -18,9 +18,9 @@ elseif reload == 1
     p  = load_pref(T, indices,data_directory);
 
     save(savetofilename, 'p')
-elseif reload == 2 %only reload the last experiments
+else  %only reload the last experiments
 
-    indices = indices(end);
+    indices = indices(end-reload+2);
     new_p = load_pref(T, indices,data_directory);
 
     load(savetofilename, 'p')
@@ -36,8 +36,8 @@ elseif reload == 2 %only reload the last experiments
     p.optimized_miss_vs_opt_miss_training = [p.optimized_miss_vs_opt_miss_training, new_p.optimized_miss_vs_opt_miss_training];
     p.acq_vs_control_test = [p.acq_vs_control_test, new_p.acq_vs_control_test];
     p.acq_vs_control_training = [p.acq_vs_control_training,new_p.acq_vs_control_training];
-    p.optimized_vs_naive_training = [p.optimized_vs_naive_training, new_optimized_vs_naive_training];
-    p.optimized_vs_naive_test = [p.optimized_vs_naive_test, new_optimized_vs_naive_test];
+    p.optimized_vs_naive_training = [p.optimized_vs_naive_training, new_p.optimized_vs_naive_training];
+    p.optimized_vs_naive_test = [p.optimized_vs_naive_test, new_p.optimized_vs_naive_test];
     p.optimized_miss_vs_control_training = [p.optimized_miss_vs_control_training, new_p.optimized_miss_vs_control_training];
     p.optimized_miss_vs_control_test = [p.optimized_miss_vs_control_test, new_p.optimized_miss_vs_control_test];
     p.optimized_miss_vs_naive_training = [p.optimized_miss_vs_naive_training, new_p.optimized_miss_vs_naive_training];
@@ -46,6 +46,9 @@ elseif reload == 2 %only reload the last experiments
     p.E_vs_naive_training = [p.E_vs_naive_training, new_p.E_vs_naive_training];
     p.E_vs_control_training = [p.E_vs_control_training, new_p.E_vs_control_training];
     p.opt_miss_vs_control_training = [p.opt_miss_vs_control_training, new_p.opt_miss_vs_control_training];
+    p.optimized_miss_vs_controlmiss_test = [p.optimized_miss_vs_controlmiss_test, new_p.optimized_miss_vs_controlmiss_test];
+    p.optimized_miss_vs_controlmiss_training = [p.optimized_miss_vs_controlmiss_training, new_p.optimized_miss_vs_controlmiss_training];
+
     save(savetofilename,'p')
 end
 
@@ -74,6 +77,8 @@ p.control_vs_naive_training = NaN(1,N);
 p.E_vs_naive_training = NaN(1,N);
 p.E_vs_control_training = NaN(1,N);
 p.opt_miss_vs_control_training = NaN(1,N);
+p.optimized_miss_vs_controlmiss_test = NaN(1,N);
+p.optimized_miss_vs_controlmiss_training = NaN(1,N);
 i=0;
 while i <N
     i=i+1;
@@ -164,6 +169,12 @@ while i <N
             end
             if isfield(experiment, 'opt_miss_vs_control_training')
                 p.opt_miss_vs_control_training(i+k-1) = experiment.opt_miss_vs_control_training.pref;
+            end
+            if isfield(experiment, 'optimized_miss_vs_controlmiss_test')
+                p.optimized_miss_vs_controlmiss_test(i+k-1) = experiment.optimized_miss_vs_controlmiss_test.pref;
+            end
+            if isfield(experiment, 'optimized_miss_vs_controlmiss_training')
+                p.optimized_miss_vs_controlmiss_training(i+k-1) = experiment.optimized_miss_vs_controlmiss_training.pref;
             end
         end
     end

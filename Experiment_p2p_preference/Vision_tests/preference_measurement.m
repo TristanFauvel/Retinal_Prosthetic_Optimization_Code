@@ -1,19 +1,21 @@
-function  preference_measure = preference_measurement(experiment, W1, W2, test)
+function  preference_measure = preference_measurement(experiment, M, W1, W2, test, screen)
 add_directories;
-% 
-% nx = experiment.nx;
-% ny = experiment.ny;
 
-display_size = floor(experiment.display_size);
+display_size = experiment.display_size;
 
-
-% Stimuli_folder =  [Stimuli_folder,'/letters'];
-
+%%
+ window = screen.window;
+[width, height]=Screen('WindowSize', window,[]);
+dpcm = get(0,'ScreenPixelsPerInch')/2.54; % number of pixels per centimeter
+viewing_distance = [height, width/2]./(2*tan(0.5*experiment.visual_field_size*pi/180));
+viewing_distance = min(viewing_distance/dpcm)/100; % Viewing distance, in cm;
+ display_size = 2*viewing_distance*tan(0.5*experiment.visual_field_size*pi/180); % Size of the image on screen (in m)
+display_size = floor(display_size*100*dpcm) ; % Size of the image on screen (in pixels)
+%%
 close all;
 
 graphics_style_paper;
 task = 'preference';
-M = experiment.M;
 letter2number = @(c)1+lower(c)-'a';
 letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 

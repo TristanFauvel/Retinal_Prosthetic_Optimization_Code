@@ -1,5 +1,4 @@
-function plot_optimization_preference 
-
+function plot_optimization_preference
 %% Plot the results of the preference-based optimization
 graphics_style_paper;
 
@@ -12,7 +11,7 @@ reload = 0;
 VA= load_VA_results(reload, data_directory, data_table_file);
 pref  = load_preferences(reload,data_directory, data_table_file);
 
-val = load_values_evolution_combined_data(reload);
+val = load_values_evolution_combined_data(reload, data_directory, data_table_file);
 
 boxp = 1;
 
@@ -197,7 +196,6 @@ mc = 4;
 k = 1;
 fig=figure('units','centimeters','outerposition',1+[0 0 16 1.5/2*16]);
 fig.Color =  [1 1 1];
-fig.Name = 'Fraction preferred';
 layout3 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
 
 h = nexttile(layout3);
@@ -303,13 +301,14 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 i = 0;
 fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
-fig.Name = 'Fraction preferred';
+fig.Name = 'Fraction preferred, test';
 xlabels = {'Naive','Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
 Y = {pref.optimized_vs_naive_test, pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,0.5,1]);
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', ...
+    'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 13);
 i=i+1;
 text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
  
@@ -322,13 +321,14 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 i = 0;
 fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
-fig.Name = 'Fraction preferred';
+fig.Name = 'Fraction preferred, training';
 xlabels = {'Naive','Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
 Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,0.5,1]);
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval',...
+    'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 13);
 i=i+1;
 text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
 
@@ -336,3 +336,21 @@ figname  = ['optimization_preference','_training'];
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+
+
+%% Combined
+i = 0;
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred, combined';
+xlabels = {'Naive','Control','Random','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+Y = {mean([pref.optimized_vs_naive_training; pref.optimized_vs_naive_test],1), ...
+    mean([pref.acq_vs_control_training; pref.acq_vs_control_test],1), ...
+    mean([pref.acq_vs_random_training; pref.acq_vs_random_test],1), ...
+    mean([pref.acq_vs_opt_training; pref.acq_vs_opt_test],1)};
+
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 26);
+i=i+1;
+text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins

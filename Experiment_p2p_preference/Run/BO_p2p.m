@@ -114,9 +114,10 @@ if misspecification
     to_update = {'rho', 'lambda', 'rot', 'center_x', 'center_y','magnitude'};
     [~,~,~,~,~,~, ~, ~,~, lb, ub] = sample_perceptual_model(to_update, default_values, rho_range,lambda_range,rot_range,center_x_range,center_y_range,beta_sup_range,beta_inf_range,z_range,magnitude_range);
     
-    beta_sup = -2.5;
-    beta_inf = 0.1;
-    
+    beta_sup = beta_sup_range(1);%-2.5;
+    beta_inf = beta_inf_range(1);% 0.1;
+     
+
     model_params = [rho,lambda, rot, center_x, center_y, magnitude,  beta_sup, beta_inf,z]';
     %Precompute the axon map according to the estimated perceptual model (it may not change anymore if beta_sup and beta_inf
     %are not updated)

@@ -40,4 +40,4 @@ T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
 Acq_vs_random = pref.acq_vs_random_training';
 Subjects = T.Subject;
-table(Subjects, Acq_vs_random, VA.VA_E_optimized_E_TS)
+table(Subjects, Acq_vs_random)

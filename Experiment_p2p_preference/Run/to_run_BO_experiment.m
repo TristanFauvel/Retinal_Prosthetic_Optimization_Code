@@ -6,15 +6,15 @@ cd('/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_O
 use_ptb3=1; %Wether to use PTB3 or not 
 p2p_version = 'latest';
 
-maxiter = 200; %Number of iterations in the BO loop. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-subject = 'TF_200'; %'CW';  % 7 CW,SC 14 PC 14, CJ 15
+maxiter = 60; %Number of iterations in the BO loop. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+subject = 'TC'; %'CW';  % 7 CW,SC 14 PC 14, CJ 15 
 
 add_modules;
 beep off
 load('subject_seeds_table.mat', 'subject_table')
-model_seeds = subject_table(ismember(subject_table.Name,subject),:).Seeds;
-model_seeds = 15;
-seeds = 15;
+model_seeds = subject_table(ismember(subject_table.Name,subject),:).Seeds; 
+model_seeds = 16;
+seeds = 16;
 %% 
 
 if model_seeds== 6  
@@ -32,12 +32,12 @@ training_preference = 1;
 training_E = 1;
 training_Snellen = 1;
 
-nexp =2;  
+nexp =4;  
 for model_seed = model_seeds
     for seed = seeds       
         rng(seed)
         experiments_order  = randperm(nexp);
-        for k=2:nexp %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        for k=1:nexp %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             if experiments_order(k) ==1
                 acquisition_fun = @maxvar_challenge;
                 acquisition_fun_name = 'maxvar_challenge';
@@ -185,7 +185,6 @@ end
 
 T = load(data_table_file);
 T= T.T;
-T = T(T.Subject == subject,:);
 nexp = numel(seeds)*numel(model_seeds)*nexp;
 T=T(end-nexp+1:end,:);
 
@@ -203,12 +202,13 @@ filename2 = filenames{T.Task == 'preference' & T.Acquisition == 'random'};
 filename3 = filenames{T.Task == 'E' & T.Acquisition ~= 'random'};
 filename4 = filenames{T.Task == 'preference' & T.Acquisition ~= 'random' & T.Misspecification ==1};
 % 
-measure_pref_btw_optimized_encoders(filename1,filename2, 'random')
-measure_pref_btw_optimized_encoders(filename1,[], 'optimal')
-measure_pref_btw_optimized_encoders(filename1,[], 'control')
-% measure_pref_btw_optimized_encoders(filename1,[], 'naive')
-measure_pref_btw_optimized_encoders(filename1,filename3, 'E')
-measure_pref_btw_optimized_encoders(filename4,filename1, 'misspecified')
+version = 2; %short version
+measure_pref_btw_optimized_encoders(filename1,filename2, 'random',screen, version)
+measure_pref_btw_optimized_encoders(filename1,[], 'optimal',screen, version)
+measure_pref_btw_optimized_encoders(filename1,[], 'control',screen, version)
+% measure_pref_btw_optimized_encoders(filename1,[], 'naive', version)
+measure_pref_btw_optimized_encoders(filename1,filename3, 'E',screen, version)
+measure_pref_btw_optimized_encoders(filename4,filename1, 'misspecified',screen, version)
 
 nexp = numel(filenames);
 rng(1)

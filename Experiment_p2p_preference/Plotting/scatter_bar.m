@@ -5,7 +5,9 @@ opts = namevaluepairtostruct(struct( ...
     'stat', 'median',...
     'pval', 1, ...
     'rotation', 0, ...
-    'colorized',false, ...
+    'colorized',true, ...
+    'test', 'Bayes', ... %Mann-Whitney
+    'Ncomp', [], ...
     'pba', [1,1,1] ...
     ), varargin);
 
@@ -113,15 +115,19 @@ ylim([0,1])
 pvals = zeros(1,N);
 axes(ax1)
 for i = 1:N
-    [p, ~]  = ranksum(Y{i}, 0.5*ones(1,numel(Y{i}))); % signtest(Y{i}-0.5);%signrank(Y{i}-0.5);
+    if strcmp(test, 'Mann-Whitney')
+    p  = ranksum(Y{i}, 0.5*ones(1,numel(Y{i}))); % signtest(Y{i}-0.5);%signrank(Y{i}-0.5);
+    elseif strcmp(test, 'Bayes')
+        p = BayesFactor(Y{i}, Ncomp*ones(1, numel(Y{i})));
+    end
     pvals(i) = p;
-    [stars, offset]= disp_p(p, 'test', 'Mann-Whitney');
+    [stars, offset]= disp_p(p, 'test', test);
     offset= 0.04;
 %     text(i, 1 + offset, stars, 'HorizontalAlignment', 'center', 'Fontsize', Fontsize);
     text(i, min(offset + mean(Y{i}) + 2*std(Y{i}), 1+offset), stars, 'HorizontalAlignment', 'center', 'Fontsize', Fontsize, 'Rotation', rotation);
 
 end
-    ax1.Color = 'none';
+ax1.Color = 'none';
 
 %%
 % 
