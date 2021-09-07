@@ -282,8 +282,8 @@ else
     [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
 end
 
-
-
+model.ns = 0;
+model.task = 'max';
 while ~ stopping_criterion
     i=i+1;
     

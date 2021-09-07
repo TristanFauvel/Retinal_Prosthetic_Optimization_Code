@@ -6,7 +6,8 @@ plot_optimization_VA  % plot_figure_challenge_VA(5)
 plot_figure_performance
 plot_figure_misspecification
 plot_figure_misspecified_opt
-% plot_figure_E_Snellen
+
+plot_figure_E_Snellen
 %plot_figure_Value_VA
 % plot_figure_VA_precision
 % plot_figure_intersubject
@@ -35,9 +36,9 @@ figures_folder = [experiment_path,'/Figures'];
 
 T = load(data_table_file).T;
 T= T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 0, :);
-subject_to_remove = load('subjects_to_remove.mat') %remove data from participants who did not complete the experiment;
-T = T(all(T.Subject ~= subjects_to_remove,2),:);
+subject_to_remove = load('subjects_to_remove.mat'); %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subject_to_remove.subjects_to_remove,2),:);
 
 Acq_vs_random = pref.acq_vs_random_training';
 Subjects = T.Subject;
-table(Subjects, Acq_vs_random)
+table(Subjects, Acq_vs_random, VA.VA_E_optimized_preference_acq')

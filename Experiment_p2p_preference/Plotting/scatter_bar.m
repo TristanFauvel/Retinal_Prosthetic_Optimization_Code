@@ -5,7 +5,7 @@ opts = namevaluepairtostruct(struct( ...
     'stat', 'median',...
     'pval', 1, ...
     'rotation', 0, ...
-    'colorized',true, ...
+    'colorized',false, ...
     'test', 'Bayes', ... %Mann-Whitney
     'Ncomp', [], ...
     'pba', [1,1,1] ...
@@ -75,7 +75,6 @@ if boxp
     ylabel(ylabels)
 
     set(gca,'FontSize', Fontsize,'TickLabelInterpreter', 'latex')
-    set(gca, 'TickLabelInterpreter', 'latex');
     xtickangle(rotation)
     ax2 = axes('Position',ax1.Position,'Color','none', 'XLim', ax1.XLim, 'YLim', ax1.YLim);
     
@@ -87,7 +86,7 @@ if boxp
      set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
      set(gca,'XColor', 'none','YColor','none')
      offset= 0.5;
-     ax2.XLim = ax1.XLim
+     ax2.XLim = ax1.XLim;
           pbaspect(pba)
 
     %xlim([xl(1)-offset, xl(2)+offset])
@@ -121,13 +120,17 @@ for i = 1:N
         p = BayesFactor(Y{i}, Ncomp*ones(1, numel(Y{i})));
     end
     pvals(i) = p;
-    [stars, offset]= disp_p(p, 'test', test);
-    offset= 0.04;
+    [stars,~]= disp_p(p, 'test', test, 'n', n(i), 'plot_N', true);
+    offset= 0.1;
 %     text(i, 1 + offset, stars, 'HorizontalAlignment', 'center', 'Fontsize', Fontsize);
     text(i, min(offset + mean(Y{i}) + 2*std(Y{i}), 1+offset), stars, 'HorizontalAlignment', 'center', 'Fontsize', Fontsize, 'Rotation', rotation);
 
 end
 ax1.Color = 'none';
+
+% if numel(unique(n)) == 1
+% text(0.5, -0.3, ['N=', num2str(unique(n))] ,'Units','normalized','Fontsize', letter_font)
+% end
 
 %%
 % 

@@ -34,13 +34,20 @@ VA= load_VA_results(reload, data_directory, data_table_file);
 pref  = load_preferences(reload,data_directory, data_table_file);
 boxp = 1;
 
-VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
-VA_scale_Snellen=[min([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control]), max([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control])];
+VA_E_combined = [VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random, ...
+    VA.VA_E_control, VA.VA_E_control, VA.VA_E_optimized_preference_acq_misspecification, ...
+    VA.VA_E_optimal_misspecification, VA.VA_E_optimized_E_TS, VA.VA_E_naive];
+VA_Snellen_combined = [VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random, ...
+    VA.VA_Snellen_control, VA.VA_Snellen_control, VA.VA_Snellen_optimized_preference_acq_misspecification, ...
+    VA.VA_Snellen_optimal_misspecification, VA.VA_Snellen_optimized_E_TS, VA.VA_Snellen_naive];
+
+VA_scale_E= [min(VA_E_combined), max(VA_E_combined)];
+VA_scale_Snellen=[min(VA_Snellen_combined), max(VA_Snellen_combined)];
 VA_scale = [min(VA_scale_E(1), VA_scale_Snellen(1)),max(VA_scale_E(2), VA_scale_Snellen(2))];
 VA_scale = [VA_scale;VA_scale];
 
-VA_scale_E = [VA_scale_E;VA_scale_E];
-VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
+% VA_scale_E = [VA_scale_E;VA_scale_E];
+% VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
 
 pref_scale = [0,1;0,1];
 
@@ -63,9 +70,9 @@ i=0;
 h =nexttile(layout1);
 
 i=i+1;
- imagesc(reshape(S(:,1),ny,nx));
+imagesc(reshape(S(:,1),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[],'dataAspectRatio',[1 1 1],'Fontsize', Fontsize)
- h.CLim = [0, 1];
+h.CLim = [0, 1];
 colormap(gca,'gray')
 title('Stimulus')
 
@@ -74,9 +81,9 @@ title('Stimulus')
 
 i=i+1;
 h = nexttile(layout1);
- imagesc(reshape(popt(:,k),ny,nx));
+imagesc(reshape(popt(:,k),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[],'dataAspectRatio',[1 1 1],'Fontsize', Fontsize)
- h.CLim = [0, 255];
+h.CLim = [0, 255];
 colormap(gca,'gray')
 title('Ground truth')
 
@@ -144,7 +151,7 @@ text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', let
 
 
 h = nexttile(layout1);
- i=i+1;
+i=i+1;
 xlabels = {'Miss. vs Control'};
 ylabels = {'Fraction preferred',''};
 
@@ -153,7 +160,7 @@ Y = {pref.opt_miss_vs_control_training};
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0, 'test', 'Bayes', 'Ncomp', 13);
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 
-% 
+%
 % nexttile()
 % y = VA.VA_Snellen_optimized_preference_acq_misspecification;
 % x = VA.VA_Snellen_control;

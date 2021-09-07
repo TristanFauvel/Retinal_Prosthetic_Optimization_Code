@@ -190,7 +190,7 @@ T = T(all(T.Subject ~= subjects_to_remove,2),:);
 % s_index = find(T.Subject == 'PC', :)
 s_index = 2;
 T = T(T.Subject == 'PC', :);
-[p_after_optim, p_opt, p_control, p_after_optim_rand, nx,ny] = encoders_comparison(s_index, T);
+[p_after_optim, p_opt, p_control, p_after_optim_rand,~, nx,ny] = encoders_comparison(s_index, T);
 mr = 2;
 mc = 4;
 k = 1;
@@ -302,10 +302,11 @@ i = 0;
 fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred, test';
-xlabels = {'Naive','Control','Random','Ground truth'};
+xlabels = {'Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-Y = {pref.optimized_vs_naive_test, pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
+% Y = {pref.optimized_vs_naive_test, pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
+Y = {pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', ...
     'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 13);
@@ -322,10 +323,11 @@ i = 0;
 fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred, training';
-xlabels = {'Naive','Control','Random','Ground truth'};
+xlabels = { 'Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
+% Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
+Y = {pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval',...
     'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 13);
@@ -343,11 +345,10 @@ i = 0;
 fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred, combined';
-xlabels = {'Naive','Control','Random','Ground truth'};
+xlabels = { 'Control','Random','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-Y = {mean([pref.optimized_vs_naive_training; pref.optimized_vs_naive_test],1), ...
-    mean([pref.acq_vs_control_training; pref.acq_vs_control_test],1), ...
+Y = {mean([pref.acq_vs_control_training; pref.acq_vs_control_test],1), ...
     mean([pref.acq_vs_random_training; pref.acq_vs_random_test],1), ...
     mean([pref.acq_vs_opt_training; pref.acq_vs_opt_test],1)};
 

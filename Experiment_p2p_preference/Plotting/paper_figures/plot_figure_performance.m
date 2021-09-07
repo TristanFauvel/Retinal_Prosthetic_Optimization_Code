@@ -59,7 +59,7 @@ X{2} = VA.VA_Snellen_control;
 
 scatter_plot_combined(X,Y, tail,'LogMAR (control)','LogMAR (TS)',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
+ 
 pos = get(gca, 'Position');
 nexttile();
 i=i+1;
@@ -79,19 +79,19 @@ i=i+1;
 Y = {pref.E_vs_naive_training, pref.E_vs_control_training, 1-pref.Pref_vs_E_training};
 xlabels = {'Naive', 'Control', 'Challenge'};
 ylabels = {'Fraction preferred',''};
-h = scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [mc,1,1]);
+h = scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [mc,1,1], 'test', 'Bayes', 'Ncomp', 13);
 % pbaspect([1,1,1])
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 pos2 = get(gca, 'Position');
 set(gca, 'Position', [pos2(1), pos(2), pos2(3), pos(4)])
 
 
-figname  = ['Figure',num2str(id)];
-folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
+figname  = 'performance_based_opt';
+folder = [paper_figures_folder,figname,'/'];
 if ~isdir(folder)
     mkdir(folder)
 end
 
-savefig(fig, [folder,'\', figname, '.fig'])
-exportgraphics(fig, [folder,'\' , figname, '.pdf']);
-exportgraphics(fig, [folder,'\' , figname, '.png'], 'Resolution', 300);
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);

@@ -108,12 +108,13 @@ while k<N
                 va_snellen = experiment.Snellen_VA_naive;
             end
         else
-            if isfield(experiment, 'E_VA_optimized')
-                va_e = experiment.E_VA_optimized;
+            if isfield(experiment, ['E_VA_', experiment.acquisition_fun_name ]) 
+                va_e = experiment.(['E_VA_', experiment.acquisition_fun_name]);
             end
-            if isfield(experiment, 'Snellen_VA_optimized')
-                va_snellen = experiment.Snellen_VA_optimized;
-            end
+            if isfield(experiment, ['Snellen_VA_', experiment.acquisition_fun_name ]) 
+                va_snellen = experiment.(['Snellen_VA_', experiment.acquisition_fun_name]);
+            end            
+           
         end
         VA_E(k+l-1) = va_e;
         VA_Snellen(k+l-1) = va_snellen;

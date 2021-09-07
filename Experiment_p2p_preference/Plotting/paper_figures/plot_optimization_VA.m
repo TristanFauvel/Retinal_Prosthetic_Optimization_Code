@@ -12,18 +12,31 @@ VA = load_VA_results(reload, data_directory, data_table_file);
 pref= load_preferences(reload, data_directory, data_table_file);
 
 boxp = 1;
+% 
+% VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
+% VA_scale_Snellen=[min([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control]), max([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control])];
+% 
+% VA_scale = [min(VA_scale_E(1), VA_scale_Snellen(1)),max(VA_scale_E(2), VA_scale_Snellen(2))];
+% VA_scale = [VA_scale;VA_scale];
+% 
+% VA_scale_E = [VA_scale_E;VA_scale_E];
+% VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
+% 
 
-VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
-VA_scale_Snellen=[min([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control]), max([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control])];
+VA_E_combined = [VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random, ...
+    VA.VA_E_control, VA.VA_E_control, VA.VA_E_optimized_preference_acq_misspecification, ...
+    VA.VA_E_optimal_misspecification, VA.VA_E_optimized_E_TS, VA.VA_E_naive];
+VA_Snellen_combined = [VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random, ...
+    VA.VA_Snellen_control, VA.VA_Snellen_control, VA.VA_Snellen_optimized_preference_acq_misspecification, ...
+    VA.VA_Snellen_optimal_misspecification, VA.VA_Snellen_optimized_E_TS, VA.VA_Snellen_naive];
 
+VA_scale_E= [min(VA_E_combined), max(VA_E_combined)];
+VA_scale_Snellen=[min(VA_Snellen_combined), max(VA_Snellen_combined)];
 VA_scale = [min(VA_scale_E(1), VA_scale_Snellen(1)),max(VA_scale_E(2), VA_scale_Snellen(2))];
 VA_scale = [VA_scale;VA_scale];
 
-VA_scale_E = [VA_scale_E;VA_scale_E];
-VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
 
-pref_scale = [0,1;0,1];
-
+ 
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 mr =1;

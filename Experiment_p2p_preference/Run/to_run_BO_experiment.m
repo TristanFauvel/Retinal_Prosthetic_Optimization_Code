@@ -7,14 +7,14 @@ use_ptb3=1; %Wether to use PTB3 or not
 p2p_version = 'latest';
 
 maxiter = 60; %Number of iterations in the BO loop. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-subject = 'TC'; %'CW';  % 7 CW,SC 14 PC 14, CJ 15 
+subject = 'test'; %'CW';  % 7 CW,SC 14 PC 14, CJ 15 
 
 add_modules;
 beep off
 load('subject_seeds_table.mat', 'subject_table')
 model_seeds = subject_table(ismember(subject_table.Name,subject),:).Seeds; 
-model_seeds = 16;
-seeds = 16;
+model_seeds = 17;
+seeds = 17;
 %% 
 
 if model_seeds== 6  
@@ -205,7 +205,7 @@ filename4 = filenames{T.Task == 'preference' & T.Acquisition ~= 'random' & T.Mis
 version = 2; %short version
 measure_pref_btw_optimized_encoders(filename1,filename2, 'random',screen, version)
 measure_pref_btw_optimized_encoders(filename1,[], 'optimal',screen, version)
-measure_pref_btw_optimized_encoders(filename1,[], 'control',screen, version)
+% measure_pref_btw_optimized_encoders(filename1,[], 'control',screen, version)
 % measure_pref_btw_optimized_encoders(filename1,[], 'naive', version)
 measure_pref_btw_optimized_encoders(filename1,filename3, 'E',screen, version)
 measure_pref_btw_optimized_encoders(filename4,filename1, 'misspecified',screen, version)

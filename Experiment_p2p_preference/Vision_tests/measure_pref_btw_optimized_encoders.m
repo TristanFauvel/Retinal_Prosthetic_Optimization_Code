@@ -53,10 +53,9 @@ switch control
         experiment.acq_vs_random_test = preference_measurement(exp1, M,  W_optimized_1, W_optimized_2, 'test', screen);
         experiment.acq_vs_random_training = preference_measurement(exp1, M,  W_optimized_1, W_optimized_2, 'training',screen);
     case 'optimal'
-        if version == 1
-            experiment.acq_vs_opt_test = preference_measurement(exp1, M,  W_optimized_1, W_opt, 'test',screen);
-        end
-        experiment.acq_vs_opt_training = preference_measurement(exp1, M,  W_optimized_1, W_opt, 'training',screen);
+         experiment.acq_vs_opt_test = preference_measurement(exp1, M,  W_optimized_1, W_opt, 'test',screen);
+        
+%         experiment.acq_vs_opt_training = preference_measurement(exp1, M,  W_optimized_1, W_opt, 'training',screen);
     case 'E'
         experiment.Pref_vs_E_test = preference_measurement(exp1, M,  W_optimized_1, W_optimized_2, 'test',screen);
 

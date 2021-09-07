@@ -1,53 +1,72 @@
 function [output, offset] = disp_p(p, varargin)
 opts = namevaluepairtostruct(struct( ...
     'dp', 'eq', ...
+    'n', NaN, ...
+    'plot_N', false, ...
     'test', '' ...
     ), varargin);
 
 UNPACK_STRUCT(opts, false)
 offset = 0.08;
+full_disp = 0;
 
+
+if plot_N
+  plot_N = [', N =$', num2str(n)];
+else
+   plot_N = '$'; 
+end
 if strcmp(test, 'Bayes')
     logbayes = 1;
     
     if logbayes==1
-        x = log(p);
+        x = log10(p);
         x = round(x,2,'significant');
-        if abs(x)<1
-            n = 0;
-            while (abs(x)*10^n<1)
-                n=n+1;
-            end
-            x = num2str(x*10^n);
-            stars = ['log$B_{21} = ', x, '\times 10^{-', num2str(n),'}$'];
-        elseif abs(x)>10
-            n = 0;
-            while (abs(x)*10^n>10)
-                n=n-1;
-            end
-            x = num2str(x*10^n);
-            stars = ['log$B_{21} = ', x, '\times 10^{', num2str(-n),'}$'];
+        if full_disp == 1
+            prefix = 'log$B_{21} = ';
         else
-            stars = ['log$B_{21} = ', num2str(x),'$'];
+            prefix = '$';
+        end
+        if abs(x)<1
+            nd = 0;
+            while (abs(x)*10^nd<1)
+                nd=nd+1;
+            end
+            x = num2str(x*10^nd);
+            stars = [prefix, x, '\times 10^{-', num2str(nd),'}', plot_N];
+        elseif abs(x)>10
+            nd = 0;
+            while (abs(x)*10^nd>10)
+                nd=nd-1;
+            end
+            x = num2str(x*10^nd);
+            stars = [prefix, x, '\times 10^{', num2str(-nd),'}', plot_N];
+        else
+            stars = [prefix, num2str(x), plot_N];
         end
     else
         x = round(p,2,'significant');
-        if x<1
-            n = 0;
-            while (x*10^n<1)
-                n=n+1;
-            end
-            x = num2str(x*10^n);
-            stars = ['$B_{21} = ', x, '\times 10^{-', num2str(n),'}$'];
-        elseif x>10
-            n = 0;
-            while (x*10^n>10)
-                n=n-1;
-            end
-            x = num2str(x*10^n);
-            stars = ['$B_{21} = ', x, '\times 10^{', num2str(-n),'}$'];
+         if full_disp == 1
+            prefix = '$B_{21} = ';
         else
-            stars = ['$B_{21} = ', num2str(x),'$'];
+            prefix = '$';
+        end
+        if x<1
+            nd = 0;
+            while (x*10^nd<1)
+                nd=nd+1;
+            end
+            x = num2str(x*10^nd);
+            stars = [prefix, x, '\times 10^{-', num2str(nd),'}', plot_N];
+        elseif x>10
+            nd = 0;
+            while (x*10^nd>10)
+                nd=nd-1;
+            end
+            x = num2str(x*10^nd);
+            stars = [prefix, x, '\times 10^{', num2str(-nd),'}', plot_N];
+        else
+            stars = [prefix, num2str(x),', N =$', num2str(n)];
         end
     end
 else
@@ -80,12 +99,12 @@ else
         else
             x = round(p,2,'significant');
             if x<1
-                n = 0;
-                while (x*10^n<1)
-                    n=n+1;
+                nd = 0;
+                while (x*10^nd<1)
+                    nd=nd+1;
                 end
-                x = num2str(x*10^n);
-                stars = ['$p = ', x, '\times 10^{-', num2str(n),'}$'];
+                x = num2str(x*10^nd);
+                stars = ['$p = ', x, '\times 10^{-', num2str(nd),'}$'];
             else
                 stars = ['$p = ', num2str(x),'$'];
                 
@@ -94,12 +113,12 @@ else
     else
         x = round(p,2,'significant');
         if x<1
-            n = 0;
-            while (x*10^n<1)
-                n=n+1;
+            nd = 0;
+            while (x*10^nd<1)
+                nd=nd+1;
             end
-            x = num2str(x*10^n);
-            stars = ['$p = ', x, '\times 10^{-', num2str(n),'}$'];
+            x = num2str(x*10^nd);
+            stars = ['$p = ', x, '\times 10^{-', num2str(nd),'}$'];
         else
             stars = ['$p = ', num2str(x),'$'];
             

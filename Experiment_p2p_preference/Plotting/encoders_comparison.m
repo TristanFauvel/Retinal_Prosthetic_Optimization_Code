@@ -1,4 +1,4 @@
-function [p_after_optim, p_opt, p_control, p_after_optim_rand, nx,ny] = encoders_comparison(s_index, T)
+function [p_after_optim, p_opt, p_control, p_after_optim_rand, p_naive nx,ny] = encoders_comparison(s_index, T)
 add_directories;
 
 filename = [data_directory, '/Data_Experiment_p2p_',char(T(s_index,:).Task),'/', char(T(s_index,:).Subject), '/', char(T(s_index,:).Subject), '_', char(T(s_index,:).Acquisition), '_experiment_',num2str(T(s_index,:).Index)];
@@ -43,4 +43,10 @@ best_params_rand(ib,:) = experiment.x_best(ib,:);
 % [~, M, nx,ny] = encoder(true_model_params, experiment,ignore_pickle, optimal_magnitude, 'pymod', pymod);
 % g = @(x) loss_function(M, x, S, experiment);
 [~,p_after_optim_rand] = g(best_params_rand(:,end), []);
+
+
+%%
+experiment.M = M;
+Wi=  naive_encoder(experiment);
+p_naive = vision_model(M,Wi,S);
 

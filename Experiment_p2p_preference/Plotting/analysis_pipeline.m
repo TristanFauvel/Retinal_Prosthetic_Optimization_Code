@@ -14,9 +14,9 @@ for i=1:n
     disp(i)
     raw_filename =  [raw_data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
      filename = [data_directory, '/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
-%      load(raw_filename, 'experiment')
-%      save(filename, 'experiment') % Create the processed data file.
-     analyze_experiment(filename, 'for_all', 1)
+     load(raw_filename, 'experiment')
+     save(filename, 'experiment') % Create the processed data file.
+%      analyze_experiment(filename, 'for_all', 1)
 end
 
 to_compute_thresholds_QUEST(T, 'Snellen', data_table_file, data_directory)
@@ -27,11 +27,11 @@ subjects_to_remove = {'KM','TF_200', 'CW', 'test', 'test2'};
 filename = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_Optimization_Code/subjects_to_remove';
 save(filename, 'subjects_to_remove')
 
-reload = 3; %  1: to reload all the data, 2: to add only the last experiment
+reload = 1; %  1: to reload all the data, 2: to add only the last experiment
 load_VA_results(reload, data_directory, data_table_file)
 load_preferences(reload, data_directory, data_table_file)
 
-reload = 1; %  1: to reload all the data, 2: to add only the last experiment
+reload = 0; %  1: to reload all the data, 2: to add only the last experiment
 
 load_values(reload, data_directory, data_table_file)
 load_values_evolution(reload, data_directory, data_table_file)

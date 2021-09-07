@@ -5,7 +5,8 @@ opts = namevaluepairtostruct(struct( ...
     'linreg', 0, ...
      'categories', [], ...
      'legend_position', 'north', ...
-     'color',[] ...
+     'color',[], ...
+     'test', 'Bayes' ... %Wilcoxon
     ), varargin);
 
 UNPACK_STRUCT(opts, false)
@@ -17,6 +18,7 @@ if isempty(color)
 end
 N = numel(X);
 p = zeros(1,N);
+np = zeros(1,N);
 for i =1:N
     x = X{i};
     y = Y{i};
@@ -25,9 +27,15 @@ for i =1:N
     y = y(~remove);
     X{i} = x;
     Y{i} = y;
+    if strcmp(test, 'Wilcoxon')
     p(i) = signrank(x,y, 'Tail',tail);
-    disp_stats = disp_p(p(i));
+     elseif strcmp(test, 'Bayes')
+       p(i) = Bayes_factor_VA(x,y);        
+    end 
+     disp_stats = disp_p(p(i), 'test', test,'plot_N', false);
     leg{i} = [categories{i}, ', ', disp_stats];
+    np(2*(i-1)+1) = numel(x);
+    np(2*i) = numel(y);
 end
 % graphics_style_paper;
 linecol = [0,0,0];
@@ -71,7 +79,7 @@ if linreg
     mdl = fitlm(x,y);
     [p,F,d] = coefTest(mdl);
     h2 = plot(linspace(Xlim(1),Xlim(2),100), mdl.predict(linspace(Xlim(1),Xlim(2),100)'), 'color', linecol, 'linewidth', linewidth/4, 'linestyle','--'); hold on; %mdl.Coefficients.Estimate(1)+mdl.Coefficients.Estimate(2)*x
-    tp =  disp_p(p, 'test', 'F-test');
+    tp =  disp_p(p, 'test', 'F-test', 'plot_N', true);
     printed_text{1} = ['$R^2 =', num2str(round(mdl.Rsquared.Ordinary,3)),'$, ', tp{1}];
     printed_text{2} = tp{2};
     stat_pos = [0.0295652173913043 -0.00395652173913044]; %0.36, 0.083
@@ -108,6 +116,7 @@ end
 hleg.Position =pos;
 hleg.ItemTokenSize(1) = -40;
 
+text(0.75, 0.05, ['N=', num2str(unique(np))] ,'Units','normalized','Fontsize', letter_font)
 
 % copy the objects
 % ax = gca();
