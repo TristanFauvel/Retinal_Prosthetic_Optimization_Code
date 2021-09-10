@@ -13,7 +13,7 @@ global viewing_distance
 
 angle_to_pixels = @(angle) floor(2*tan(angle*pi/180/2)*viewing_distance*100*dpcm); %angles are in degree
 
-logMAR_to_pixels = @(logMAR) angle_to_pixels(10^logMAR*5); %angles are in degree
+%logMAR_to_pixels = @(logMAR) angle_to_pixels(10^logMAR*5); %angles are in degree
 
 
 display_size = angle_to_pixels(experiment.visual_field_size); % Size of the image on screen (in pixels)
@@ -42,7 +42,7 @@ stim_res = 255;
 switch test
     case 'CS'
         bounds = [0,1];
-        param_ub = (norminv(threshold)-gamma)*stim_res; % Maxmum slope it is possible to measure given min stimulus intensity
+        param_ub = (norminv(threshold)-gamma)*stim_res; % Maximum slope it is possible to measure given min stimulus intensity
         param_lb = (norminv(threshold)-gamma)/bounds(2); % Minimum slope it is possible to measure given max stimulus intensity
         a_range = linspace(param_lb,param_ub,2000);
     case 'VA'

@@ -83,42 +83,48 @@ while k<N
     va_snellen = NaN;
     va_e = NaN;
 
-    for l= 1:numel(j)
-        filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j(l))];
-        load(filename, 'experiment');
-        if strcmp(exp, 'optimal')
-            if isfield(experiment, 'E_VA_optimal')
-                va_e = experiment.E_VA_optimal;
+    if isempty(j)
+        l=1;
+    else
+        for l= 1:numel(j)
+            filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j(l))];
+            load(filename, 'experiment');
+            if strcmp(exp, 'optimal')
+                if isfield(experiment, 'E_VA_optimal')
+                    va_e = experiment.E_VA_optimal;
+                end
+                if isfield(experiment, 'Snellen_VA_optimal')
+                    va_snellen = experiment.Snellen_VA_optimal;
+                end
+            elseif strcmp(exp, 'control')
+                if isfield(experiment, 'E_VA_control')
+                    va_e = experiment.E_VA_control;
+                end
+                if isfield(experiment, 'Snellen_VA_control')
+                    va_snellen = experiment.Snellen_VA_control;
+                end
+            elseif strcmp(exp, 'naive')
+                if isfield(experiment, 'E_VA_naive')
+                    va_e = experiment.E_VA_naive;
+                end
+                if isfield(experiment, 'Snellen_VA_naive')
+                    va_snellen = experiment.Snellen_VA_naive;
+                end
+            else
+                if isfield(experiment, ['E_VA_', experiment.acquisition_fun_name ])
+                    va_e = experiment.(['E_VA_', experiment.acquisition_fun_name]);
+                end
+                if isfield(experiment, ['Snellen_VA_', experiment.acquisition_fun_name ])
+                    va_snellen = experiment.(['Snellen_VA_', experiment.acquisition_fun_name]);
+                end
+                
             end
-            if isfield(experiment, 'Snellen_VA_optimal')
-                va_snellen = experiment.Snellen_VA_optimal;
-            end
-        elseif strcmp(exp, 'control')
-            if isfield(experiment, 'E_VA_control')
-                va_e = experiment.E_VA_control;
-            end
-            if isfield(experiment, 'Snellen_VA_control')
-                va_snellen = experiment.Snellen_VA_control;
-            end
-        elseif strcmp(exp, 'naive')
-            if isfield(experiment, 'E_VA_naive')
-                va_e = experiment.E_VA_naive;
-            end
-            if isfield(experiment, 'Snellen_VA_naive')
-                va_snellen = experiment.Snellen_VA_naive;
-            end
-        else
-            if isfield(experiment, ['E_VA_', experiment.acquisition_fun_name ]) 
-                va_e = experiment.(['E_VA_', experiment.acquisition_fun_name]);
-            end
-            if isfield(experiment, ['Snellen_VA_', experiment.acquisition_fun_name ]) 
-                va_snellen = experiment.(['Snellen_VA_', experiment.acquisition_fun_name]);
-            end            
-           
+            VA_E(k+l-1) = va_e;
+            VA_Snellen(k+l-1) = va_snellen;
         end
-        VA_E(k+l-1) = va_e;
-        VA_Snellen(k+l-1) = va_snellen;
     end
     k=k+l-1;
 end
 end
+
+

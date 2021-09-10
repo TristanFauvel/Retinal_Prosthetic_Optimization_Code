@@ -80,7 +80,7 @@ if boxp
     
     for i = 1:N
         col = colors{i};
-    scatter(i*ones(1,n(i)) + linspace(-0.1,0.1,n(i)),Y{i}, markersize, col, 'filled','Parent',ax2);hold on
+    scatter(i*ones(1,n(i)) + linspace(-0.1,0.1,n(i)),Y{i}, markersize, col, '+', 'Parent',ax2);hold on
     end
     ax2.Color = 'none';
      set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
@@ -101,7 +101,7 @@ else
     
     for i = 1:N
        
-        scatter((i-1)*ones(1,n(i)) + linspace(-0.2,0.2,n(i)),Y{i}, markersize, colors{i}, 'filled'); hold on;
+        scatter((i-1)*ones(1,n(i)) + linspace(-0.2,0.2,n(i)),Y{i}, markersize, colors{i}, '+'); hold on;
         
     end
     xtickangle(angle);
@@ -121,7 +121,7 @@ for i = 1:N
     end
     pvals(i) = p;
     [stars,~]= disp_p(p, 'test', test, 'n', n(i), 'plot_N', true);
-    offset= 0.1;
+    offset= 0.1+ 0.005*rotation;
 %     text(i, 1 + offset, stars, 'HorizontalAlignment', 'center', 'Fontsize', Fontsize);
     text(i, min(offset + mean(Y{i}) + 2*std(Y{i}), 1+offset), stars, 'HorizontalAlignment', 'center', 'Fontsize', Fontsize, 'Rotation', rotation);
 

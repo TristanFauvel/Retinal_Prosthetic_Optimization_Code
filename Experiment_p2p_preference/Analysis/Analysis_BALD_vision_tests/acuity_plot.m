@@ -345,7 +345,7 @@ pbaspect([1,1,1])
 
 subplot(1,4,2)
 scatter(acuity_optimized_preference_random, cs_optimized_preference_random, markersize, 'filled'); 
-title('Random')
+title('Non-adaptive pref.')
 xlabel('Visual acuity')
 ylabel('Contrast sensitivity')
 box off
@@ -413,7 +413,7 @@ xticklabels({'Optimal', 'KSS', 'Random','Optimized misspecified', 'Optimal missp
 xlim([-offset,numel(y)-offset])
 
 box off
-ylabel('LogMAR')
+ylabel('logMAR')
 m=ylim;
 m=m(2);
 plot([X(1),X(3)],[m,m],'linewidth', linewidth, 'color', linecol)
@@ -462,7 +462,7 @@ xticklabels({'Optimal', 'KSS', 'Random','Optimized misspecified', 'Optimal missp
 xlim([-offset,numel(y)-offset])
 
 box off
-ylabel('LogMAR')
+ylabel('logMAR')
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

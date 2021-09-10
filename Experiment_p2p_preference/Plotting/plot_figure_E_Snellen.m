@@ -42,7 +42,7 @@ i = i+1;
 x = VA.VA_E_optimized_preference_acq;
 y= VA.VA_Snellen_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y, tail,'Tumbling E', '', [], 'equal_axes', 0,  'linreg', 1,'title_str', 'Challenge');  % H1: x – y come from a distribution with greater than 0
+scatter_plot(x,y, tail,'Tumbling E', '', [], 'equal_axes', 0,  'linreg', 1,'title_str', 'Adaptive pref.');  % H1: x – y come from a distribution with greater than 0
 text(-0.18,1.15,'$\bf{D}$','Units','normalized','Fontsize',  letter_font)
 
 fig=figure('units','centimeters','outerposition',1+[0 0 16 1/2*16]);

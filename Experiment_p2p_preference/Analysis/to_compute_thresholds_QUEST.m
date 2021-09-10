@@ -15,13 +15,13 @@ for i = 1:size(T,1)
         if strcmp(code, 'optimized')
             code = experiment.acquisition_fun_name;
             
-            %%%%%%%%%%%%%%
-            if isfield(experiment, ['VA_', task, '_QUEST_','optimized'])
-                experiment.(['VA_', task, '_QUEST_',code]) = experiment.(['VA_', task, '_QUEST_','optimized']);
-                experiment = rmfield(experiment, ['VA_', task, '_QUEST_','optimized']);
-                experiment = rmfield(experiment, [task, '_VA_optimized']);
-            end
-            %%%%%%%%%%%%%
+%             %%%%%%%%%%%%%%
+%             if isfield(experiment, ['VA_', task, '_QUEST_','optimized'])
+%                 experiment.(['VA_', task, '_QUEST_',code]) = experiment.(['VA_', task, '_QUEST_','optimized']);
+%                 experiment = rmfield(experiment, ['VA_', task, '_QUEST_','optimized']);
+%                 experiment = rmfield(experiment, [task, '_VA_optimized']);
+%             end
+%             %%%%%%%%%%%%%
          end
         if ismember('CS', measured_var)
             if isfield(experiment, ['CS_', task, '_QUEST_',code ])

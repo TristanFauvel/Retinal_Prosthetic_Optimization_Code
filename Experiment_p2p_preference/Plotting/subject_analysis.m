@@ -77,7 +77,7 @@ set(gca,'dataAspectRatio',[1 1 1])
 h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-title('Random')
+title('Non-adaptive pref.')
 h = subplot(1,nk,4);
 imagesc(reshape(p_control(:,k),ny,nx));
 set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
@@ -85,7 +85,278 @@ set(gca,'dataAspectRatio',[1 1 1])
 h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-title('Control')
+title('Random $\phi
+colormap('gray')
+if save_figures
+export_fig(fig, [figure_directory,filename_base , '_compare_encoders.png'])
+end
+%%
+range = [2.^(1:floor(log2(maxiter))), maxiter];
+nk = numel(range);
+percept= [];
+
+for k = 1:nk
+    [~,p_optimized] = g(best_params(:,range(k)), []);
+    percept = [percept,p_optimized(:,1)];
+end
+
+
+nl = 10;
+
+%%
+letter2number = @(c)1+lower(c)-'a';
+% range = [2.^(1:floor(log2(maxiter))), maxiter];
+range = floor(linspace(1,maxiter, 6));
+
+nk = numel(range);
+p1= [];
+p2= [];
+popt = [];
+for k = 1:nk
+    xm = model_params;
+    xm(ib) = xtrain(1:d,range(k));
+    [~,percept] = g(xm, []);
+    letter = letter2number(experiment.displayed_stim{k});
+    p1 = [p1, percept(:,letter)];
+    xm = model_params;
+    xm(ib) = xtrain((d+1):end,range(k));
+    
+    [~,percept] = g(xm, []);
+    p2 = [p2, percept(:,letter)];
+    
+     [~,percept] = g(x_best(:, range(k)), []);
+
+%     [~,percept] = g(x_best_unknown_hyps(:, range(k)));
+    popt = [popt, percept(:,1)];
+end
+
+fig3 = figure('units','pixels');
+fig3.Color = [1,1,1];
+width = 0.3347;
+height = 0.0873;
+xpositions = zeros(nk,2);
+ypositions = zeros(nk,2);
+
+yoffset = 0.06; %0.0857;
+xoffset = 0.04; %0.0571;
+
+yoffsets =0.9 -(0:(nk-1))*yoffset;
+xoffsets = 0.1+(0:(nk-1))*xoffset;
+xpositions(:,1) = xoffsets;
+xpositions(:,2) = xoffsets+ 0.07;
+ypositions(:,1) = yoffsets;
+ypositions(:,2) = yoffsets;
+
+c = 0;
+for k = 1:nk
+    c=c+1;
+    img1 = reshape(p1(:,k),ny,nx);
+    rgbImage1 = cat(3, img1, img1, img1)./255;
+    img2 = reshape(p2(:,k),ny,nx);
+    rgbImage2 = cat(3, img2, img2, img2)./255;
+
+    if ctrain(range(k))
+        rgbImage1= addborder(rgbImage1, 3,[1,0,0], 'center');
+    else
+        rgbImage2= addborder(rgbImage2, 3,[1,0,0], 'center');
+    end
+    
+        h =subplot(nk,2,c);
+        imshow(rgbImage1);
+    set(gca,'xtick',[],'ytick',[],'title',[]); 
+    set(gca,'dataAspectRatio',[1 1 1])
+    posnew = [xpositions(k,1), ypositions(k,1), width, height]; 
+    
+    set(h, 'Position', posnew)
+    h.CLim = [0, 255];
+    
+    %     title(range(k));
+    ylabel(num2str(range(k)));
+    hYLabel = get(gca,'YLabel');
+    set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
+    c=c+1;
+    
+    h =subplot(nk,2,c);
+            imshow(rgbImage2);
+    axis off
+    set(gca,'dataAspectRatio',[1 1 1])
+    posnew = [xpositions(k,2), ypositions(k,2), width, height];
+    set(h, 'Position', posnew)
+    h.CLim = [0, 255];
+   
+
+end
+colormap('gray')
+disp('next')
+
+if save_figures
+savefig(fig3, [figure_directory,filename_base , '_comparisons_sequence.fig'])
+export_fig(fig3, [figure_directory,filename_base , '_comparisons_sequence.png'])
+end
+
+fig = figure('units','pixels');
+fig.Color = [1,1,1];
+
+c = 0;
+for k = 1:nk
+    c=c+1;
+    h =subplot(nk,1,c);
+    imagesc(reshape(popt(:,k),ny,nx));
+    set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
+    set(gca,'dataAspectRatio',[1 1 1])
+    posnew = [xpositions(k,1), ypositions(k,1), width, height];
+%     set(h, 'Position', posnew)
+    h.CLim = [0, 255];
+    ylabel(num2str(range(k)));
+    hYLabel = get(gca,'YLabel');
+    set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
+end
+colormap('gray')
+
+if save_figures
+savefig(fig, [figure_directory,filename_base , '_optimization_sequence.fig'])
+export_fig(fig, [figure_directory,filename_base , '_optimization_sequence.png'])
+end
+%%
+
+fig= figure('units','pixels');
+fig.Color = [1,1,1];
+f= 1;
+width = f*0.3347;
+height = f*0.0873;
+xpositions = zeros(nk,2);
+ypositions = zeros(nk,2);
+
+yoffset = f*0.1;
+xoffset = f*0.06;
+% 
+yoffsets =0.9 -(0:(nk-1))*yoffset;
+xoffsets = 0.1; %+(0:(nk-1))*xoffset;
+xpositions(:,1) = xoffsets;
+xpositions(:,2) = xoffsets+ f*0.1;
+ypositions(:,1) = yoffsets;
+ypositions(:,2) = yoffsets;
+
+c = 0;
+for k = 1:nk
+    c=c+1;
+    img1 = reshape(p1(:,k),ny,nx);
+    rgbImage1 = cat(3, img1, img1, img1)./255;
+    img2 = reshape(p2(:,k),ny,nx);
+    rgbImage2 = cat(3, img2, img2, img2)./255;
+
+    if ctrain(range(k))
+        rgbImage1= addborder(rgbImage1, 3,[1,0,0], 'center');
+    else
+        rgbImage2= addborder(rgbImage2, 3,[1,0,0], 'center');
+    end
+    
+        h =subplot(nk,2,c);
+        imshow(rgbImage1);
+    set(gca,'xtick',[],'ytick',[],'title',[]); 
+    set(gca,'dataAspectRatio',[1 1 1])
+    posnew = [xpositions(k,1), ypositions(k,1), width, height]; 
+    
+    set(h, 'Position', posnew)
+    h.CLim = [0, 255];
+    
+    %     title(range(k));
+    ylabel(num2str(range(k)));
+    hYLabel = get(gca,'YLabel');
+    set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
+    c=c+1;
+    
+    h =subplot(nk,2,c);
+            imshow(rgbImage2);
+    axis off
+    set(gca,'dataAspectRatio',[1 1 1])
+    posnew = [xpositions(k,2), ypositions(k,2), width, height];
+    set(h, 'Position', posnew)
+    h.CLim = [0, 255];
+   
+
+end
+colormap('gray')
+disp('next')
+
+if save_figures
+savefig(fig, [figure_directory,filename_base , '_comparisons_sequence_straight.fig'])
+export_fig(fig, [figure_directory,filename_base , '_comparisons_sequence_straight.png'])
+end
+
+close all
+
+
+% %%%%%%%%%%%%%%%%%%%
+
+range = 1:maxiter;
+
+nk = numel(range);
+p1= [];
+p2= [];
+popt = [];
+for k = 1:nk
+    xm = model_params;
+    xm(ib) = xtrain(1:d,range(k));
+    [~,percept] = g(xm, []);
+    letter = letter2number(experiment.displayed_stim{k});
+    p1 = [p1, percept(:,letter)];
+    xm = model_params;
+    xm(ib) = xtrain((d+1):end,range(k));
+    
+    [~,percept] = g(xm, []);
+    p2 = [p2, percept(:,letter)];
+    
+     [~,percept] = g(x_best(:, range(k)), []);
+
+%     [~,percept] = g(x_best_unknown_hyps(:, range(k)));
+    popt = [popt, percept(:,1)];
+end
+
+
+
+c = 0;
+for k = 1:nk
+    c=c+1;
+    img1 = reshape(p1(:,k),ny,nx);
+    rgbImage1 = cat(3, img1, img1, img1)./255;
+    img2 = reshape(p2(:,k),ny,nx);
+    rgbImage2 = cat(3, img2, img2, img2)./255;
+
+    if ctrain(range(k))
+        rgbImage1= addborder(rgbImage1, 3,[1,0,0], 'center');
+    else
+        rgbImage2= addborder(rgbImage2, 3,[1,0,0], 'center');
+    end
+    
+    fig= figure('units','pixels');
+    fig.Color = [1,1,1];    
+    h =subplot(1,2,1);
+    imshow(rgbImage1);
+    set(gca,'xtick',[],'ytick',[],'title',[]);
+    set(gca,'dataAspectRatio',[1 1 1])
+    h.CLim = [0, 255];
+    ylabel(num2str(range(k)));
+    hYLabel = get(gca,'YLabel');
+    set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
+    c=c+1;    
+    h =subplot(1,2,2);
+    imshow(rgbImage2);
+    axis off
+    set(gca,'dataAspectRatio',[1 1 1])
+    h.CLim = [0, 255];
+    colormap('gray')
+    if save_figures
+        sdir = [figure_directory,filename_base , '_comparisons/'];
+        
+        if ~isdir(sdir)
+        mkdir(sdir)
+        end
+        saveas(fig, [sdir, 'comparison_', num2str(k),'.png'])
+    end
+end
+
+)
 colormap('gray')
 if save_figures
 export_fig(fig, [figure_directory,filename_base , '_compare_encoders.png'])

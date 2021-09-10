@@ -46,7 +46,7 @@ tiledlayout(mr,mc, 'TileSpacing', 'compact', 'padding','tight')
 % X{1} = VA.VA_E_naive;
 % Y{2} = VA.VA_Snellen_optimized_E_TS;
 % X{2} = VA.VA_Snellen_naive;
-% scatter_plot_combined(X,Y, tail,'LogMAR (naive)','LogMAR (TS)',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+% scatter_plot_combined(X,Y, tail,'logMAR (naive)','logMAR (performance-based)',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 t = nexttile();
@@ -57,7 +57,7 @@ X{1} = VA.VA_E_control;
 Y{2} = VA.VA_Snellen_optimized_E_TS;
 X{2} = VA.VA_Snellen_control;
 
-scatter_plot_combined(X,Y, tail,'LogMAR (control)','LogMAR (TS)',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X,Y, tail,'logMAR (random $\phi$)','logMAR (performance-based)',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
  
 pos = get(gca, 'Position');
@@ -69,15 +69,20 @@ X{1} = VA.VA_E_optimized_preference_acq;
 Y{2} = VA.VA_Snellen_optimized_E_TS;
 X{2} = VA.VA_Snellen_optimized_preference_acq;
 
-scatter_plot_combined(X, Y, tail,'LogMAR (challenge)', 'LogMAR (TS)',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X, Y, tail,'logMAR (adaptive pref.)', '',VA_scale, 'categories', {'E', 'Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 mc =2;
 t = nexttile([1,mc]);
 i=i+1;
-Y = {pref.E_vs_naive_training, pref.E_vs_control_training, 1-pref.Pref_vs_E_training};
-xlabels = {'Naive', 'Control', 'Challenge'};
+% Y = {pref.E_vs_naive_training, pref.E_vs_control_training, 1-pref.Pref_vs_E_training};
+% xlabels = {'Naive', 'Control', 'Adaptive pref.'};
+Y = {pref.E_vs_control_training, 1-pref.Pref_vs_E_training};
+% Y = {pref.E_vs_control_test, 1-pref.Pref_vs_E_test};
+
+xlabels = {'Random $\phi$', 'Adaptive pref.'};
+
 ylabels = {'Fraction preferred',''};
 h = scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [mc,1,1], 'test', 'Bayes', 'Ncomp', 13);
 % pbaspect([1,1,1])

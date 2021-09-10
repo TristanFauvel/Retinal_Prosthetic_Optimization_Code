@@ -40,7 +40,7 @@ VA_scale = [VA_scale;VA_scale];
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 mr =1;
-mc = 4;
+mc = 3;
 legend_pos = [-0.18,1.15];
 graphics_style_paper;
 
@@ -59,14 +59,14 @@ end
 
 I = imread([folder,'/Snellen_chart_and_TumblingE_tasks.png']);
 clear('X', 'Y')
-nexttile()
-i=i+1;
-Y{1} = VA.VA_E_optimized_preference_acq;
-X{1} = VA.VA_E_naive;
-Y{2} = VA.VA_Snellen_optimized_preference_acq;
-X{2} = VA.VA_Snellen_naive;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(naive)'],['LogMAR' newline '(challenge)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
-text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% nexttile()
+% i=i+1;
+% Y{1} = VA.VA_E_optimized_preference_acq;
+% X{1} = VA.VA_E_naive;
+% Y{2} = VA.VA_Snellen_optimized_preference_acq;
+% X{2} = VA.VA_Snellen_naive;
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(naive)'],['logMAR' newline '(adaptive pref.)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+% text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 nexttile()
 i=i+1;
@@ -74,7 +74,7 @@ Y{1} = VA.VA_E_optimized_preference_acq;
 X{1} = VA.VA_E_control;
 Y{2} = VA.VA_Snellen_optimized_preference_acq;
 X{2} = VA.VA_Snellen_control;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(control)'],['LogMAR' newline '(challenge)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(adaptive pref.)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 nexttile()
@@ -83,7 +83,7 @@ Y{1} = VA.VA_E_optimized_preference_acq;
 X{1} = VA.VA_E_optimized_preference_random;
 Y{2} = VA.VA_Snellen_optimized_preference_acq;
 X{2} = VA.VA_Snellen_optimized_preference_random;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(random)'],['LogMAR' newline '(challenge)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(non-adaptive pref.)'],'',VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 
@@ -93,7 +93,7 @@ Y{1} = VA.VA_E_optimized_preference_acq;
 X{1} = VA.VA_E_optimal;
 Y{2} = VA.VA_Snellen_optimized_preference_acq;
 X{2} = VA.VA_Snellen_optimal;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(ground truth)'],['LogMAR' newline '(challenge)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(ground truth)'],'',VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 figname  = ['optimization_VA_2'];

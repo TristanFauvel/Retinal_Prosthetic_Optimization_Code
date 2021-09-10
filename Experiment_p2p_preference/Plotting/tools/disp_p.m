@@ -25,7 +25,7 @@ if strcmp(test, 'Bayes')
         if full_disp == 1
             prefix = 'log$B_{21} = ';
         else
-            prefix = '$';
+            prefix = '$K = ';
         end
         if abs(x)<1
             nd = 0;

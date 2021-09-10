@@ -99,45 +99,45 @@ i=0;
 % X{2} = VA.VA_Snellen_naive;
 % Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
 % 
-% scatter_plot_combined(X,Y, tail,['LogMAR' newline '(naive)'], ['LogMAR' newline '(challenge miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(naive)'], ['logMAR' newline '(challenge miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
 % text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
-i=2;
+i=3;
 h = nexttile(layout1, i);
 Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
 X{1} = VA.VA_E_control;
 X{2} = VA.VA_Snellen_control;
 Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
 
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(control)'],['LogMAR' newline '(opt. miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(opt. miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
-i=3;
+i=4;
 h = nexttile(layout1,i);
 X{1} = VA.VA_E_optimal_misspecification;
 Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
 X{2} = VA.VA_Snellen_optimal_misspecification;
 Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(misspecified)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(misspecified)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
-i=4;
-h = nexttile(layout1,i);
-X{1} = VA.VA_E_optimized_preference_acq;
-Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
-X{2} = VA.VA_Snellen_optimized_preference_acq;
-Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(challenge)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% i=4;
+% h = nexttile(layout1,i);
+% X{1} = VA.VA_E_optimized_preference_acq;
+% Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
+% X{2} = VA.VA_Snellen_optimized_preference_acq;
+% Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(adaptive pref.)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 i=1;
-h = nexttile(layout1,i);
+h = nexttile(layout1,[1,2]);
 xlabels = {'Control miss.', 'Control','Misspecified'};
 ylabels = {'Fraction preferred',''};
 
 Y = {pref.optimized_miss_vs_controlmiss_training, pref.optimized_miss_vs_control_training, pref.optimized_miss_vs_opt_miss_training};
 
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 45 ,'Ncomp', 13);
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0 ,'Ncomp', 13,'pba', [2,1,1]);
 text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
 
 
@@ -148,8 +148,8 @@ text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', le
 % scatter_plot(x,y, tail,'Control','Challenge, miss.',VA_scale_Snellen, 'color', colors_chart(2,:), 'title_str', 'Snellen');  %H1 : x – y come from a distribution with median greater than 0
 % text(-0.18,1.15,'$\bf{H}$','Units','normalized','Fontsize', letter_font)
 
-figname  = ['Figure',num2str(id)];
-folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
+figname  = 'Misspecified_opt';
+folder = [paper_figures_folder,'Figure_',figname,'/'];
 if ~isdir(folder)
     mkdir(folder)
 end
@@ -160,7 +160,7 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
 %%
 % figure()
-% xlabels = {'Control miss.', 'Control','Misspecified', 'Challenge'};
+% xlabels = {'Control miss.', 'Control','Misspecified', 'Adaptive pref.'};
 % ylabels = {'Fraction preferred',''};
 % 
 % Y = {mean([pref.optimized_miss_vs_controlmiss_training; pref.optimized_miss_vs_controlmiss_test],1), ...

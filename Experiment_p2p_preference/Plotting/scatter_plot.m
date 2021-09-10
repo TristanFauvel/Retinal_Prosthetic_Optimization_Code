@@ -54,6 +54,7 @@ else
     ry=  [Ylim(1),Ylim(2)];
     
 end
+stat_pos = [0.63, 0.091]; %0.63, 0.091
 
 if linreg
     mdl = fitlm(x,y);
@@ -74,6 +75,8 @@ else
     %stat_pos = [0.63, 0.091]; %0.63, 0.091
     %text(stat_pos(1), stat_pos(2),disp_p(p, 'test','Wilcoxon signed-rank'),'Units','normalized','Fontsize', Fontsize) % 'Wilcoxon signed-rank'
 %     title_str = [title_str, ', ', disp_p(p, 'test','Wilcoxon signed-rank')];
+text(stat_pos(1), stat_pos(2),['N = ', num2str(numel(x)) newline disp_p(p, 'test','Wilcoxon signed-rank')],'Units','normalized','Fontsize', Fontsize) % 'Wilcoxon signed-rank'
+
 end
 title(title_str)
 
@@ -84,7 +87,5 @@ L = get(gca,'YLim');
 set(gca,'YTick',linspace(L(1),L(2),NumTicks))
 xtickformat('%.2f')
 ytickformat('%.2f')
-stat_pos = [0.63, 0.091]; %0.63, 0.091
-text(stat_pos(1), stat_pos(2),['N = ', num2str(numel(x)) newline disp_p(p, 'test','Wilcoxon signed-rank')],'Units','normalized','Fontsize', Fontsize) % 'Wilcoxon signed-rank'
 
 

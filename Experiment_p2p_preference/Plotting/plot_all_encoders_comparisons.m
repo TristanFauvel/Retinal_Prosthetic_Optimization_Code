@@ -49,7 +49,7 @@ h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
 if i ==1
-title('Random')
+title('Non-adaptive pref.')
 end
 
 h =nexttile();
@@ -60,7 +60,10 @@ h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
  if i ==1
-title('Control')
+title('Random $\phi
+    end
+colormap('gray')
+)
     end
 colormap('gray')
 end

@@ -41,7 +41,7 @@ end
 linecol = [0,0,0];
 plots = [];
 for i =1:N
-    h(i) = scatter(X{i},Y{i}, markersize, 'filled'); hold on;
+    h(i) = scatter(X{i},Y{i}, markersize,  '+'); hold on;
     h(i).CData = color(i,:);
     plots = [plots, h(i)];
 end
@@ -108,10 +108,13 @@ ytickformat('%.2f')
 M = findobj(icons,'type','patch'); % Find objects of type 'patch'
 set(M,'MarkerSize', sqrt(markersize))
 legend boxoff
-pos = hleg.Position;
+legpos = hleg.Position;
+pos = legpos;
 if strcmp(legend_position, 'north')
-pos(2) = pos(2)+0.119;
-pos(1) = pos(1) +0.05;
+% pos(2) = pos(2)+0.119;
+% pos(1) = pos(1) +0.05;
+pos(2) = pos(2)+0.2;
+pos(1) = pos(1)+0.01;
 end
 hleg.Position =pos;
 hleg.ItemTokenSize(1) = -40;

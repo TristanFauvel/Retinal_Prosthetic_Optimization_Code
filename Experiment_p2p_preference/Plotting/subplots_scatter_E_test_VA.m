@@ -32,7 +32,7 @@ subplot(mr, mc,1)
 x = VA_E_control;
 y= VA_E_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y, tail,'Control', 'Challenge',VA_scale_E); % H1: x – y come from a distribution with greater than 0
+scatter_plot(x,y, tail,'Control', 'Adaptive pref.',VA_scale_E); % H1: x – y come from a distribution with greater than 0
 text(-0.18,1.15,'A','Units','normalized','Fontsize', letter_font,'FontWeight', 'Bold')
 
 subplot(mr,mc,2)
@@ -46,7 +46,7 @@ subplot(mr,mc,3)
 x = VA_E_optimized_preference_random;
 y = VA_E_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y, tail,'Random', '',VA_scale_E); %H1 : x – y come from a distribution with median greater than 0 
+scatter_plot(x,y, tail,'Non-adaptive pref.', '',VA_scale_E); %H1 : x – y come from a distribution with median greater than 0 
 text(-0.18,1.15,'C','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
 
 % VA_scale = [];
@@ -54,7 +54,7 @@ subplot(mr, mc,4)
 x = VA_Snellen_control;
 y= VA_Snellen_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y, tail,'Control', 'Challenge',VA_scale_Snellen); % H1: x – y come from a distribution with greater than 0
+scatter_plot(x,y, tail,'Control', 'Adaptive pref.',VA_scale_Snellen); % H1: x – y come from a distribution with greater than 0
 text(-0.18,1.15,'C','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
 
 subplot(mr,mc,5)
@@ -68,7 +68,7 @@ subplot(mr,mc,6)
 x = VA_Snellen_optimized_preference_random;
 y = VA_Snellen_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y, tail,'Random', '',VA_scale_Snellen); %H1 : x – y come from a distribution with median greater than 0 
+scatter_plot(x,y, tail,'Non-adaptive pref.', '',VA_scale_Snellen); %H1 : x – y come from a distribution with median greater than 0 
 text(-0.18,1.15,'F','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
 
 
@@ -94,7 +94,7 @@ subplot(mr,mc,2)
 y = VA_E_optimized_preference_acq_misspecification;
 x = VA_E_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y,tail,'Challenge Misspecified','Challenge',VA_scale_E); %H1 : x – y come from a distribution with median greater than 0 
+scatter_plot(x,y,tail,'Challenge Misspecified','Adaptive pref.',VA_scale_E); %H1 : x – y come from a distribution with median greater than 0 
 subplot(mr,mc,3)
 x = VA_Snellen_optimal;
 y = VA_Snellen_optimal_misspecification;
@@ -103,7 +103,7 @@ subplot(mr,mc,4)
 y = VA_Snellen_optimized_preference_acq_misspecification;
 x = VA_Snellen_optimized_preference_acq;
 tail = 'both'; %'right';
-scatter_plot(x,y,tail,'Challenge Misspecified','Challenge',VA_scale_Snellen); %H1 : x – y come from a distribution with median greater than 0 
+scatter_plot(x,y,tail,'Challenge Misspecified','Adaptive pref.',VA_scale_Snellen); %H1 : x – y come from a distribution with median greater than 0 
 
 savefig(fig, [figures_folder,test_name, 'scatter_misspecification.fig'])
 exportgraphics(fig, [figures_folder,test_name, 'scatter_misspecification.eps'])
@@ -123,37 +123,37 @@ exportgraphics(fig, [figures_folder,test_name, 'scatter_misspecification.png'])
 % subplot(mr,mc,i)
 % x = VA_E_optimized_preference_acq;
 % y = VA_E_optimized_E_TS;
-% scatter_plot(x,y, tail,'Challenge','TS'); %H1 : x – y come from a distribution with median different than 0
+% scatter_plot(x,y, tail,'Adaptive pref.','Performance-based'); %H1 : x – y come from a distribution with median different than 0
 % i=i+1;
 % 
 % subplot(mr,mc,i)
 % x = VA_E_optimal;
 % y = VA_E_optimized_E_TS;
-% scatter_plot(x,y, tail,'Ground truth','TS'); %H1 : x – y come from a distribution with median different than 0
+% scatter_plot(x,y, tail,'Ground truth','Performance-based'); %H1 : x – y come from a distribution with median different than 0
 % 
 % i=i+1;
 % subplot(mr, mc, i)
 % x = VA_E_optimized_E_random;
 % y = VA_E_optimized_E_TS;
-% scatter_plot(x,y, tail,'Random','TS');  %H1 : x – y come from a distribution with median greater than 0 
+% scatter_plot(x,y, tail,'Random','Performance-based');  %H1 : x – y come from a distribution with median greater than 0 
 % i=i+1;
 % 
 % subplot(mr,mc,i)
 % x = VA_Snellen_optimized_preference_acq;
 % y = VA_Snellen_optimized_E_TS;
-% scatter_plot(x,y, tail,'Ground truth','TS'); %H1 : x – y come from a distribution with median different than 0
+% scatter_plot(x,y, tail,'Ground truth','Performance-based'); %H1 : x – y come from a distribution with median different than 0
 % 
 % i=i+1;
 % subplot(mr,mc,i)
 % x = VA_Snellen_optimal;
 % y = VA_Snellen_optimized_E_TS;
-% scatter_plot(x,y, tail,'Ground truth','TS'); %H1 : x – y come from a distribution with median different than 0
+% scatter_plot(x,y, tail,'Ground truth','Performance-based'); %H1 : x – y come from a distribution with median different than 0
 % 
 % i=i+1;
 % subplot(mr,mc,i)
 % x = VA_Snellen_optimized_E_random;
 % y = VA_Snellen_optimized_E_TS;
-% scatter_plot(x,y, tail,'Random','TS');  %H1 : x – y come from a distribution with median greater than 0 
+% scatter_plot(x,y, tail,'Random','Performance-based');  %H1 : x – y come from a distribution with median greater than 0 
 % 
 % print([figures_folder,test_name, 'scatter_visual_performance_E_TS.png'],'-dpng')
 % 
@@ -173,7 +173,7 @@ scatter_plot(x,y, tail,'Ground truth','TS',VA_scale_E);  %H1 : x – y come from
 subplot(mr,mc,2)
 x = VA_E_optimized_E_TS;
 y = VA_E_optimized_preference_acq;
-scatter_plot(x,y, tail,'TS','Challenge',VA_scale_E);  %H1 : x – y come from a distribution with median greater than 0 
+scatter_plot(x,y, tail, 'Performance-based','Adaptive pref.',VA_scale_E);  %H1 : x – y come from a distribution with median greater than 0 
 
 subplot(mr,mc,3)
 x = VA_Snellen_optimal;
@@ -183,7 +183,7 @@ scatter_plot(x,y, tail,'Ground truth','TS',VA_scale_E);  %H1 : x – y come from
 subplot(mr,mc,4)
 x = VA_Snellen_optimized_E_TS;
 y = VA_Snellen_optimized_preference_acq;
-scatter_plot(x,y, tail,'TS','Challenge',VA_scale_E);  %H1 : x – y come from a distribution with median greater than 0 
+scatter_plot(x,y, tail, 'Performance-based','Adaptive pref.',VA_scale_E);  %H1 : x – y come from a distribution with median greater than 0 
 
 savefig(fig, [figures_folder,test_name, 'task_comparison_scatter_visual_performance.fig'])
 exportgraphics(fig, [figures_folder,test_name, 'task_comparison_scatter_visual_performance.eps'])
@@ -237,7 +237,7 @@ x = VA_E_control;
 y= VA_Snellen_control;
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'E', 'Snellen',[], 'equal_axes', 0, 'linreg', 1); % H1: x – y come from a distribution with greater than 0
-title('Control')
+title('Random $\phi
 text(-0.18,1.15,'A','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
 
 subplot(mr,mc,2)
@@ -253,7 +253,31 @@ x = VA_E_optimized_preference_random;
 y = VA_Snellen_optimized_preference_random;
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'E', '', [], 'equal_axes', 0,  'linreg', 1);  %H1 : x – y come from a distribution with median greater than 0
-title('Random')
+title('Non-adaptive pref.')
+text(-0.18,1.15,'C','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
+
+% VA_scale = [];
+subplot(mr, mc,4)
+x = VA_E_optimized_preference_acq;
+y= VA_Snellen_optimized_preference_acq;
+tail = 'both'; %'right';
+)
+text(-0.18,1.15,'A','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
+
+subplot(mr,mc,2)
+x = VA_E_optimal;
+y = VA_Snellen_optimal;
+tail = 'both'; 
+scatter_plot(x,y, tail,'E', '', [], 'equal_axes', 0, 'linreg', 1); %H1 : x – y come from a distribution with median different than 0*
+title('Ground truth')
+text(-0.18,1.15,'B','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
+
+subplot(mr,mc,3)
+x = VA_E_optimized_preference_random;
+y = VA_Snellen_optimized_preference_random;
+tail = 'both'; %'right';
+scatter_plot(x,y, tail,'E', '', [], 'equal_axes', 0,  'linreg', 1);  %H1 : x – y come from a distribution with median greater than 0
+title('Non-adaptive pref.')
 text(-0.18,1.15,'C','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
 
 % VA_scale = [];
@@ -262,7 +286,7 @@ x = VA_E_optimized_preference_acq;
 y= VA_Snellen_optimized_preference_acq;
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'E', 'Snellen', [], 'equal_axes', 0,  'linreg', 1);  % H1: x – y come from a distribution with greater than 0
-title('Challenge')
+title('Adaptive pref.')
 text(-0.18,1.15,'C','Units','normalized','Fontsize',  letter_font,'FontWeight', 'Bold')
 
 %%
@@ -272,5 +296,7 @@ x = [VA_E_control, VA_E_optimal, VA_E_optimized_preference_random, VA_E_optimize
 y = [VA_Snellen_control, VA_Snellen_optimal, VA_Snellen_optimized_preference_random, VA_Snellen_optimized_preference_acq];
 tail = 'both'; %'right';
 scatter_plot(x,y, tail,'E', 'Snellen',[], 'equal_axes', 0, 'linreg', 1); % H1: x – y come from a distribution with greater than 0
-title('Control')
+title('Random $\phi
+
+)
 

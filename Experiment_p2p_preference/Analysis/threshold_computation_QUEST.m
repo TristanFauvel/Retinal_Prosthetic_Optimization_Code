@@ -1,7 +1,7 @@
 function  [visual_performance, max_val, threshold_intercept, slope, QP, measure] = threshold_computation_QUEST(filename, test, measure)
 
 load(filename, 'experiment');
-plotting = 1;
+plotting = 0;
 recompute_QP = 1;
 add_directories;
 
@@ -134,8 +134,6 @@ measure.param_ub = param_ub;
 measure.QP = QP;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-plotting=0
 if plotting
     graphics_style_paper;
     c = @(b) (gamma-normcdf(b))./(1-normcdf(b));
@@ -155,6 +153,27 @@ disp(['a: ',num2str(a)])
 disp(['b: ',num2str(b)])
 disp(['visual perf: ',num2str(visual_performance)])
 
+
+%%%
+% Plot in the logMAR space
+% angle_to_pixels = @(angle) floor(2*tan(angle*pi/180/2)*viewing_distance*100*dpcm); %angles are in degree
+% logMAR_to_pixels = @(logMAR) angle_to_pixels(10^logMAR*5); %angles are in degree
+% 
+% angle_to_logMAR = @(angle) log10(angle/5);
+% 
+% p = @(x,a,b) c(b) + (1-c(b))*normcdf(a*x+b);
+% 
+% mdl = glmfit(angle_to_logMAR(measure.QP.history_stim'),[measure.QP.history_resp' ones(size(measure.QP.history_resp'))],'binomial','Link','probit');
+% yfit = glmval(mdl,linspace(0,5,100),'probit');
+% 
+% fig=figure(1);
+% fig.Color =  [1 1 1];
+% plot(linspace(0,5,100),yfit); hold on;
+% scatter(angle_to_logMAR(measure.QP.history_stim),measure.QP.history_resp, markersize, 'k', 'filled');  
+% scatter(angle_to_logMAR(measure.QP.stimDomain),out, 1, 'b', 'filled'); hold off;
+% 
+% 
+%%%
 %
 % if plotting
 %     graphics_style_paper;

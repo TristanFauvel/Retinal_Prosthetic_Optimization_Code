@@ -213,7 +213,7 @@ set(gca,'dataAspectRatio',[1 1 1])
 h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-title('Random')
+title('Non-adaptive pref.')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h =nexttile(layout3);
@@ -225,7 +225,52 @@ set(gca,'dataAspectRatio',[1 1 1])
 h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-title('Control')
+title('Random $\phi
+colormap('gray')
+% text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+%%
+%%
+% Y = {acq_vs_opt_training,acq_vs_random_training};
+% scatter_bar(Y, {'Ground truth','Random'}, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq');
+%%
+nexttile(layout3, mc/2+1, [mr/2,mc/2])
+xlabels = {'Random','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+Y = {acq_vs_random_training, acq_vs_opt_training};
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq');
+ i=i+1;
+text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+
+i=i+1;
+
+% text(-0.14,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+% 
+% nexttile(layout3, (mr/2*mc)+mc/2+1, [mr/2,mc/4])
+% i=i+1;
+% x = acq_vs_random_training;
+% y = acq_vs_random_test;
+% tail = 'both';
+% scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+% 
+% nexttile(layout3,(mr/2*mc)+mc/2+2, [mr/2,mc/4])
+% i=i+1;
+% x =acq_vs_opt_training;
+% y= acq_vs_opt_test;
+% tail = 'both'; %'right';
+% scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
+%     text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+
+figname  = ['Figure',num2str(id)];
+folder = ['C:\Users\tfauvel\Documents\PhD\Figures\Paper_figures\',figname];
+savefig(fig, [folder,'\', figname, '.fig'])
+exportgraphics(fig, [folder,'\' , figname, '.pdf']);
+exportgraphics(fig, [folder,'\' , figname, '.png'], 'Resolution', 300);
+)
 colormap('gray')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 

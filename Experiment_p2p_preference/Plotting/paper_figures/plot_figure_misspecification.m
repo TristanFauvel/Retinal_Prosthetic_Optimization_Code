@@ -111,8 +111,7 @@ exportgraphics(fig, [folder,'/' , figname, '_1.png'], 'Resolution', 300);
 %%
 mr = 1;
 mc = 4;
-i=0;
-
+ 
 fig=figure('units','centimeters','outerposition',1+[0 0 16 0.66*16]);
 fig.Color =  [1 1 1];
 fig.Name = 'Ground truth vs misspecified';
@@ -126,7 +125,7 @@ Y{1} = VA.VA_E_optimal_misspecification;
 X{2} = VA.VA_Snellen_optimal;
 Y{2} = VA.VA_Snellen_optimal_misspecification;
 
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(ground truth)'], ['LogMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(ground truth)'], ['logMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h = nexttile(layout1);
@@ -136,23 +135,23 @@ X{1} = VA.VA_E_control;
 X{2} = VA.VA_Snellen_control;
 Y{2} = VA.VA_Snellen_optimal_misspecification;
 
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(control)'], ['LogMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'], ['logMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+% h = nexttile(layout1);
+% i=i+1;
+% Y{1} = VA.VA_E_optimal_misspecification;
+% X{1} = VA.VA_E_naive;
+% X{2} = VA.VA_Snellen_naive;
+% Y{2} = VA.VA_Snellen_optimal_misspecification;
+% 
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(naive)'], ['logMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
 
 h = nexttile(layout1);
 i=i+1;
-Y{1} = VA.VA_E_optimal_misspecification;
-X{1} = VA.VA_E_naive;
-X{2} = VA.VA_Snellen_naive;
-Y{2} = VA.VA_Snellen_optimal_misspecification;
-
-scatter_plot_combined(X,Y, tail,['LogMAR' newline '(naive)'], ['LogMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
-
-h = nexttile(layout1);
-i=i+1;
-xlabels = {'Miss. vs Control'};
+xlabels = {'Miss. vs random $\phi'};
 ylabels = {'Fraction preferred',''};
 
 Y = {pref.opt_miss_vs_control_training};
@@ -170,4 +169,5 @@ text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', le
 savefig(fig, [folder,'/', figname, '_2.fig'])
 exportgraphics(fig, [folder,'/' , figname, '_2.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '_2.png'], 'Resolution', 300);
+
 

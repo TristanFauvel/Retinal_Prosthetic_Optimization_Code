@@ -7,6 +7,9 @@ plot_figure_performance
 plot_figure_misspecification
 plot_figure_misspecified_opt
 
+
+plot_figure_misspecification_combined
+
 plot_figure_E_Snellen
 %plot_figure_Value_VA
 % plot_figure_VA_precision
@@ -41,4 +44,6 @@ T = T(all(T.Subject ~= subject_to_remove.subjects_to_remove,2),:);
 
 Acq_vs_random = pref.acq_vs_random_training';
 Subjects = T.Subject;
+table(Subjects, Acq_vs_random, VA.VA_E_optimized_preference_acq')
+
 table(Subjects, Acq_vs_random, VA.VA_E_optimized_preference_acq')
