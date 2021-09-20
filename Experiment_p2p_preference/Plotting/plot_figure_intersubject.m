@@ -171,3 +171,44 @@ end
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+
+
+%%
+
+
+letters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+tail = 'both';
+mc =4;
+mr = 2;
+legend_pos = [-0.18,1.15];
+pref_scale = [0,1;0,1];
+
+i=0;
+fig=figure('units','centimeters','outerposition',1+[0 0 16 1.4/2*16]);
+fig.Color =  [1 1 1];
+fig.Name = "subject_to_subject_optimization_variability";
+tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','tight');
+nexttile
+i=i+1;
+X = [acq_vs_random_training_paired(1,:),acq_vs_random_test_paired(1,:),acq_vs_opt_test_paired(1,:),...
+    acq_vs_opt_training_paired(1,:)]
+Y = [acq_vs_random_training_paired(2,:),acq_vs_random_test_paired(2,:),acq_vs_opt_test_paired(2,:),acq_vs_opt_training_paired(2,:)]
+
+
+
+X = [paired_VA.VA_E_optimized_preference_acq(1,:),  
+Y = [paired_VA.VA_E_optimized_preference_acq(2,:),  
+
+
+X = [paired_VA.VA_Snellen_optimized_preference_acq(1,:), 
+Y = [paired_VA.VA_Snellen_optimized_preference_acq(2,:),
+ i=i+1;
+scatter_plot(paired_VA.VA_E_optimized_E_TS(1,:),paired_VA.VA_E_optimized_E_TS(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1, 'color', C(1,:)); %H1 : x – y come from a distribution with median greater than 0
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+nexttile
+i=i+1;
+scatter_plot(paired_VA.VA_Snellen_optimized_E_TS(1,:),paired_VA.VA_Snellen_optimized_E_TS(2,:), tail,'Subject  1', 'Subject  2',[], 'linreg', 1, 'color', C(2,:)); %H1 : x – y come from a distribution with median greater than 0
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+folder = 'C:\Users\tfauvel\Documents\PhD\Figures\Paper_figures\Figure9\';
+

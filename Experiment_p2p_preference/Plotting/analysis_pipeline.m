@@ -3,6 +3,10 @@ data_directory = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data';
 raw_data_directory = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Raw_Data';
 
 T = load(data_table_file).T;
+
+
+% raw_data_table_file = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Data/raw_data_table.mat';
+% save(raw_data_table_file, 'T')
 load('subjects_to_remove.mat', 'subjects_to_remove');
 T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
@@ -23,7 +27,7 @@ to_compute_thresholds_QUEST(T, 'Snellen', data_table_file, data_directory)
 to_compute_thresholds_QUEST(T, 'E', data_table_file, data_directory)
 
 
-subjects_to_remove = {'KM','TF_200', 'CW', 'test', 'test2'};
+subjects_to_remove = {'SG2', 'FF2'};
 filename = '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_Optimization_Code/subjects_to_remove';
 save(filename, 'subjects_to_remove')
 
@@ -35,11 +39,23 @@ load_values(reload, data_directory, data_table_file)
 load_values_evolution(reload, data_directory, data_table_file)
 load_values_evolution_combined_data(reload, data_directory, data_table_file)
 
-
+ RMSE = load_RMSE_results(reload, data_directory, data_table_file);
 
 T = load(data_table_file).T;
-subject_to_remove = load('subjects_to_remove.mat');
-T = T(all(T.Subject ~= subject_to_remove,2),:);
+subjects_to_remove = load('subjects_to_remove.mat');
+subjects_to_remove  =subjects_to_remove.subjects_to_remove;
+T = T(all(T.Subject ~= subjects_to_remove,2),:);
+
+T = T(T.Subject == 'TF', : );
+
+T(T.Subject == 'SG' & T.Index == 3 & T.Acquisition == 'maxvar_challenge',:).Subject = 'SG2';
+
+%%%%%%%%%%
+T = load(data_table_file).T;
+T = T(T.Subject == 'TF', : );
+
+%save(data_table_file, 'T')
+
 id = 1:size(T,1);
 acquisition= 'maxvar_challenge';
 id = id(T.Acquisition==acquisition & T.Misspecification == 0);
@@ -68,3 +84,27 @@ end
 % i = 5
 % filename = [data_directory, '/Data_Experiment_p2p_',char(t(i,:).Task),'/', char(t(i,:).Subject), '/', char(t(i,:).Subject), '_', char(t(i,:).Acquisition), '_experiment_',num2str(t(i,:).Index)];
 % load(filename, 'experiment');
+
+
+
+reload = 0;
+pref  = load_preferences(reload,data_directory, data_table_file);
+VA  = load_VA_results(reload,data_directory, data_table_file);
+
+data_directory = [experiment_path,'/Data'];
+figures_folder = [experiment_path,'/Figures'];
+
+
+T = load(data_table_file).T;
+T= T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 0, :);
+subject_to_remove = load('subjects_to_remove.mat'); %remove data from participants who did not complete the experiment;
+T = T(all(T.Subject ~= subject_to_remove.subjects_to_remove,2),:);
+
+Acq_vs_random = pref.acq_vs_random_training';
+VA_E_optimized_preference_acq = VA.VA_E_optimized_preference_acq';
+VA_E_optimized_preference_random = VA.VA_E_optimized_preference_random';
+
+Subjects = T.Subject;
+table(Subjects, Acq_vs_random, VA_E_optimized_preference_acq, VA_E_optimized_preference_random)
+
+% T(T.Subject == 'TF', : ) = []

@@ -73,53 +73,30 @@ title('Random $\phi$')
 colormap('gray')
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
 
-nexttile(4)
-tail = 'both';
-i=4;
-Y{1} = VA.VA_E_naive;
-X{1} = VA.VA_E_control;
-Y{2} = VA.VA_Snellen_naive;
-X{2} = VA.VA_Snellen_control;
-scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(naive)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
-text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
-h = nexttile(3);
-xlabels = {'Random $\phi$ vs naive'};
-ylabels = {'Fraction preferred',''};
-Y = {pref.control_vs_naive_training};
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,1,1], ...
-    'test', 'Bayes', 'Ncomp', 13);
-i=3
-text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
- 
-
-figname  = 'Parameterization_effect';
-folder = [folder,figname];
-savefig(fig, [folder,'/', figname, '.fig'])
-exportgraphics(fig, [folder,'/' , figname, '.pdf']);
-exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
- colormap('gray')
-text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+keep = find((~isnan(VA.VA_E_naive)).*(~isnan(VA.VA_E_control)).*(~isnan(VA.VA_Snellen_naive)).*(~isnan(VA.VA_Snellen_control)));
 
 nexttile(4)
 tail = 'both';
 i=4;
-Y{1} = VA.VA_E_naive;
-X{1} = VA.VA_E_control;
-Y{2} = VA.VA_Snellen_naive;
-X{2} = VA.VA_Snellen_control;
+Y{1} = VA.VA_E_naive(keep);
+X{1} = VA.VA_E_control(keep);
+Y{2} = VA.VA_Snellen_naive(keep);
+X{2} = VA.VA_Snellen_control(keep);
 scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(naive)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
+
 h = nexttile(3);
+Y = {pref.control_vs_naive_training(keep)};
+
 xlabels = {'Random $\phi$ vs naive'};
 ylabels = {'Fraction preferred',''};
-Y = {pref.control_vs_naive_training};
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,1,1], ...
-    'test', 'Bayes', 'Ncomp', 13);
+    'test', 'Bayes', 'Ncomp', 13, 'plot_N', true);
 i=3
 text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
- 
+
 
 figname  = 'Parameterization_effect';
 folder = [folder,figname];
@@ -127,3 +104,23 @@ savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
+% text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+% 
+% nexttile(4)
+% tail = 'both';
+% i=4;
+% Y{1} = VA.VA_E_naive;
+% X{1} = VA.VA_E_control;
+% Y{2} = VA.VA_Snellen_naive;
+% X{2} = VA.VA_Snellen_control;
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(naive)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+% text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% 
+%  
+% 
+% figname  = 'Parameterization_effect';
+% folder = [folder,figname];
+% savefig(fig, [folder,'/', figname, '.fig'])
+% exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+% exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+% 

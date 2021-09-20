@@ -1,4 +1,4 @@
-function plot_figure_misspecified_opt(id)
+function plot_figure_misspecified_opt()
 %% Plot the VA results with the misspecified encoder
 add_modules;
 add_directories;
@@ -110,7 +110,7 @@ X{2} = VA.VA_Snellen_control;
 Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
 
 scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(opt. miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+text(-0.18,1.15,['$\bf{', letters(2), '}$'],'Units','normalized','Fontsize', letter_font)
 
 i=4;
 h = nexttile(layout1,i);
@@ -119,7 +119,7 @@ Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
 X{2} = VA.VA_Snellen_optimal_misspecification;
 Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
 scatter_plot_combined(X,Y, tail,['logMAR' newline '(misspecified)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+text(-0.18,1.15,['$\bf{', letters(3), '}$'],'Units','normalized','Fontsize', letter_font)
 
 % i=4;
 % h = nexttile(layout1,i);
@@ -138,7 +138,7 @@ ylabels = {'Fraction preferred',''};
 Y = {pref.optimized_miss_vs_controlmiss_training, pref.optimized_miss_vs_control_training, pref.optimized_miss_vs_opt_miss_training};
 
 scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0 ,'Ncomp', 13,'pba', [2,1,1]);
-text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+text(-0.18,1.15,['$\bf{', letters(1), '}$'], 'Units','normalized','Fontsize', letter_font)
 
 
 % 

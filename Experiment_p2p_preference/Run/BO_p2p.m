@@ -9,6 +9,7 @@ rng(model_seed)
 dpcm = get(0,'ScreenPixelsPerInch')/2.54; % number of pixels per centimeter
 display_size = 2*viewing_distance*tan(0.5*visual_field_size*pi/180); % Size of the image on screen (in m)
 display_size = floor(display_size*100*dpcm) ; % Size of the image on screen (in pixels)
+% 360/pi*atan(s/(100*dpcm)/(2*viewing_distance))
 display_width = display_size(2);
 display_height = display_size(1);
 experiment.display_size = display_size;

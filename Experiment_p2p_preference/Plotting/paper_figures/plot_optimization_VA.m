@@ -44,7 +44,7 @@ mc = 3;
 legend_pos = [-0.18,1.15];
 graphics_style_paper;
 
-fig=figure('units','centimeters','outerposition',1+[0 0 16 7.5]);
+fig=figure('units','centimeters','outerposition',1+[0 0 16 1.3*fheight(mr)]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred';
 tail = 'both';

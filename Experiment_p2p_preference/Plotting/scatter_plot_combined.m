@@ -3,10 +3,11 @@ function scatter_plot_combined(X,Y, tail,xlab,ylab, scale, varargin)
 opts = namevaluepairtostruct(struct( ...
     'equal_axes', 1, ...
     'linreg', 0, ...
-     'categories', [], ...
-     'legend_position', 'north', ...
-     'color',[], ...
-     'test', 'Bayes' ... %Wilcoxon
+    'categories', [], ...
+    'legend_position', 'north', ...
+    'color',[], ...
+    'disp_mean', 1, ...
+    'test', 'Bayes' ... %Wilcoxon
     ), varargin);
 
 UNPACK_STRUCT(opts, false)
@@ -19,6 +20,8 @@ end
 N = numel(X);
 p = zeros(1,N);
 np = zeros(1,N);
+
+M = zeros(2,N);
 for i =1:N
     x = X{i};
     y = Y{i};
@@ -28,14 +31,20 @@ for i =1:N
     X{i} = x;
     Y{i} = y;
     if strcmp(test, 'Wilcoxon')
-    p(i) = signrank(x,y, 'Tail',tail);
-     elseif strcmp(test, 'Bayes')
-       p(i) = Bayes_factor_VA(x,y);        
-    end 
-     disp_stats = disp_p(p(i), 'test', test,'plot_N', false);
-    leg{i} = [categories{i}, ', ', disp_stats];
+        p(i) = signrank(x,y, 'Tail',tail);
+    elseif strcmp(test, 'Bayes')
+        p(i) = Bayes_factor_VA(x,y);
+    end
+    disp_stats = disp_p(p(i), 'test', test,'plot_N', false);
+    
+    if ~strcmp(categories{i},'')
+        leg{i} = [categories{i}, ', ', disp_stats];
+    else
+        leg{i} = disp_stats;
+    end
     np(2*(i-1)+1) = numel(x);
     np(2*i) = numel(y);
+    M(:,i) = [mean(x); mean(y)];
 end
 % graphics_style_paper;
 linecol = [0,0,0];
@@ -44,6 +53,10 @@ for i =1:N
     h(i) = scatter(X{i},Y{i}, markersize,  '+'); hold on;
     h(i).CData = color(i,:);
     plots = [plots, h(i)];
+    
+    if disp_mean
+        scatter(M(1,i), M(2,i), 10*markersize, color(i,:),'*');
+    end
 end
 
 pbaspect([1 1 1])
@@ -61,8 +74,8 @@ else
         ylim([m, M])
     end
 end
-    Xlim = xlim;
-    Ylim = ylim;
+Xlim = xlim;
+Ylim = ylim;
 
 if ~isempty(scale)
     rx= [scale(1,1),scale(1,2)];
@@ -80,58 +93,58 @@ if linreg
     [p,F,d] = coefTest(mdl);
     h2 = plot(linspace(Xlim(1),Xlim(2),100), mdl.predict(linspace(Xlim(1),Xlim(2),100)'), 'color', linecol, 'linewidth', linewidth/4, 'linestyle','--'); hold on; %mdl.Coefficients.Estimate(1)+mdl.Coefficients.Estimate(2)*x
     tp =  disp_p(p, 'test', 'F-test', 'plot_N', true);
-    printed_text{1} = ['$R^2 =', num2str(round(mdl.Rsquared.Ordinary,3)),'$, ', tp{1}];
-    printed_text{2} = tp{2};
-    stat_pos = [0.0295652173913043 -0.00395652173913044]; %0.36, 0.083
+    printed_text = ['$R^2 =', num2str(round(mdl.Rsquared.Ordinary,3)),'$, ', tp];
+    %     stat_pos = [0.0295652173913043 -0.00395652173913044]; %0.36, 0.083
+    stat_pos = [0, 1.1];
     text(stat_pos(1), stat_pos(2),printed_text,'Units','normalized','Fontsize', Fontsize)
     % 'F-test'
 else
     h2 = plot(rx,ry, 'color', linecol, 'linewidth', linewidth/4, 'linestyle','--'); hold on;
     %title(disp_p(p));
     stat_pos = [0.63, 0.091]; %0.63, 0.091
-%     text(stat_pos(1), stat_pos(2),disp_p(p, 'test','Wilcoxon signed-rank'),'Units','normalized','Fontsize', 9,'FontWeight', 'Bold') % 'Wilcoxon signed-rank'
+    %     text(stat_pos(1), stat_pos(2),disp_p(p, 'test','Wilcoxon signed-rank'),'Units','normalized','Fontsize', 9,'FontWeight', 'Bold') % 'Wilcoxon signed-rank'
+    
+    
+    NumTicks = 3;
+    L = get(gca,'XLim');
+    set(gca,'XTick',linspace(L(1),L(2),NumTicks))
+    L = get(gca,'YLim');
+    set(gca,'YTick',linspace(L(1),L(2),NumTicks))
+    xtickformat('%.2f')
+    ytickformat('%.2f')
+    
+    
+    [hleg, icons] = legend(h, leg, 'Location', legend_position, 'FontSize' , Fontsize);
+    % rect = [0, 0.25, 1, 1];
+    % set(hleg, 'Position', rect)
+    M = findobj(icons,'type','patch'); % Find objects of type 'patch'
+    set(M,'MarkerSize', sqrt(markersize))
+    legend boxoff
+    legpos = hleg.Position;
+    pos = legpos;
+    if strcmp(legend_position, 'north')
+        pos(2) = pos(2)+0.2;
+        pos(1) = pos(1)+0.01;
+    else
+        pos(2) = pos(2)+0.05;
+        pos(1) = pos(1) +0.05;
+    end
+    hleg.Position =pos;
+    hleg.ItemTokenSize(1) = -40;
 end
-
-
-NumTicks = 3;
-L = get(gca,'XLim');
-set(gca,'XTick',linspace(L(1),L(2),NumTicks))
-L = get(gca,'YLim');
-set(gca,'YTick',linspace(L(1),L(2),NumTicks))
-xtickformat('%.2f')
-ytickformat('%.2f')
-
-
-[hleg, icons] = legend(leg, 'Location', legend_position, 'FontSize' , Fontsize);
-% rect = [0, 0.25, 1, 1];
-% set(hleg, 'Position', rect)
-M = findobj(icons,'type','patch'); % Find objects of type 'patch'
-set(M,'MarkerSize', sqrt(markersize))
-legend boxoff
-legpos = hleg.Position;
-pos = legpos;
-if strcmp(legend_position, 'north')
-% pos(2) = pos(2)+0.119;
-% pos(1) = pos(1) +0.05;
-pos(2) = pos(2)+0.2;
-pos(1) = pos(1)+0.01;
-end
-hleg.Position =pos;
-hleg.ItemTokenSize(1) = -40;
-
-text(0.75, 0.05, ['N=', num2str(unique(np))] ,'Units','normalized','Fontsize', letter_font)
+% text(0.75, 0.05, ['N=', num2str(unique(np))] ,'Units','normalized','Fontsize', letter_font)
 
 % copy the objects
 % ax = gca();
-% hCopy = copyobj(h, ax); 
-% % replace coordinates with NaN 
+% hCopy = copyobj(h, ax);
+% % replace coordinates with NaN
 % % Either all XData or all YData or both should be NaN.
 % for i = 1:N
 % set(hCopy(i),'XData', NaN', 'YData', NaN)
-% hCopy(1).SizeData = 2; 
+% hCopy(1).SizeData = 2;
 % end
 % % Note, these lines can be combined: set(hCopy,'XData', NaN', 'YData', NaN)
-% % To avoid "Data lengths must match" warning, assuming hCopy is a handle array, 
+% % To avoid "Data lengths must match" warning, assuming hCopy is a handle array,
 % % use arrayfun(@(h)set(h,'XData',nan(size(h.XData))),hCopy)
 % % Alter the graphics properties
 % % Create legend using copied objects

@@ -1,4 +1,5 @@
-function [loss, p] = loss_function(M, x, S, experiment, varargin)
+function [loss, p, loss_opt] = loss_function(M, x, S, experiment, varargin)
+%  loss_opt : distance from the optimally encoded percept
 opts = namevaluepairtostruct(struct( ...
     'optimal_magnitude', [] ...
     ), varargin);
@@ -21,7 +22,15 @@ end
 
 p = vision_model(M,W,S);
 
-loss = -immse(p, S);
+loss = immse(p./255, S./255);
+
+%%
+ optimal_magnitude= 1;
+[Wopt, ~] = encoder(experiment.true_model_params, experiment,ignore_pickle, 1);
+popt= vision_model(M,Wopt,S);
+loss_opt = sqrt(immse(p./255, popt./255));
+
+loss_opt = immse(p./255, popt./255);
 
 return
  

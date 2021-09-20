@@ -66,6 +66,12 @@ while k<N
     for l = 1:numel(j)
         filename = [data_directory, '/Data_Experiment_p2p_',task,'/', subject, '/', subject, '_', acquisition, '_experiment_', num2str(j(l))];
         load(filename, 'experiment');
+        
+        if any(isnan(experiment.x_best_norm(:,1)))
+             analyze_experiment(filename, 'for_all', 1)
+             load(filename, 'experiment');
+        end
+         
         if strcmp(task, 'preference')
             D = size(experiment.xtrain,1)/2;
             model.D = D;
@@ -82,6 +88,9 @@ while k<N
         model.ub = experiment.ub;
         model.lb = experiment.lb;
 
+        
+          
+             
          if strcmp(exp, 'optimal')
             [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, ...
                 [(experiment.model_params(experiment.ib)-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)], model, post);

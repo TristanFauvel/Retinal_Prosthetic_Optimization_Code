@@ -53,6 +53,7 @@ T = load(data_table_file).T;
 load('subjects_to_remove.mat', 'subjects_to_remove') %remove data from participants who did not complete the experiment;
 T = T(all(T.Subject ~= subjects_to_remove,2),:);
 
+% T = T(T.Subject == 'SG', :);
 
 if n ~= -1
     T=T(end-n+1:end,:);
@@ -72,7 +73,7 @@ else
     acquisition = exp;
 end
 % t = T(T.Task == task & T.Acquisition==acquisition & T.Misspecification==misspecification,:);
-
+% T = T(T.Subject == 'FF', :);
 k = 0;
 while k<N
     k=k+1;

@@ -4,12 +4,14 @@ plot_naive_vs_control
 plot_optimization_preference % plot_figure_challenge(4)
 plot_optimization_VA  % plot_figure_challenge_VA(5)
 plot_figure_performance
-plot_figure_misspecification
+% plot_figure_misspecification
+plot_figure_misspecification_effect()
 plot_figure_misspecified_opt
 
 
-plot_figure_misspecification_combined
-
+ plot_naive_vs_control_RMSE
+ plot_optimization_VA_RMSE
+ 
 plot_figure_E_Snellen
 %plot_figure_Value_VA
 % plot_figure_VA_precision
@@ -43,7 +45,12 @@ subject_to_remove = load('subjects_to_remove.mat'); %remove data from participan
 T = T(all(T.Subject ~= subject_to_remove.subjects_to_remove,2),:);
 
 Acq_vs_random = pref.acq_vs_random_training';
+Acq_vs_opt = pref.acq_vs_opt_training';
+
+Pref_vs_E_training = pref.Pref_vs_E_training'; 
+E_vs_control_training = pref.E_vs_control_training'; 
+
 Subjects = T.Subject;
-table(Subjects, Acq_vs_random, VA.VA_E_optimized_preference_acq')
+table(Subjects, Pref_vs_E_training, E_vs_control_training )
 
 table(Subjects, Acq_vs_random, VA.VA_E_optimized_preference_acq')

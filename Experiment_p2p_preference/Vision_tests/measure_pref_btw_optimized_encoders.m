@@ -5,10 +5,10 @@ function measure_pref_btw_optimized_encoders(filename1,filename2, control, scree
 exp1 = load(filename1, 'experiment');
 exp1 = exp1.experiment;
 
-
-W_optimized_1 = encoder(exp1.x_best(:, end), exp1,1,0);
-[~, M] = encoder(exp1.true_model_params, exp1,1,1);
-W_opt = encoder(exp1.model_params, exp1,1,1);
+ignore_pickle = 1;
+W_optimized_1 = encoder(exp1.x_best(:, end), exp1,ignore_pickle,0);
+[~, M] = encoder(exp1.true_model_params, exp1,ignore_pickle,1);
+W_opt = encoder(exp1.model_params, exp1,ignore_pickle,1);
 
 exp1.M = M;
 W_naive = naive_encoder(exp1);

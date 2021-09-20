@@ -10,7 +10,7 @@ UNPACK_STRUCT(opts, false)
 offset = 0.08;
 full_disp = 0;
 
-
+plot_N = false;
 if plot_N
   plot_N = [', N =$', num2str(n)];
 else

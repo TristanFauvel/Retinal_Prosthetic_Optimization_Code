@@ -56,6 +56,8 @@ tail = 'both'; %'right';
 scatter_plot(x,y, tail,'Tumbling E', 'Snellen',[], 'equal_axes', 0, 'linreg', 1); % H1: x – y come from a distribution with greater than 0
 
 
+ 
+%%
 figname  = ['Figure',num2str(id)];
 folder = [paper_figures_folder,'Figure_',num2str(id),'/'];
 if ~isdir(folder)

@@ -34,7 +34,7 @@ T = T(all(T.Subject ~= subjects_to_remove,2),:);
 T= T(T.Acquisition == 'maxvar_challenge' & T.Misspecification == 0, :);
 
 
-index = 17;
+index = 15;
 filename = [data_directory, '/Data_Experiment_p2p_',char(T(index,:).Task),'/', char(T(index,:).Subject), '/', char(T(index,:).Subject), '_', char(T(index,:).Acquisition), '_experiment_',num2str(T(index,:).Index)];
 
 load(filename, 'experiment')
@@ -96,11 +96,12 @@ nk = numel(range);
 p1= [];
 p2= [];
 popt = [];
+stims= {};
 for k = 1:nk
     xm = exp.model_params;
     xm(exp.ib) = exp.xtrain(1:exp.d,range(k));
     [~,percept] = g(xm, []);
-    letter = letter2number(exp.displayed_stim{k});
+    letter = letter2number(exp.displayed_stim{range(k)});
     p1 = [p1, percept(:,letter)];
     xm = exp.model_params;
     xm(exp.ib) = exp.xtrain((exp.d+1):end,range(k));
@@ -112,6 +113,7 @@ for k = 1:nk
     
     %     [~,percept] = g(x_best_unknown_hyps(:, range(k)));
     popt = [popt, percept(:,1)];
+    stims{k} = exp.displayed_stim{range(k)};
 end
 
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -152,7 +154,7 @@ for k = 1:nk
         text(-0.525641025641026, 1.14553014553015,'Iteration','Units','normalized','Fontsize', letter_font)
     end
     %     title(range(k));
-    ylabel(num2str(range(k)));
+    ylabel([num2str(range(k)), ', ', stims{k}]);
     hYLabel = get(gca,'YLabel');
     set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
     
@@ -183,6 +185,36 @@ savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 
+
+%%
+
+fig=figure('units','centimeters','outerposition',1+[0 0 16 1.5/2*16]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred';
+mc = 1;
+layout1 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
+nt=1;
+c = 0;
+ for k = 1:nk
+    c=c+1;
+    letter = letter2number(exp.displayed_stim{range(k)});
+    stim = reshape(S(:, letter),ny,nx);
+    h = nexttile(layout1, 1+(c-1)*nt);
+    
+    hi = imshow(stim);
+    set(gca,'xtick',[],'ytick',[],'title',[]);
+    set(gca,'dataAspectRatio',[1 1 1])
+%     h.CLim = [0, 255];   
+end
+colormap('gray')
+
+ 
+figname  = 'stimuli';
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+
+
 %%
 %
 T = load(data_table_file).T;
@@ -192,11 +224,21 @@ s_index = 2;
 T = T(T.Subject == 'PC', :);
 [p_after_optim, p_opt, p_control, p_after_optim_rand,~, nx,ny] = encoders_comparison(s_index, T);
 mr = 2;
-mc = 4;
+mc = 5;
 k = 1;
 fig=figure('units','centimeters','outerposition',1+[0 0 16 1.5/2*16]);
 fig.Color =  [1 1 1];
 layout3 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
+
+
+h = nexttile(layout3);
+% h = subplot(mr,mc,[1,3])
+imagesc(reshape(255*S(:,1),ny,nx));
+set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[]),
+set(gca,'dataAspectRatio',[1 1 1])
+h.CLim = [0, 255];
+title('Stimulus')
+
 
 h = nexttile(layout3);
 % h = subplot(mr,mc,[1,3])
@@ -215,7 +257,7 @@ set(gca,'dataAspectRatio',[1 1 1])
 h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-title('MaxVarChallenge')
+title('Adaptive pref.')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
 h = nexttile(layout3);
@@ -237,7 +279,7 @@ set(gca,'dataAspectRatio',[1 1 1])
 h.CLim = [0, 255];
 hYLabel = get(gca,'YLabel');
 set(hYLabel,'rotation',0,'VerticalAlignment','middle', 'HorizontalAlignment', 'right')
-title('Random $\phi')
+title('Random $\phi$')
 colormap('gray')
 % text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
 
@@ -261,7 +303,7 @@ options.color_area = C(2,:);%./255;    % Orange theme
 options.color_line = C(2,:);%./255;
 h2=plot_areaerrorbar(val.optimized_preference_random_evolution', options); hold on;
 legendstr={'Adaptive pref.','', 'Non-adaptive pref.', '', 'Challenge miss.', ''};
-legend([h1 h2], 'Adaptive pref.', 'Random', 'Challenge miss.', 'location', 'northwest');
+legend([h1 h2], 'Adaptive pref.', 'Random', 'location', 'northwest');
 box off
 xlabel('Iteration')
 ylabel('Value');
@@ -370,24 +412,36 @@ text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', let
 
 %%
 
+
+mr = 1;
+mc = 3
 i=0;
-fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 fheight(1)]);
+fig=figure('units','centimeters','outerposition',1+[0 0 fwidth(1) fheight(1)]);
 fig.Color =  [1 1 1];
 fig.Name = 'Fraction preferred, optimization set vs transfer set';
 xlabels= {'Random $\phi$', 'Non-adaptive pref.','Ground truth'};
 ylabels = {'Fraction preferred',''};
 
-layout = tiledlayout(1,1, 'TileSpacing', 'tight', 'padding','compact');
-h = nexttile();
+layout = tiledlayout(mr, mc, 'TileSpacing', 'tight', 'padding','compact');
+h = nexttile(1);
 i=i+1;
 x = [pref.acq_vs_random_training,pref.acq_vs_opt_training, pref.acq_vs_control_training];
 y = [pref.acq_vs_random_test,pref.acq_vs_opt_test, pref.acq_vs_control_test];
 tail = 'both';
 scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'linreg', 1);  %H1 : x – y come from a distribution with median different than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+
+h = nexttile(1);
+i=i+1;
+VA.VA_E = [VA.VA_E_optimized_preference_acq,  VA.VA_E_optimal, VA.VA_E_optimized_preference_random, VA.VA_E_optimized_preference_acq_misspecification, VA.VA_E_optimal_misspecification, VA.VA_E_optimized_E_TS, VA.VA_E_control];
+VA_S = [VA.VA_Snellen_optimized_preference_acq,  VA.VA_Snellen_optimal, VA.VA_Snellen_optimized_preference_random, VA.VA_Snellen_optimized_preference_acq_misspecification, VA.VA_Snellen_optimal_misspecification, VA.VA_Snellen_optimized_E_TS, VA.VA_Snellen_control];
+x  = VA.VA_E;
+y = VA_S;
+tail = 'both'; %'right';
+scatter_plot(x,y, tail,'Tumbling E', 'Snellen',[], 'equal_axes', 0, 'linreg', 1); % H1: x – y come from a distribution with greater than 0
+
 
 figname  = ['optimization_preference','_correlation'];
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
-exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+saveas(fig, [folder,'/' , figname, '.png']);
  
