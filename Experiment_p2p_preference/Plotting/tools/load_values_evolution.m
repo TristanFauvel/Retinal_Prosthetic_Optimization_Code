@@ -61,9 +61,9 @@ while k<N
         model.ub = experiment.ub;
         model.lb = experiment.lb;
             if strcmp(task, 'preference')
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], model, post);
+                [~, v] = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], post);
             else
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm,  model, post);
+                [~, v] = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm,  model, post);
             end
         val(:,k+l-1) = v;
     end

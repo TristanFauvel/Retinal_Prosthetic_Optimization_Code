@@ -1,7 +1,8 @@
 function [S,correct_response] = compute_stimulus(experiment, task, stim_size, display_width, display_height, Stimuli_folder, contrast, varargin)
 
 opts = namevaluepairtostruct(struct( ...
-    'previous_stim', [] ...
+    'previous_stim', [], ...
+    'stim', [] ...
     ), varargin);
 
 UNPACK_STRUCT(opts, false)
@@ -20,6 +21,9 @@ switch task
         types = types(experiment.letters_range);
 end
 
+if ~isempty(stim)
+    types = stim;
+end
 correct_response = randsample(types, 1);
 
 switch task

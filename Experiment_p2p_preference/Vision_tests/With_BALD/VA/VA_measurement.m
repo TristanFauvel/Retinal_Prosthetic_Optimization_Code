@@ -140,12 +140,12 @@ while i<maxiter
             try
                 if i== nopt+1 || mod(i, update_period) ==1
                     nd = numel(hyp.cov);
-                    theta_ub = 10*ones(nd,1);
-                    theta_lb = -10*ones(nd,1);
+                    hyp_ub = 10*ones(nd,1);
+                    hyp_lb = -10*ones(nd,1);
                     ncandidates= 5;
                     starting_points= NaN(nd,ncandidates);
                     for k = 1:nd
-                        starting_points(k,:)= theta_lb(k)+(theta_ub(k)-theta_lb(k))*rand(1,ncandidates);
+                        starting_points(k,:)= hyp_lb(k)+(hyp_ub(k)-hyp_lb(k))*rand(1,ncandidates);
                     end
                     if nd ==2
                         starting_points = [starting_points(1,:);starting_points(1,:)];
@@ -195,7 +195,7 @@ return
 
 %% Compute the value function
 
-% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, model, post);
+% [mu_c, mu_y, sigma2_y] = model.prediction(theta, xtrain, ctrain, x, post);
 % [fitresult, gof] = sigmoid_fit(xtrain, ctrain);
 % pred_fit = fitresult(x);
 % acuity = fitresult.k;

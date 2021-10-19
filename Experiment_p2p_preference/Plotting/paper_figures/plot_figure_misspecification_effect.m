@@ -120,7 +120,7 @@ exportgraphics(fig, [folder,'/' , figname, '_1.png'], 'Resolution', 300);
 
 
 %%
-mr = 2;
+mr = 1;
 mc = 4;
  
 fig=figure('units','centimeters','outerposition',1+[0 0 16 1.2*fheight(mr)]);
@@ -131,7 +131,7 @@ layout1 = tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
 
 h = nexttile(layout1);
 i=i+1;
-
+% 
 %keep = find((~isnan(VA.VA_E_optimal)).*(~isnan(VA.VA_E_optimal_misspecification)).*(~isnan()).*(~isnan()).*(~isnan())
 X{1} = VA.VA_E_optimal;
 Y{1} = VA.VA_E_optimal_misspecification;
@@ -140,60 +140,60 @@ Y{2} = VA.VA_Snellen_optimal_misspecification;
 
 scatter_plot_combined(X,Y, tail,['logMAR' newline '(ground truth)'], ['logMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
 text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
-h = nexttile(layout1);
-i=i+1;
-Y{1} = VA.VA_E_optimal_misspecification;
-X{1} = VA.VA_E_control;
-X{2} = VA.VA_Snellen_control;
-Y{2} = VA.VA_Snellen_optimal_misspecification;
-
-scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'], ['logMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
-
-h = nexttile(layout1);
-i=i+1;
-xlabels = {'Miss. vs random $\phi$'};
-ylabels = {'Fraction preferred',''};
-
-pref.opt_miss_vs_control_training(isnan(VA.VA_E_optimal_misspecification)) = NaN;
-Y = {pref.opt_miss_vs_control_training};
-
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0, 'test', 'Bayes', 'Ncomp', 13);
-text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
-
-%%
-%%
-i=5;
-h = nexttile(layout1,[1,2]);
-xlabels = {'Random $\phi$ miss.', 'Random $\phi$','Misspecified'};
-ylabels = {'Fraction preferred',''};
-
-Y = {pref.optimized_miss_vs_controlmiss_training, pref.optimized_miss_vs_control_training, pref.optimized_miss_vs_opt_miss_training};
-
-scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0 ,'Ncomp', 13,'pba', [2,1,1]);
-text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
- 
-i=7;
-h = nexttile(layout1, i);
-Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
-X{1} = VA.VA_E_control;
-X{2} = VA.VA_Snellen_control;
-Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
-
-scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(opt. miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
-i=8;
-h = nexttile(layout1,i);
-X{1} = VA.VA_E_optimal_misspecification;
-Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
-X{2} = VA.VA_Snellen_optimal_misspecification;
-Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
-scatter_plot_combined(X,Y, tail,['logMAR' newline '(misspecified)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
-text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
-
+% 
+% h = nexttile(layout1);
+% i=i+1;
+% Y{1} = VA.VA_E_optimal_misspecification;
+% X{1} = VA.VA_E_control;
+% X{2} = VA.VA_Snellen_control;
+% Y{2} = VA.VA_Snellen_optimal_misspecification;
+% 
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'], ['logMAR' newline '(misspecified)'], VA_scale, 'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% 
+% 
+% h = nexttile(layout1);
+% i=i+1;
+% xlabels = {'Miss. vs random $\phi$'};
+% ylabels = {'Fraction preferred',''};
+% 
+% pref.opt_miss_vs_control_training(isnan(VA.VA_E_optimal_misspecification)) = NaN;
+% Y = {pref.opt_miss_vs_control_training};
+% 
+% scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0, 'test', 'Bayes', 'Ncomp', 13);
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+% 
+% %%
+% %%
+% i=5;
+% h = nexttile(layout1,[1,2]);
+% xlabels = {'Random $\phi$ miss.', 'Random $\phi$','Misspecified'};
+% ylabels = {'Fraction preferred',''};
+% 
+% Y = {pref.optimized_miss_vs_controlmiss_training, pref.optimized_miss_vs_control_training, pref.optimized_miss_vs_opt_miss_training};
+% 
+% scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'rotation', 0 ,'Ncomp', 13,'pba', [2,1,1]);
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+%  
+% i=7;
+% h = nexttile(layout1, i);
+% Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
+% X{1} = VA.VA_E_control;
+% X{2} = VA.VA_Snellen_control;
+% Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
+% 
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(opt. miss.)'], VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% 
+% i=8;
+% h = nexttile(layout1,i);
+% X{1} = VA.VA_E_optimal_misspecification;
+% Y{1} = VA.VA_E_optimized_preference_acq_misspecification;
+% X{2} = VA.VA_Snellen_optimal_misspecification;
+% Y{2} = VA.VA_Snellen_optimized_preference_acq_misspecification;
+% scatter_plot_combined(X,Y, tail,['logMAR' newline '(misspecified)'],'', VA_scale,  'categories', {'E', 'Snellen'}, 'legend_position', 'north'); %H1 : x – y come from a distribution with median less than 0
+% text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+% 
  
 
 

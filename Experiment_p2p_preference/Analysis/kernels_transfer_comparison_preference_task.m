@@ -67,12 +67,12 @@ else
         
         
         init_guess = theta;
-        theta_lb = -10*ones(size(init_guess));
-        theta_ub = 10*ones(size(init_guess));
+        hyp_lb = -10*ones(size(init_guess));
+        hyp_ub = 10*ones(size(init_guess));
         options_theta = experiment.options_theta;
         
         if update_theta
-            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, x_train_norm_data, c_train_data, model), theta_lb, theta_ub,10, init_guess, options_theta);
+            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, x_train_norm_data, c_train_data, model), hyp_lb, hyp_ub,10, init_guess, options_theta);
         end
         ktheta{i} = theta;
     end
@@ -109,7 +109,7 @@ for i = 1:numel(kernel_list)
     theta = ktheta{i};
     kernelfun = @(theta, xi, xj, training) preference_kernelfun(theta, base_kernelfun, xi, xj, training);
     
-    [mu_c,  mu_y, ~, Sigma2_y] = prediction_bin(theta, x_train_norm_data, c_train_data, x_test_norm_data, model, post);
+    [mu_c,  mu_y, ~, Sigma2_y] = model.prediction(theta, x_train_norm_data, c_train_data, x_test_norm_data, post);
     mu_c = mu_c';
     
     brier_score(i) = mean((mu_c - c_test_data).^2);

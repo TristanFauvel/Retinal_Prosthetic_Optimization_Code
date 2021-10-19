@@ -71,8 +71,8 @@ nopt = 40; % number of time steps before starting using the acquisition function
 
 close all;
 
-theta_lb = [-10;-30;-10;-10;-30;-10];
-theta_ub= [5;30;5;5;30;5];
+hyp_lb = [-10;-30;-10;-10;-30;-10];
+hyp_ub= [5;30;5;5;30;5];
 
 options_theta.verbose = 1;
 options_theta.method = 'sd'; %'lbfgs';
@@ -140,7 +140,7 @@ for i=1:maxiter %x corresponds to the diameter of the C.
     
     if i > nopt
         if i== nopt+1 || mod(i, update_period) ==1
-            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,3, theta,options_theta);
+            theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), hyp_lb, hyp_ub,3, theta,options_theta);
         end
         new_x = acquisition_fun(x_norm, theta, xtrain_norm, ctrain,model);
         new_x = new_x.*(ub-lb)+lb;
@@ -152,8 +152,8 @@ end
 VA_CS_measure.ctrain= ctrain;
 VA_CS_measure.xtrain = xtrain;
 VA_CS_measure.xtrain_norm = xtrain_norm;
-VA_CS_measure.theta_lb = theta_lb ;
-VA_CS_measure.theta_ub = theta_ub ;
+VA_CS_measure.hyp_lb = hyp_lb ;
+VA_CS_measure.hyp_ub = hyp_ub ;
 VA_CS_measure.kernelfun = kernelfun;
 VA_CS_measure.modeltype = modeltype;
 VA_CS_measure.theta = theta;

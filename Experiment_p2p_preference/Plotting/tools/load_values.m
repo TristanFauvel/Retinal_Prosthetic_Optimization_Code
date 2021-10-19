@@ -92,17 +92,17 @@ while k<N
           
              
          if strcmp(exp, 'optimal')
-            [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, ...
-                [(experiment.model_params(experiment.ib)-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)], model, post);
+            [~, v] = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, ...
+                [(experiment.model_params(experiment.ib)-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)], post);
         elseif strcmp(exp, 'control')
             xparams = experiment.xtrain(1:experiment.d,1);
             xparams =[(xparams-experiment.lb(:))./(experiment.ub(:)-experiment.lb(:)); experiment.x0.*ones(experiment.d,1)];
-            [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, xparams, model, post);
+            [~, v] = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, xparams, post);
         else
             if strcmp(task, 'preference')
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], model, post);
+                [~, v] = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [experiment.x_best_norm; experiment.x0.*ones(experiment.d,size(experiment.x_best_norm,2))], post);
             else
-                [~, v] = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, model, post);
+                [~, v] = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, experiment.x_best_norm, post);
             end
         end
         val(k+l-1) = v(end);

@@ -64,8 +64,8 @@ nopt = 15; % number of time steps before starting using the acquisition function
 
 close all;
 
-% theta_lb = [-10;-30;-10;-10;-30;-10];
-% theta_ub= [5;30;5;5;30;5];
+% hyp_lb = [-10;-30;-10;-10;-30;-10];
+% hyp_ub= [5;30;5;5;30;5];
 
 % options_theta.verbose = 1;
 % options_theta.method = 'sd'; %'lbfgs';
@@ -139,12 +139,12 @@ while i<maxiter
         if i > nopt
             if i== nopt+1 || mod(i, update_period) ==1
                 nd = numel(hyp.cov);
-                theta_ub = 10*ones(nd,1);
-                theta_lb = -10*ones(nd,1);
+                hyp_ub = 10*ones(nd,1);
+                hyp_lb = -10*ones(nd,1);
                 ncandidates= 5;
                 starting_points= NaN(nd,ncandidates);
                 for k = 1:nd
-                    starting_points(k,:)= theta_lb(k)+(theta_ub(k)-theta_lb(k))*rand(1,ncandidates);
+                    starting_points(k,:)= hyp_lb(k)+(hyp_ub(k)-hyp_lb(k))*rand(1,ncandidates);
                 end
                 if nd ==2
                     starting_points = [starting_points(1,:);starting_points(1,:)];

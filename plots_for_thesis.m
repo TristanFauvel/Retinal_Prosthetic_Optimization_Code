@@ -1,11 +1,12 @@
 regression_tutorial;
 regression_tutorial_hyperparameters;
-
 plot_example_classification_1d;
+
 preference_learning_GP;
 kernels_examples;
-plot_approximation;
+plot_kernel_approximation;
 BO_principle
+
 BO_hyperparameters_effect
 plot_GP_sampling;
 
@@ -18,16 +19,23 @@ plot_GP_sampling_binary;
 
 % plot_duels_analysis;
 duels_analysis_ranking;
-plot_pareto_front;
-PBO_pareto_front;
+ PBO_pareto_front;
 BBO_pareto_front;
 
 BatchMUC_behavior
-
+ 
 figure_MUC;
-
+Copeland_vs_PKG
 figure_sampling_preference;
 
 preference_learning_GP_comparison_wo_conditionning
 
 performance_GP_sampling
+BBO_proba_vs_latent
+uncertainty
+
+ 
+%%
+plot_cBKG
+plot_cBKG_evolution
+plot_cBKG_linARD.m

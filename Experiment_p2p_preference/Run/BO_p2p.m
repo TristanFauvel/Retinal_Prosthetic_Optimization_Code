@@ -166,8 +166,8 @@ if ~strcmp(task, 'preference')
     kernelfun = @(theta, x,xp,training, regularization) base_kernelfun(theta, x(1:d,:),xp(1:d,:),training, regularization);
 end
 
-theta_lb = -10*ones(size(theta_init));
-theta_ub = 10*ones(size(theta_init));
+hyp_lb = -10*ones(size(theta_init));
+hyp_ub = 10*ones(size(theta_init));
 
 [~, ib] = intersect(params,to_update);
 ib = sort(ib);
@@ -262,8 +262,8 @@ model.kernelname = kernelname;
 model.base_kernelfun = base_kernelfun;
 model.lb_norm = lb_norm;
 model.ub_norm = ub_norm;
-model.theta_lb = theta_lb;
-model.theta_ub = theta_ub;
+model.hyp_lb = hyp_lb;
+model.hyp_ub = hyp_ub;
 model.ub = ub;
 model.lb = lb;
 model.D = numel(lb);
@@ -332,14 +332,14 @@ while ~ stopping_criterion
         x_duel2 = xtrain(d+1:end, i+1);
         new_x = [x_duel1;x_duel2];
     else
-        post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
+        post =  model.prediction(theta, xtrain_norm(:,1:i), ctrain(1:i), [], post);
         if i >= nopt
             %Optimization of hyperparameters
             if mod(i, update_period) == 0
                 %theta_old = [theta_old, theta];
                 init_guess = theta;
-                theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
-                post =  prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
+                theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), model), hyp_lb, hyp_ub,10, init_guess, options_theta);
+                post =  model.prediction(theta, xtrain_norm(:,1:i), ctrain(1:i), [], post);
                 if  strcmp(task, 'preference')
                     [approximation.phi_pref, approximation.dphi_pref_dx, approximation.phi, approximation.dphi_dx]= sample_features_preference_GP(theta, d, model, approximation);
                 else
@@ -462,8 +462,8 @@ experiment.stopping_criterion = stopping_criterion;
 experiment.subject = subject;
 experiment.theta = theta;
 experiment.theta_init = theta_init;
-experiment.theta_lb = theta_lb;
-experiment.theta_ub = theta_ub;
+experiment.hyp_lb = hyp_lb;
+experiment.hyp_ub = hyp_ub;
 experiment.true_model_params = true_model_params;
 experiment.ub = ub;
 experiment.ub_norm = ub_norm;

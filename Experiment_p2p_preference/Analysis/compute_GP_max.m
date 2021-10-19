@@ -26,7 +26,7 @@ model.lb = lb;
 
 init_guess = theta;
 if unknown_theta
-    theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,30, init_guess, options_theta);
+    theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), hyp_lb, hyp_ub,30, init_guess, options_theta);
 else
     theta = theta_init;
 end
@@ -62,7 +62,7 @@ if compute_all
                     if (mod(i, update_period) ==1 && i>1) || i == imax
                         %theta_old = [theta_old, theta];
                         init_guess = theta;
-                        theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
+                        theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:,1:i), ctrain(1:i), model), hyp_lb, hyp_ub,10, init_guess, options_theta);
                     end
                 end
             end
@@ -72,18 +72,18 @@ if compute_all
             else
                 init_guess = x_best_norm(:,i-1);
             end
-            post = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, []);
+            post = model.prediction(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, []);
 
             x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm(:,1:i), ctrain(1:i), x, model, post), model.lb_norm, model.ub_norm, ncandidates,init_guess, options);
             
 %             waitbar(i/imax,wbar,'Computing best parameters...');
             
         end
-        %         theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,30, theta, options_theta);
+        %         theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), hyp_lb, hyp_ub,30, theta, options_theta);
         
-        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], model, []);
+        [~, values] = model.prediction(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], model, []);
    
-%         [~,test] = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [linspace(0,1,25); x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
+%         [~,test] = model.prediction(theta, xtrain_norm(:,1:i), ctrain(1:i), [linspace(0,1,25); x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
 % figure(); plot(test)
     else
         for i=1:imax
@@ -94,7 +94,7 @@ if compute_all
                     if mod(i, update_period) ==0
                         %theta_old = [theta_old, theta];
                         init_guess = theta;
-                        theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:, 1:i), ctrain(1:i), model), theta_lb, theta_ub,10, init_guess, options_theta);
+                        theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm(:, 1:i), ctrain(1:i), model), hyp_lb, hyp_ub,10, init_guess, options_theta);
                     end
                 end
             end
@@ -103,12 +103,12 @@ if compute_all
             else
                 init_guess = x_best_norm(:,i-1);
             end
-            post = prediction_bin(theta, xtrain_norm(:,1:i), ctrain(1:i), [], model, post);
+            post = model.prediction(theta, xtrain_norm(:,1:i), ctrain(1:i), [], post);
 
             x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x,model, post), model.lb_norm, model.ub_norm, ncandidates, init_guess,options);
 %             waitbar(i/imax,wbar,'Computing best parameters...');
         end        
-        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, model, []);
+        [~, values] = model.prediction(theta, xtrain_norm, ctrain, x_best_norm, model, []);
     end
     
 else
@@ -116,14 +116,14 @@ else
     
     if strcmp(task, 'preference')
         init_guess = [];
-        post = prediction_bin(theta, xtrain_norm, ctrain,[], model, post);
+        post = model.prediction(theta, xtrain_norm, ctrain,[], post);
         x_best_norm = multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm, ctrain, x, model, post), model.lb_norm, model.ub_norm, ncandidates,init_guess, options);
-        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], model, post);
+        [~, values] = model.prediction(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], post);
     elseif strcmp(task, 'LandoltC') || strcmp(task, 'Vernier') || strcmp(task, 'E')
         init_guess = [];
-        post = prediction_bin(theta, xtrain_norm, ctrain,[], model, post);
+        post = model.prediction(theta, xtrain_norm, ctrain,[], post);
         x_best_norm = multistart_minConf(@(x)to_maximize_mean_bin_GP(theta, xtrain_norm, ctrain, x,model, post), model.lb_norm, model.ub_norm, ncandidates, init_guess,options);
-        [values, mu_y] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, model, post);
+        [values, mu_y] =model.prediction(theta, xtrain_norm, ctrain, x_best_norm, post);
         
     end
 end

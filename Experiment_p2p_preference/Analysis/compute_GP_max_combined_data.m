@@ -17,7 +17,7 @@ end
 xtrain_norm = xtrain_norm_combined;
 xtrain = xtrain_combined;
 ctrain = ctrain_combined;
-% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,10, init_guess, options_theta);
+% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), hyp_lb, hyp_ub,10, init_guess, options_theta);
 theta = theta_init;
 
 maxiter= sum(maxiters);
@@ -50,7 +50,7 @@ if compute_all
             waitbar(i/maxiter,wbar,'Computing best parameters...');
             
         end
-        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regulzarization);
+        [~, values] = model.prediction(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regulzarization);
         
     else
         for i=1:maxiter
@@ -62,7 +62,7 @@ if compute_all
             x_best_norm(:,i) = multistart_minConf(@(x)to_maximize_mean_GP(theta, xtrain_norm(:,1:i), ctrain(1:i), x,model), lb_norm, ub_norm, ncandidates, init_guess,options);
             waitbar(i/maxiter,wbar,'Computing best parameters...');
         end
-        [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, model, post);
+        [mu_c, mu_y, ~,~] =model.prediction(theta, xtrain_norm, ctrain, x_best_norm, post);
         values = mu_y;
     end
     
@@ -73,11 +73,11 @@ else
         init_guess = [];
         x_best_norm = multistart_minConf(@(x)to_maximize_value_function(theta, xtrain_norm, ctrain, x, kernelfun, x0,modeltype), model.lb_norm, model.ub_norm, ncandidates,init_guess, options);
         
-        [~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
+        [~, values] = model.prediction(theta, xtrain_norm, ctrain, [x_best_norm; x0.*ones(d,size(x_best_norm,2))], kernelfun, kernelname, modeltype, post, regularization);
     elseif strcmp(task, 'LandoltC') || strcmp(task, 'Vernier') || strcmp(task, 'E')
         init_guess = [];
         x_best_norm = multistart_minConf(@(x)to_maximize_mean_GP(theta, xtrain_norm, ctrain, x,model), lb_norm, ub_norm, ncandidates, init_guess,options);
-        [values, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, x_best_norm, model, post);
+        [values, mu_y, ~,~] =model.prediction(theta, xtrain_norm, ctrain, x_best_norm, post);
        
     end
 end
@@ -96,21 +96,21 @@ return
 N= 1000;
 figure();
 for k=1:6
-    [mu_c, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, [ones(k-1,N); linspace(0,1,N); ones(6-k,N)], model, post);
+    [mu_c, mu_y, ~,~] =model.prediction(theta, xtrain_norm, ctrain, [ones(k-1,N); linspace(0,1,N); ones(6-k,N)], post);
     subplot(6,1,k)
     plot(linspace(0,1,N), mu_y)
 end
 
 
 if strcmp(acquisition_fun_name, 'accessvar_TS')
-    theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,40, theta, options_theta);
+    theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), hyp_lb, hyp_ub,40, theta, options_theta);
 else
-    theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), theta_lb, theta_ub,10, init_guess, options_theta);
+    theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain_norm, ctrain, model), hyp_lb, hyp_ub,10, init_guess, options_theta);
     
 end
 
-[a,b] = negloglike_bin(theta, xtrain_norm, ctrain, model, post);
-mu_c = prediction_bin(theta, xtrain_norm, ctrain, [xtrain_norm(1:d,:);ones(1,maxiter)], kernelfun, kernelname, modeltype, post, regularization);
+[a,b] = negloglike_bin(theta, xtrain_norm, ctrain, post);
+mu_c = model.prediction(theta, xtrain_norm, ctrain, [xtrain_norm(1:d,:);ones(1,maxiter)], kernelfun, kernelname, modeltype, post, regularization);
 figure(); plot(mu_c)
 
 
@@ -118,13 +118,13 @@ x_best_norm = (x_best - min_x)./(max_x-min_x);
 N=100;
 xtest = x_best_norm(:,end)*ones(1,N);
 xtest(1,:) = linspace(0,1,N)
-[~, mu_y, ~,~] =prediction_bin(theta, xtrain_norm, ctrain, xtest, model, post);
+[~, mu_y, ~,~] =model.prediction(theta, xtrain_norm, ctrain, xtest, post);
 figure();
 plot(xtest(1,:), mu_y)
 
 
 
 
-[~, values] = prediction_bin(theta, xtrain_norm, ctrain, [x_best_norm(:,1:i); x0.*ones(d,i)], kernelfun, kernelname, modeltype, post, regularization);
+[~, values] = model.prediction(theta, xtrain_norm, ctrain, [x_best_norm(:,1:i); x0.*ones(d,i)], kernelfun, kernelname, modeltype, post, regularization);
 figure()
 plot(values)

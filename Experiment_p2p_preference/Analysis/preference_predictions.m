@@ -52,9 +52,9 @@ for k = 1:n_seeds
 
   
     load(filename_1)
-    preference_prediction_kss_kssvsrandom(k) =  prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+    preference_prediction_kss_kssvsrandom(k) =  model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
     load(filename_2)
-    preference_prediction_random_kssvsrandom(k) =  prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+    preference_prediction_random_kssvsrandom(k) =  model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
 
 end
 save([data_directory, '/prediction_kss_vs_random_',subject,'.mat'],'preference_prediction_kss_kssvsrandom','preference_prediction_random_kssvsrandom'); 
@@ -125,9 +125,9 @@ save([data_directory, '/prediction_kss_vs_random_',subject,'.mat'],'preference_p
 %     x2_norm = (x2(experiment.ib)- experiment.lb')./(experiment.ub' - experiment.lb');
 % 
 %     load(filename_1)
-%     preference_prediction_kss_kssvsE(k) =  prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+%     preference_prediction_kss_kssvsE(k) =  model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
 %     load(filename_2)
-%     preference_prediction_E_kssvsE(k) =  prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+%     preference_prediction_E_kssvsE(k) =  model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
 % 
 % 
 % end
@@ -161,7 +161,7 @@ for k = 1:n_seeds
         x2 = experiment.x_best(:,end);
         x2_norm = (x2(experiment.ib)- experiment.lb')./(experiment.ub' - experiment.lb');
         
-        prediction_optimal_vs_kss(k) = prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+        prediction_optimal_vs_kss(k) = model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
         
     end
 end
@@ -203,9 +203,9 @@ graphics_style_paper;
 % 
 %  
 %     load(filename_1)
-%     preference_prediction_kss_kssvsrandom(k) =  prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+%     preference_prediction_kss_kssvsrandom(k) =  model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
 %     load(filename_2)
-%     preference_prediction_random_kssvsrandom(k) =  prediction_bin(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+%     preference_prediction_random_kssvsrandom(k) =  model.prediction(experiment.theta, experiment.xtrain_norm, experiment.ctrain, [x1_norm;x2_norm], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
 % 
 % 
 %     kss_vs_pBO = preference_measure.pref; % Preference of the kss encoders compared to the E.

@@ -59,9 +59,9 @@ for j = 1:numel(indices_preference_kss)
     [x_train_data, x_train_norm_data, c_train_data, theta_data] =  pool_data(char(T(i,:).Subject), T(i,:).Seed);
     switch task
         case 'preference'
-            [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, experiment.modeltype, oost, regularization);
+            [mu_c_opt, value_opt, ~,~] = model.prediction(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, experiment.modeltype, oost, regularization);
         case 'E'
-            [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, x_best_norm, experiment.model, post);
+            [mu_c_opt, value_opt, ~,~] = model.prediction(experiment.theta, x_train_norm_data, c_train_data, x_best_norm, experiment.model, post);
     end
     values_kss(j,:) = value_opt;
     mu_c_kss(j,:) = mu_c_opt;
@@ -80,9 +80,9 @@ for j = 1:numel(indices_preference_random)
     [x_train_data, x_train_norm_data, c_train_data, theta_data] =  pool_data(char(T(i,:).Subject), T(i,:).Seed);
     switch task
         case 'preference'
-            [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+            [mu_c_opt, value_opt, ~,~] = model.prediction(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm; experiment.x0.*ones(d,maxiter)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
         case 'E'
-            [mu_c_opt, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
+            [mu_c_opt, value_opt, ~,~] = model.prediction(experiment.theta, x_train_norm_data, c_train_data, x_best_norm, experiment.kernelfun, 'modeltype', experiment.modeltype);
     end
     values_random(j,:) = value_opt;
     mu_c_random(j,:) = mu_c_opt;
@@ -149,7 +149,7 @@ title("$\mu_c$")
 legend({'KSS', 'Random'})
 
 
-mu_c_opt = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm_kss;x_best_norm_rand], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+mu_c_opt = model.prediction(experiment.theta, x_train_norm_data, c_train_data, [x_best_norm_kss;x_best_norm_rand], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
 
 
 fig=figure();
@@ -222,7 +222,7 @@ for di = 1:d
     
     x = x_best_norm(:,end)*ones(1,n);
     x(di,:) = varying_var;
-    [~, value_opt, ~,~] = prediction_bin(experiment.theta, x_train_norm_data, c_train_data, [x; experiment.x0.*ones(d,n)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
+    [~, value_opt, ~,~] = model.prediction(experiment.theta, x_train_norm_data, c_train_data, [x; experiment.x0.*ones(d,n)], experiment.kernelfun, experiment.kernelname, 'modeltype', experiment.modeltype);
     
     plot(varying_var(:), value_opt(:), 'linewidth', linewidth);
     

@@ -121,12 +121,12 @@ while i<maxiter
             try
                 if i== nopt+1 || mod(i, update_period) ==1
                     nd = numel(hyp.cov);
-                    theta_ub = 10*ones(nd,1);
-                    theta_lb = -10*ones(nd,1);
+                    hyp_ub = 10*ones(nd,1);
+                    hyp_lb = -10*ones(nd,1);
                     ncandidates= 5;
                     starting_points= NaN(nd,ncandidates);
                     for k = 1:nd
-                        starting_points(k,:)= theta_lb(k)+(theta_ub(k)-theta_lb(k))*rand(1,ncandidates);
+                        starting_points(k,:)= hyp_lb(k)+(hyp_ub(k)-hyp_lb(k))*rand(1,ncandidates);
                     end
                     
                     
@@ -170,7 +170,7 @@ for a = 1:length(w)
 end
 return
 
-% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain, ctrain, model), theta_lb, theta_ub,5, theta,options_theta);
+% theta = multistart_minConf(@(hyp)negloglike_bin(hyp, xtrain, ctrain, model), hyp_lb, hyp_ub,5, theta,options_theta);
 
 % theta(2) = 0;
 % theta(3) = sqrt(abs(norminv(0.25)));
@@ -200,7 +200,7 @@ plot(x,mu_c); hold on;
 scatter(xtrain, ctrain)
 subplot(2,1,2)
 errorshaded(x,mu_y,sqrt(sigma2_y))
-% [mu_c, mu_y, sigma2_y] = prediction_bin(theta, xtrain, ctrain, x, model, post);
+% [mu_c, mu_y, sigma2_y] = model.prediction(theta, xtrain, ctrain, x, post);
 % [fitresult, gof] = sigmoid_fit(xtrain, ctrain);
 % pred_fit = fitresult(x);
 % acuity = fitresult.k;
