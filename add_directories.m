@@ -20,7 +20,7 @@ if ispc
     latest_perceptual_model_table_file = [code_directory,'\latest_perceptual_model_table.mat'];
     Stimuli_folder =  [code_directory, '\Stimuli'];
     figures_folder = [experiment_path,'\Figures'];
-    experiment_directory = [code_directory, '\Experiment_p2p_preference'];
+    experiment_directory = [code_directory, '\Experiment'];
     paper_figures_folder = [pathname,'\PhD\Figures\Paper_figures\'];
 else
     experiment_path = [pathname, '/Retinal_Prosthetic_Optimization'];
@@ -37,7 +37,7 @@ else
     Stimuli_folder =  [code_directory, '/Stimuli'];
     figures_folder = [experiment_path,'/Figures'];
     paper_figures_folder = [pathname,'/PhD/Figures/Paper_figures/'];
-    experiment_directory = [code_directory, '/Experiment_p2p_preference'];
+    experiment_directory = [code_directory, '/Experiment'];
     
 end
 

@@ -1,0 +1,223 @@
+%% All subjects
+reload = 1; %whether you want to reload the subjects (1) data or use preprocessed ones (0); 
+pref  = load_preferences(reload,data_directory, data_table_file);
+VA  = load_VA_results(reload,data_directory, data_table_file);
+
+%% Subjects: remote experiment
+subjects_to_keep = {'AD', 'CF', 'IO', 'MB', 'MC', 'TN', 'TO', 'AA', 'PC', 'RB', 'SC', 'RC'};
+
+reload = 1; %whether you want to reload the subjects (1) data or use preprocessed ones (0); 
+pref_rem  = load_preferences(reload,data_directory, data_table_file,subjects_to_keep);
+VA_rem  = load_VA_results(reload,data_directory, data_table_file,subjects_to_keep);
+
+%% Subjects in the lab
+subjects_to_keep = {'FF', 'SG', 'BF', 'SF', 'SV', 'IE', 'FT', 'DP', 'MS', 'PY', 'OM', 'TB'};
+ 
+reload = 1; %whether you want to reload the subjects (1) data or use preprocessed ones (0); 
+pref_lab  = load_preferences(reload,data_directory, data_table_file,subjects_to_keep);
+VA_lab  = load_VA_results(reload,data_directory, data_table_file,subjects_to_keep);
+
+%%
+VA_scale_E= [min([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control]), max([VA.VA_E_optimized_preference_acq,VA.VA_E_optimized_preference_random,VA.VA_E_control])];
+VA_scale_Snellen=[min([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control]), max([VA.VA_Snellen_optimized_preference_acq,VA.VA_Snellen_optimized_preference_random,VA.VA_Snellen_control])];
+VA_scale = [min(VA_scale_E(1), VA_scale_Snellen(1)),max(VA_scale_E(2), VA_scale_Snellen(2))];
+VA_scale = [VA_scale;VA_scale];
+
+VA_scale_E = [VA_scale_E;VA_scale_E];
+VA_scale_Snellen = [VA_scale_Snellen;VA_scale_Snellen];
+pref_scale = [0,1;0,1];
+
+%%
+
+tail = 'both';
+
+graphics_style_paper;
+mr = 1;
+mc = 4;
+i = 1;
+legend_pos = [-0.18,1.15];
+
+fig=figure('units','centimeters','outerposition',1+[0 0 16 0.5*16]);
+fig.Color =  [1 1 1];
+tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+% keep = find((~isnan(VA.VA_E_naive)).*(~isnan(VA.VA_E_control)).*(~isnan(VA.VA_Snellen_naive)).*(~isnan(VA.VA_Snellen_control)));
+
+nexttile()
+i=4;
+Y{1} = VA_lab.VA_E_naive(keep);
+X{1} = VA_rem.VA_E_naive(keep);
+Y{2} = VA_lab.VA_Snellen_naive(keep);
+X{2} = VA_rem.VA_Snellen_naive(keep);
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(naive)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+
+
+
+
+
+plot_naive_vs_control()
+plot_optimization_preference()
+plot_optimization_VA()
+plot_figure_performance()
+plot_figure_misspecification_effect()
+plot_figure_misspecified_opt()
+plot_naive_vs_control_RMSE()
+
+
+mr = 1;
+mc = 4;
+i = 0;
+k=1;
+fig=figure('units','centimeters','outerposition',1+[0 0 16 0.5*16]);
+fig.Color =  [1 1 1];
+tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+keep = find((~isnan(VA.VA_E_naive)).*(~isnan(VA.VA_E_control)).*(~isnan(VA.VA_Snellen_naive)).*(~isnan(VA.VA_Snellen_control)));
+
+nexttile(4)
+tail = 'both';
+i=4;
+Y{1} = VA.VA_E_naive(keep);
+X{1} = VA.VA_E_control(keep);
+Y{2} = VA.VA_Snellen_naive(keep);
+X{2} = VA.VA_Snellen_control(keep);
+scatter_plot_combined(X,Y, tail,['logMAR' newline '(random $\phi$)'],['logMAR' newline '(naive)'],VA_scale, 'categories', {'E','Snellen'}, 'color', C);  %H1 : x – y come from a distribution with median greater than 0
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+
+nexttile(3);
+Y = {pref.control_vs_naive_training(keep)};
+
+xlabels = {'Random $\phi$ vs naive'};
+ylabels = {'Fraction preferred',''};
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,1,1], ...
+    'test', 'Bayes', 'Ncomp', 13, 'plot_N', true);
+i=3
+text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+
+
+
+ 
+%%
+i = 0;
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred, test';
+xlabels = { 'Random $\phi$','Non-adaptive pref.','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+ % Y = {pref.optimized_vs_naive_test, pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
+Y = {pref.acq_vs_control_test, pref.acq_vs_random_test, pref.acq_vs_opt_test};
+
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', ...
+    'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 13);
+i=i+1;
+text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+ 
+
+ 
+ 
+%%
+i = 0;
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred, training';
+xlabels= {'Random $\phi$', 'Non-adaptive pref.','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+% Y = {pref.optimized_vs_naive_training, pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
+Y = {pref.acq_vs_control_training, pref.acq_vs_random_training, pref.acq_vs_opt_training};
+
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval',...
+    'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 13);
+i=i+1;
+text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+
+figname  = ['optimization_preference','_training'];
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
+
+
+%% Combined
+i = 0;
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 0.5*16]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred, combined';
+xlabels= {'Random $\phi$', 'Non-adaptive pref.','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+Y = {mean([pref.acq_vs_control_training; pref.acq_vs_control_test],1), ...
+    mean([pref.acq_vs_random_training; pref.acq_vs_random_test],1), ...
+    mean([pref.acq_vs_opt_training; pref.acq_vs_opt_test],1)};
+
+scatter_bar(Y, xlabels, ylabels{1},'boxp', boxp,'stat', 'median', 'pval', 'ineq', 'pba', [1,0.5,1], 'test', 'Bayes', 'Ncomp', 26);
+i=i+1;
+text(-1.22,1.05,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize',letter_font) %with compact margins
+
+%%
+
+fig=figure('units','centimeters','outerposition',1+[0 0 0.5*16 fheight(1)]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred';
+xlabels= {'Random $\phi$', 'Non-adaptive pref.','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+layout = tiledlayout(1,3, 'TileSpacing', 'tight', 'padding','compact');
+
+h = nexttile();
+i=i+1;
+x = pref.acq_vs_control_training;
+y = pref.acq_vs_control_test;
+tail = 'both';
+scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
+text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+
+h = nexttile();
+i=i+1;
+x = pref.acq_vs_random_training;
+y = pref.acq_vs_random_test;
+tail = 'both';
+scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'title_str', 'Random');  %H1 : x – y come from a distribution with median different than 0
+text(-0.18,1.15,['$\bf{', letters(i), '}$'], 'Units','normalized','Fontsize', letter_font)
+
+nexttile()
+i=i+1;
+x =pref.acq_vs_opt_training;
+y= pref.acq_vs_opt_test;
+tail = 'both'; %'right';
+scatter_plot(x,y, tail,'Optimization set', '',pref_scale,'title_str', 'Ground truth'); % H1: x – y come from a distribution with greater than 0
+text(-0.18,1.15,['$\bf{', letters(i), '}$'],'Units','normalized','Fontsize', letter_font)
+
+
+%%
+
+
+mr = 1;
+mc = 3
+i=0;
+fig=figure('units','centimeters','outerposition',1+[0 0 fwidth(1) fheight(1)]);
+fig.Color =  [1 1 1];
+fig.Name = 'Fraction preferred, optimization set vs transfer set';
+xlabels= {'Random $\phi$', 'Non-adaptive pref.','Ground truth'};
+ylabels = {'Fraction preferred',''};
+
+layout = tiledlayout(mr, mc, 'TileSpacing', 'tight', 'padding','compact');
+h = nexttile(1);
+i=i+1;
+x = [pref.acq_vs_random_training,pref.acq_vs_opt_training, pref.acq_vs_control_training];
+y = [pref.acq_vs_random_test,pref.acq_vs_opt_test, pref.acq_vs_control_test];
+tail = 'both';
+scatter_plot(x,y, tail,'Optimization set', 'Transfer set',pref_scale, 'linreg', 1);  %H1 : x – y come from a distribution with median different than 0
+
+h = nexttile(1);
+i=i+1;
+VA.VA_E = [VA.VA_E_optimized_preference_acq,  VA.VA_E_optimal, VA.VA_E_optimized_preference_random, VA.VA_E_optimized_preference_acq_misspecification, VA.VA_E_optimal_misspecification, VA.VA_E_optimized_E_TS, VA.VA_E_control];
+VA_S = [VA.VA_Snellen_optimized_preference_acq,  VA.VA_Snellen_optimal, VA.VA_Snellen_optimized_preference_random, VA.VA_Snellen_optimized_preference_acq_misspecification, VA.VA_Snellen_optimal_misspecification, VA.VA_Snellen_optimized_E_TS, VA.VA_Snellen_control];
+x  = VA.VA_E;
+y = VA_S;
+tail = 'both'; %'right';
+scatter_plot(x,y, tail,'Tumbling E', 'Snellen',[], 'equal_axes', 0, 'linreg', 1); % H1: x – y come from a distribution with greater than 0
+

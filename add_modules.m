@@ -31,6 +31,7 @@ else
     addpath(genpath(experiment_path))
     
     addpath(genpath(code_directory))
-addpath(genpath('/home/tfauvel/Documents/GP_toolbox'))
-addpath(genpath('/home/tfauvel/Documents/BO_toolbox'))
+    addpath(genpath('/home/tfauvel/Documents/GP_toolbox'))
+    addpath(genpath('/home/tfauvel/Documents/BO_toolbox'))
+     addpath(genpath('/home/tfauvel/Documents/Code_Efficient_exploration_in_BO'))
 end
