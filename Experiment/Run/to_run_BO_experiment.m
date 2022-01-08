@@ -1,7 +1,7 @@
 
 clear all
 rng('default')
-cd('/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_Optimization_Code') 
+
 use_ptb3=0; %Wether to use PTB3 or not 
 p2p_version = 'latest';
 
