@@ -1,7 +1,11 @@
 function launch_exp(acquisition_fun, acquisition_fun_name, task, misspecification, use_ptb3, window, screen, text_size, visual_field_size, viewing_distance, Stimuli_folder, instruct, training, maxiter, subject, model_seed, seed, implant_name, p2p_version)
 
 if instruct && use_ptb3==1
+    instructions
+
+    global white dpcm window_size
     if strcmp(task, 'E')
+        add_directories;
         E_display_size = 2*viewing_distance*tan(0.5*visual_field_size*pi/180); % Size of the image on screen (in m)
         E_display_size = 0.3*100*E_display_size*dpcm;
         [width, height]=Screen('WindowSize',window) ; %1920         975
@@ -10,7 +14,7 @@ if instruct && use_ptb3==1
         Screen('TextSize', window, text_size);
         DrawFormattedText(window, E_instructions_v1,...
             'center', [], white);
-        I = imread([code_directory, '/Experiment_p2p_preference/Run/instructions.png']);
+        I = imread([experiment_directory, '/Run/instructions.png']);
         imageTexture = Screen('MakeTexture', window, I);
         image_size = floor(0.3*window_size(4));
         Position = [m,M,m+E_display_size(2), M+E_display_size(1)];

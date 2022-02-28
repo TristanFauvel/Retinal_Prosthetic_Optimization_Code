@@ -12,12 +12,8 @@
      end
  end
 visual_field_size = [21,29]; % size of the visual field, in dva.  (height, width)
-env = pyenv;
-if (strcmp(p2p_version, 'stable') && strcmp(env.Home, "/home/tfauvel/anaconda3/envs/pulse2percept_latest_env"))
-    error('You need to run this code in the environment where the stable version of pulse2percept')
-elseif (strcmp(p2p_version, 'latest') && strcmp(env.Home, "/home/tfauvel/anaconda3/envs/pulse2percept_stable_env"))
-    error('You need to run this code in the environment where the latest version of pulse2percept')
-end
+
+
 cd([code_directory,'/Experiment'])
 set(0,'units','pixels')
 screen_size = get(0,'screensize');
@@ -29,7 +25,7 @@ if use_ptb3
     AssertOpenGL;
     %Keyboard setup
     KbName('UnifyKeyNames');
-    
+    global window_size
     window_size = [0,0,screen_size(3), screen_size(4)]; %%%%%%%%%%%%%%%%%%%%%%%%%%%[1920, 0, 1920+2560,1440];
     
     screen = expscreen_class(window_size);
@@ -41,6 +37,7 @@ if use_ptb3
     background_luminance=screen.grey;
     screen.vbl = Screen('Flip', window);
     Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    global white 
     white = WhiteIndex(window);
     Screen('TextSize', window, 30);
         [width, height]=Screen('WindowSize', window,[]);
@@ -52,6 +49,7 @@ else
     window = [];
 end
 
+global dpcm
 dpcm = get(0,'ScreenPixelsPerInch')/2.54; % number of pixels per centimeter
 global viewing_distance
 viewing_distance = [height, width/2]./(2*tan(0.5*visual_field_size*pi/180));

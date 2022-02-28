@@ -7,8 +7,7 @@ def Compute_perceptual_model(rho = 200, axlambda= 400, x = 0, y = 0, z = 0, rot 
                     axon_pickle='axons.pickle', 
                     axons_range=(-180, 180), engine='serial', 
                     eye='RE', grid_type='rectangular', 
-                    ignore_pickle=ignore_pickle, loc_od_x=15.5, 
-                    loc_od_y=1.5, n_ax_segments=n_ax_segments, 
+                    ignore_pickle=ignore_pickle, n_ax_segments=n_ax_segments, 
                     n_axons=n_axons, n_jobs=1, rho=rho, 
                     scheduler='threading', thresh_percept=0, 
                     verbose=True, xrange=xrange, xystep=xystep, 
@@ -19,15 +18,17 @@ def Compute_perceptual_model(rho = 200, axlambda= 400, x = 0, y = 0, z = 0, rot 
     
     perceptual_model = np.zeros((percept.shape[0], percept.shape[1], 60))
     k=0
-    for name, electrode in implant.items():
+    for name, electrode in implant.electrodes.items():
         implant.stim={name: 30}
         percept = model.predict_percept(implant)
-        perceptual_model[:,:,k] = percept.data.squeeze()
+        perceptual_model[:,:,k] = percept.data.squeeze() 
         k=k+1
     
-    
-    from scipy.io import savemat
-    savemat('perceptual_model.mat', {'M' : perceptual_model})
+    return perceptual_model
+
+
+#from scipy.io import savemat
+#savemat('perceptual_model.mat', {'M' : perceptual_model})
     
 # rho = 200
 # axlambda = 400
@@ -47,8 +48,8 @@ def Compute_perceptual_model(rho = 200, axlambda= 400, x = 0, y = 0, z = 0, rot 
 # beta_inf=0.5
 # beta_sup=4.9
 # beta_inf=1.5
-#     # xrange = (-9, 8)
-# # yrange = (-6, 6)
+# xrange = (-9, 8)
+# yrange = (-6, 6)
 # from pulse2percept.viz import plot_implant_on_axon_map, plot_axon_map
 # import matplotlib.pyplot as plt
 # import matplotlib

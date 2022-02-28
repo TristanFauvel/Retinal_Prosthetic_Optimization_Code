@@ -2,10 +2,9 @@
 clear all
 rng('default')
 
-use_ptb3=0; %Wether to use PTB3 or not 
-p2p_version = 'latest';
-
-maxiter = 60; %Number of iterations in the BO loop.
+use_ptb3=1; %Wether to use PTB3 or not 
+p2p_version = 'stable';
+maxiter = 6; %60; %Number of iterations in the BO loop.
 subject = 'test'; 
 add_modules;
 beep off
@@ -35,7 +34,7 @@ for model_seed = model_seeds
     for seed = seeds       
         rng(seed)
         experiments_order  = randperm(nexp);
-        for k=1:nexp  
+        for k=4:nexp  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             if experiments_order(k) ==1
                 training = training_preference;
                 acquisition_fun = @MUC;
@@ -112,8 +111,8 @@ experiments_order  = randperm(nexp);
 test_task = 'E';
 measured_var = {'VA'}; %measured_var = {'VA', 'CS'};
 
+instructions;
 if instruct_E
-    
     E_display_size = 2*viewing_distance*tan(0.5*visual_field_size*pi/180); % Size of the image on screen (in m)
     E_display_size = 0.3*100*E_display_size*dpcm;
     

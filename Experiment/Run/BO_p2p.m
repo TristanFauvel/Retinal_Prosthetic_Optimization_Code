@@ -61,6 +61,12 @@ default_values = [200,400,0,0,0,175.8257,-2.5,0.1,0]; %Default parameter values
 experiment.p2p_version = p2p_version;
 experiment.default_values=  default_values;
 
+
+pymod = [];
+load_python;
+
+
+
 %Sample a perceptual model
 [rho,lambda, rot, center_x, center_y, magnitude, ~, ~,z, lb, ub, model_lb, model_ub] = sample_perceptual_model(to_update, default_values, rho_range,lambda_range,rot_range,center_x_range,center_y_range,beta_sup_range,beta_inf_range,z_range,magnitude_range);
 % Select beta values at one extreme
@@ -97,9 +103,6 @@ experiment.xystep = xystep;
 experiment.use_ptb3 = use_ptb3;
 experiment.implant_name = implant_name;
 
-pymod = [];
-
-load_python;
 %Compute the true perceptual model
 ignore_pickle=1; % Wether to use a precomputed axon map (0) or not (1)
 optimal_magnitude = 0;
@@ -218,7 +221,7 @@ end
 %% Initialize the experiment
 ctrain = NaN(1,maxiter);
 
-nopt = 5; % number of time steps before starting using the acquisition function %%%%%%%%%%%%%%%%%%%%%%%%%ù
+nopt = 2; % number of time steps before starting using the acquisition function %%%%%%%%%%%%%%%%%%%%%%%%%ù
 
 if strcmp(acquisition_fun_name, 'random')
     nopt = maxiter +1;
@@ -262,12 +265,14 @@ hyperparameters.hyp_ub = 10*ones(hyperparameters.ncov_hyp  + hyperparameters.nme
 ns = 0;
 if strcmp(task,'preference')
     identification = 'mu_g';
-    model = gp_preference_model(d, meanfun, base_kernelfun, regularization, hyperparameters, lb,ub, 'preference', link, modeltype, kernelname, condition);
-    optim = preferential_BO([], task, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, ns);
+    model = gp_preference_model(d, meanfun, base_kernelfun, regularization, ...
+        hyperparameters, lb,ub, 'preference', link, modeltype, kernelname, condition, 0);
+    optim = preferential_BO([], task, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, d,  ns);
 else
     identification = 'mu_c';
-    model = gp_classification_model(d, meanfun, base_kernelfun, regularization, hyperparameters, lb,ub, 'classification', link, modeltype, kernelname, condition);
-    optim = binary_BO([], task, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, ns);
+    model = gp_classification_model(d, meanfun, base_kernelfun, regularization, ...
+        hyperparameters, lb,ub, 'classification', link, modeltype, kernelname, ns);
+    optim = binary_BO([], task, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, d, ns);
 end
 
 %% Compute the kernel approximation if needed
@@ -346,7 +351,7 @@ while ~ stopping_criterion
                     [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
                 end
             end
-                 new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post,approximation);
+                 new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post,approximation, optim);
                  if strcmp(task, 'preference')
                      x_duel1 = new_x(1:d);
                      x_duel2 = new_x((d+1):end);
@@ -489,7 +494,11 @@ NAxon_Segments = n_ax_segments;
 NAxons= n_axons;
 
 t = table(Index, Model_Seed, Seed, Task, Acquisition, Subject,Misspecification, Implant, NAxons, NAxon_Segments);
-T = load(data_table_file);
-T = [T.T;t];
+if exist(data_table_file)
+    T = load(data_table_file);
+    T = [T.T;t];
+else
+    T = t;
+end
 save(data_table_file, 'T')
 

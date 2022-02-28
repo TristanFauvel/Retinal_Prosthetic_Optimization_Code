@@ -1,4 +1,4 @@
-function [new_x, M] = rand_model(max_x, min_x, magnitude_range, experiment, ib, ignore_pickle)
+function [new_x, M] = rand_model(ub, lb, magnitude_range, experiment, ib, ignore_pickle)
 add_directories;
 
 if strcmp(experiment.p2p_version, 'stable')
@@ -70,13 +70,13 @@ end
 
 t= [T.rho, T.axlambda, T.rot, T.center_x, T.center_y, magnitude*ones(size(T,1),1), T.beta_sup, T.beta_inf,T.z];
 
-id1 = any(t > max_x(:)',2);
-id2 = any(t < min_x(:)',2);
+id1 = any(t > ub(:)',2);
+id2 = any(t < lb(:)',2);
 T= T(~(id1 | id2),:);
 
 nmodels= 2000;
 if isempty(T) || size(T,1)< nmodels
-    new_x = random_acquisition_binary([],[],[],[],[],[], max_x', min_x', 0, 1);
+     new_x = rand_interval(lb,ub); 
     warning('The number of precomputed models is to small, compute a new model.')
 else
     i = randsample(nmodels,1);

@@ -30,7 +30,7 @@ def Compute_perceptual_model(rho = 200, axlambda= 400, x = 0, y = 0, z = 0, rot 
     
     perceptual_model = np.zeros((percept.shape[0], percept.shape[1], nelectrodes))
     k=0
-    for name, electrode in implant.items():
+    for name, electrode in implant.electrodes.items():
         implant.stim={name: 30}
         percept = model.predict_percept(implant)
         perceptual_model[:,:,k] = percept.data.squeeze()

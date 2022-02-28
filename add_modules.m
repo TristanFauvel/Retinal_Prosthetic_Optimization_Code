@@ -5,7 +5,13 @@ global pathname
 addpath(genpath(pathname))
 addpath(genpath([fileparts(pathname), '/GP_toolbox']))
 addpath(genpath([fileparts(pathname), '/BO_toolbox']))
-addpath(genpath([fileparts(pathname), '/Code_Efficient_exploration_in_BO']))
+
+
+addpath(genpath([fileparts(pathname), '/GP_toolbox-dev']))
+addpath(genpath([fileparts(pathname), '/BO_toolbox-dev']))
+
+
+
 
 add_directories
 
@@ -16,6 +22,6 @@ if ~exist(latest_perceptual_models_directory,'dir')
     mkdir(latest_perceptual_models_directory)
 end
 
-addpath(genpath(experiment_path))
+addpath(genpath(experiment_directory))
 addpath(genpath(code_directory))
  
