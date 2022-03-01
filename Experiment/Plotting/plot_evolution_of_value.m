@@ -29,7 +29,7 @@ regularization = 'nugget';
 
 % for j = 1:numel(indices_preference_kss)
 %     i = indices_preference_kss(j);
-%     filename = [experiment_path, '/Data/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
+%     filename = [experiment_directory, '/Data/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
 %     load(filename,'experiment')
 %     if unknown_hyp == 1
 %         x_best_norm = (experiment.x_best_unknown_hyp(experiment.ib,:) - experiment.lb')./(experiment.ub'- experiment.lb');
@@ -42,7 +42,7 @@ regularization = 'nugget';
 % end
 for j = 1:numel(indices_preference_kss)
     i = indices_preference_kss(j);
-    filename = [experiment_path, '/Data/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
+    filename = [experiment_directory, '/Data/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
     load(filename,'experiment')
     if unknown_hyp == 1
         x_best_norm = (experiment.x_best_unknown_hyp(experiment.ib,:) - experiment.lb')./(experiment.ub'- experiment.lb');
@@ -60,7 +60,7 @@ end
 
 for j = 1:numel(indices_preference_random)
     i = indices_preference_random(j);
-    filename = [experiment_path, '/Data/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
+    filename = [experiment_directory, '/Data/Data_Experiment_p2p_',char(T(i,:).Task),'/', char(T(i,:).Subject), '/', char(T(i,:).Subject), '_', char(T(i,:).Acquisition), '_experiment_',num2str(T(i,:).Index)];
     load(filename,'experiment')
     if unknown_hyp == 1
         x_best_norm = (experiment.x_best_unknown_hyp(experiment.ib,:) - experiment.lb')./(experiment.ub'- experiment.lb');

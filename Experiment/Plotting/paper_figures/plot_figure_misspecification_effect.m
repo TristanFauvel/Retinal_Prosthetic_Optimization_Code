@@ -12,8 +12,8 @@ task = char(T(index,:).Task);
 subject = char(T(index,:).Subject);
 
 filename = [data_directory, '/Data_Experiment_p2p_',char(T(index,:).Task),'/', char(T(index,:).Subject), '/', char(T(index,:).Subject), '_', char(T(index,:).Acquisition), '_experiment_',num2str(T(index,:).Index)];
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 reload = 0;
 VA= load_VA_results(reload, data_directory, data_table_file);
 pref  = load_preferences(reload,data_directory, data_table_file);

@@ -1,2 +1,5 @@
 *.asv
-*.mat
+Data/
+Raw_Data/
+Perceptual_Models_latest_p2p/
+Perceptual_Models_stable_p2p/

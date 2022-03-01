@@ -20,8 +20,8 @@ reload = 0;
 pref  = load_preferences(reload,data_directory, data_table_file);
 VA  = load_VA_results(reload,data_directory, data_table_file);
 
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 
 
 T = load(data_table_file).T;

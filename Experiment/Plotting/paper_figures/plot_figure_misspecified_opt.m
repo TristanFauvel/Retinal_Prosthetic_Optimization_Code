@@ -41,8 +41,8 @@ S = load_stimuli_letters(experiment);
 [popt, pmax] = vision_model(M,Wopt,S);
 [pmiss, pmax] = vision_model(M,Wmiss,S);
 
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 reload = 0;
 VA = load_VA_results(reload,data_directory, data_table_file);
 pref = load_preferences(reload,data_directory, data_table_file);

@@ -6,7 +6,7 @@ graphics_style_paper;
 add_directories
 graphics_style_paper;
 folder = paper_figures_folder;
-data_directory = [experiment_path,'/Data'];
+data_directory = [experiment_directory,'/Data'];
 reload = 0;
 VA= load_VA_results(reload, data_directory, data_table_file);
 pref  = load_preferences(reload,data_directory, data_table_file);

@@ -141,11 +141,11 @@ d=numel(to_update);
 % kernelname = 'ARD';% 'ARD'; %'ARD';'Matern52'
 
 if strcmp(task, 'preference') && misspecification
-    theta_filename = [data_directory, '/Dataset_preference_misspecified_seed_6_theta.mat'];
+    theta_filename = [experiment_directory, '/Dataset_preference_misspecified_seed_6_theta.mat'];
 elseif strcmp(task, 'preference') && ~misspecification
-    theta_filename = [data_directory, '/Dataset_preference_seed_6_theta.mat'];
+    theta_filename = [experiment_directory, '/Dataset_preference_seed_6_theta.mat'];
 elseif strcmp(task, 'E')
-    theta_filename = [data_directory, '/Dataset_E_seed_6_theta.mat'];
+    theta_filename = [experiment_directory, '/Dataset_E_seed_6_theta.mat'];
 end
 load(theta_filename,'ktheta')
 
@@ -263,16 +263,17 @@ hyperparameters.hyp_lb = -10*ones(hyperparameters.ncov_hyp  + hyperparameters.nm
 hyperparameters.hyp_ub = 10*ones(hyperparameters.ncov_hyp  + hyperparameters.nmean_hyp,1);
 
 ns = 0;
+task_type = 'max';
 if strcmp(task,'preference')
     identification = 'mu_g';
     model = gp_preference_model(d, meanfun, base_kernelfun, regularization, ...
         hyperparameters, lb,ub, 'preference', link, modeltype, kernelname, condition, 0);
-    optim = preferential_BO([], task, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, d,  ns);
+    optim = preferential_BO([], task_type, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, d,  ns);
 else
     identification = 'mu_c';
     model = gp_classification_model(d, meanfun, base_kernelfun, regularization, ...
         hyperparameters, lb,ub, 'classification', link, modeltype, kernelname, ns);
-    optim = binary_BO([], task, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, d, ns);
+    optim = binary_BO([], task_type, identification, maxiter, nopt, nopt, update_period, 'all', acquisition_fun, d, ns);
 end
 
 %% Compute the kernel approximation if needed
@@ -284,11 +285,8 @@ end
 approximation.decoupled_bases = 1;
 approximation.nfeatures = 6561;
 
-if  strcmp(task, 'preference')
-    [approximation.phi_pref, approximation.dphi_pref_dx, approximation.phi, approximation.dphi_dx]= sample_features_preference_GP(theta, model, approximation);
-else
-    [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
-end
+model = approximate_kernel(model, theta, approximation);
+
 
 
 while ~ stopping_criterion
@@ -344,14 +342,12 @@ while ~ stopping_criterion
             %Optimization of hyperparameters
             if mod(i, update_period) == 0
                 theta = model.model_selection(xtrain_norm(:,1:i), ctrain(1:i), theta, optim. hyps_update);
-                post =  model.prediction(theta, xtrain_norm(:,1:i), ctrain(1:i), [], post);
-                if  strcmp(task, 'preference')
-                    [approximation.phi_pref, approximation.dphi_pref_dx, approximation.phi, approximation.dphi_dx]= sample_features_preference_GP(theta, d, model, approximation);
-                else
-                    [approximation.phi, approximation.dphi_dx]= sample_features_GP(theta, model, approximation);
-                end
+                
+                model = approximate_kernel(model, theta, approximation);
+
+       
             end
-                 new_x = acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post,approximation, optim);
+                 new_x = optim.acquisition_fun(theta, xtrain_norm(:,1:i), ctrain(1:i), model, post,approximation, optim);
                  if strcmp(task, 'preference')
                      x_duel1 = new_x(1:d);
                      x_duel2 = new_x((d+1):end);

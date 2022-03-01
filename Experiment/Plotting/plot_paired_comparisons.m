@@ -4,8 +4,8 @@ add_directories
 
 graphics_style_paper;
 
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 letter_size = 0.01;
 reload = 0;
 [VA_E_optimized_preference_acq, VA_Snellen_optimized_preference_acq, VA_E_optimal,VA_Snellen_optimal, VA_E_optimized_preference_random,VA_Snellen_optimized_preference_random, VA_E_optimized_preference_acq_misspecification, VA_Snellen_optimized_preference_acq_misspecification, VA_E_optimal_misspecification,VA_Snellen_optimal_misspecification, VA_E_optimized_E_TS,VA_Snellen_optimized_E_TS, VA_E_control,VA_Snellen_control] = load_VA_results(reload);

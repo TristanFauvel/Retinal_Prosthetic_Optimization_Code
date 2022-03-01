@@ -4,8 +4,14 @@ add_directories;
 display_size = experiment.display_size;
 
 %%
+if experiment.use_ptb3
  window = screen.window;
 [width, height]=Screen('WindowSize', window,[]);
+else
+    width = screen.width;
+    height = screen.height;
+end
+
 dpcm = get(0,'ScreenPixelsPerInch')/2.54; % number of pixels per centimeter
 viewing_distance = [height, width/2]./(2*tan(0.5*experiment.visual_field_size*pi/180));
 viewing_distance = min(viewing_distance/dpcm)/100; % Viewing distance, in cm;

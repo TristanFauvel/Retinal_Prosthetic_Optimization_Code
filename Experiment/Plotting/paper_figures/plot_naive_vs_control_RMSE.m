@@ -6,8 +6,8 @@ graphics_style_paper;
 add_directories
 graphics_style_paper;
 folder = paper_figures_folder;
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 reload = 0;
 RMSE= load_RMSE_results(reload, data_directory, data_table_file);
 pref  = load_preferences(reload,data_directory, data_table_file);

@@ -18,6 +18,7 @@ cd([code_directory,'/Experiment'])
 set(0,'units','pixels')
 screen_size = get(0,'screensize');
 %screen_size = [1, 1, 1920, 1080];
+global window
 if use_ptb3
     KbName('UnifyKeyNames');
 
@@ -31,7 +32,6 @@ if use_ptb3
     screen = expscreen_class(window_size);
     
     commandwindow;
-    global window
     window=screen.window;
     color=screen.white*[0 1 0]'; %'parameters_file.mat'
     background_luminance=screen.grey;
@@ -43,10 +43,12 @@ if use_ptb3
         [width, height]=Screen('WindowSize', window,[]);
 else
     instruct_preference = 0;
-    width = screen_size(3); % Screen width (px)
+    width  =screen_size(3); % Screen width (px)
     height = screen_size(4); % Screen height (px)
-    screen = [];
+    screen.width = width; 
+    screen.height = height;
     window = [];
+    screen.window = window;
 end
 
 global dpcm

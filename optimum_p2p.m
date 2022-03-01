@@ -3,8 +3,8 @@ graphics_style_paper;
 add_directories
 graphics_style_paper;
 folder = paper_figures_folder;
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 
 T = load(data_table_file).T;
 % s_index = find(T.Subject == 'PC', :)

@@ -4,8 +4,8 @@ function plot_optimization_VA(varargin)
 add_modules;
 
 id = 5;
-data_directory = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+data_directory = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 reload = 0;
 VA = load_VA_results(reload, data_directory, data_table_file);
 %[Pref_vs_E_training, Pref_vs_E_test, pref.acq_vs_random_training, pref.acq_vs_random_test, pref.acq_vs_opt_training, pref.acq_vs_opt_test, optimized_misspecified_vs_optimized_training, optimized_misspecified_vs_optimized_test,optimized_miss_vs_opt_miss_test, optimized_miss_vs_opt_miss_training, pref.acq_vs_control_test, pref.acq_vs_control_training]  = load_preferences(reload);

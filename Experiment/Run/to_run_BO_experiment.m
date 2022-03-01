@@ -2,14 +2,14 @@
 clear all
 rng('default')
 
-use_ptb3=1; %Wether to use PTB3 or not 
-p2p_version = 'stable';
-maxiter = 6; %60; %Number of iterations in the BO loop.
-subject = 'test'; 
+use_ptb3=1; %Wether to use PTB3 or not (1/0)
+p2p_version = 'stable'; % Either 'stable' or 'latest' (careful : the latest version may not be compatible) 
+maxiter = 60; %Number of iterations in the BO loop.
+subject = 'test'; %Subject's name
+
 add_modules;
 beep off
-load('subject_seeds_table.mat', 'subject_table')
-model_seeds = subject_table(ismember(subject_table.Name,subject),:).Seeds; 
+
 model_seeds = 5;
 seeds = 5;
 %% 
@@ -21,10 +21,12 @@ implant_name = 'Argus II'; %'PRIMA'
 
 screen_setup;
 
+% Whether or not to display instructions
 instruct_preference = 1;
 instruct_E = 1;
 instruct_Snellen = 1;
 
+% Whether or not to include a small training session before experiments
 training_preference = 1;
 training_E = 1;
 training_Snellen = 1;
@@ -34,7 +36,7 @@ for model_seed = model_seeds
     for seed = seeds       
         rng(seed)
         experiments_order  = randperm(nexp);
-        for k=4:nexp  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        for k=1:nexp  
             if experiments_order(k) ==1
                 training = training_preference;
                 acquisition_fun = @MUC;
@@ -78,6 +80,7 @@ for model_seed = model_seeds
     end
 end
 
+
 T = load(data_table_file);
 T= T.T;
 nexp = numel(seeds)*numel(model_seeds)*nexp;
@@ -96,20 +99,23 @@ filename1 = filenames{T.Task == 'preference' & T.Acquisition ~= 'random' & T.Mis
 filename2 = filenames{T.Task == 'preference' & T.Acquisition == 'random'};
 filename3 = filenames{T.Task == 'E' & T.Acquisition ~= 'random'};
 filename4 = filenames{T.Task == 'preference' & T.Acquisition ~= 'random' & T.Misspecification ==1};
-% 
+
+%% Measure preference between encoders over several repetitions
 version = 2; %short version
 measure_pref_btw_optimized_encoders(filename1,filename2, 'random',screen, version)
 measure_pref_btw_optimized_encoders(filename1,[], 'optimal',screen, version)
 measure_pref_btw_optimized_encoders(filename1,[], 'control',screen, version)
-measure_pref_btw_optimized_encoders(filename1,[], 'naive', version)
+measure_pref_btw_optimized_encoders(filename1,[], 'naive', screen, version)
 measure_pref_btw_optimized_encoders(filename1,filename3, 'E',screen, version)
 measure_pref_btw_optimized_encoders(filename4,filename1, 'misspecified',screen, version)
 
+
+%% Measure visual acuity with the different encoders in the E task
 nexp = numel(filenames);
 rng(1)
 experiments_order  = randperm(nexp);
 test_task = 'E';
-measured_var = {'VA'}; %measured_var = {'VA', 'CS'};
+measured_var = {'VA'}; 
 
 instructions;
 if instruct_E
@@ -117,13 +123,13 @@ if instruct_E
     E_display_size = 0.3*100*E_display_size*dpcm;
     
     if use_ptb3
-    [width, height]=Screen('WindowSize',window) ; %1920         975
+    [width, height]=Screen('WindowSize',window) ; 
     m = floor((width-E_display_size(2))/2);
     M = floor((height-E_display_size(1))/2);
     Screen('TextSize', window, text_size);
     DrawFormattedText(window, E_instructions_v2,...
         'center', [], white);
-    I = imread([code_directory, '/Experiment_p2p_preference/Run/instructions.png']);
+    I = imread([experiment_directory, '/Run/instructions.png']);
     imageTexture = Screen('MakeTexture', window, I);
     image_size = floor(0.3*window_size(4));
     Position = [m,M,m+E_display_size(2), M+E_display_size(1)];
@@ -144,6 +150,9 @@ for k= 1:nexp
     filename = filenames{experiments_order(k)};
     measure_vision_QUEST(filename, test_task, measured_var, 'short_version', 0)
 end
+
+
+%% Measure visual acuity with the different encoders in the Snellen task
 
 if instruct_Snellen
     if use_ptb3
@@ -170,12 +179,12 @@ Screen('TextSize', window, text_size);
 DrawFormattedText(window, ['Thank you !'],...
     'center', 'center', white);
 screen.vbl = Screen('Flip', window);
-% KbWait([], 10)
-% RestrictKeysForKbCheck(KbName('Return'));
-% KbWait([], 10)
-% screen.vbl = Screen('Flip', window);
+KbWait([], 10)
+RestrictKeysForKbCheck(KbName('Return'));
+KbWait([], 10)
+screen.vbl = Screen('Flip', window);
 
-% if use_ptb3 ==1
-%     Screen('CloseAll'); %closes the window
-% end
+if use_ptb3 ==1
+    Screen('CloseAll'); %closes the window
+end
 % !shutdown -h now

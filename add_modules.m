@@ -1,4 +1,4 @@
-% global experiment_path code_directory data_directory perceptual_models_directory
+% global experiment_directory code_directory data_directory perceptual_models_directory
 currentFile = mfilename( 'fullpath' );
 global pathname
 [pathname,~,~] = fileparts( currentFile );

@@ -1,7 +1,7 @@
 clear all
 add_directories
-Data_folder = [experiment_path,'/Data'];
-figures_folder = [experiment_path,'/Figures'];
+Data_folder = [experiment_directory,'/Data'];
+figures_folder = [experiment_directory,'/Figures'];
 nalt = 4;
 b = norminv(1/nalt,0,1);
 F = @(x,a)([1-normcdf(a.*x+b),normcdf(a.*x+b)])';

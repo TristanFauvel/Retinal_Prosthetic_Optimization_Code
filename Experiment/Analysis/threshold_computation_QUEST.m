@@ -41,7 +41,7 @@ if recompute_QP ==1
     priors = {ya, yb};
     % initialise (with default, uniform, prior)
     try
-        load([experiment_path, '/QPlikelihoods_', measure.task, '_', test], 'QP');
+        load([experiment_directory, '/QPlikelihoods_', measure.task, '_', test], 'QP');
         
     catch
         stop_rule = 'entropy';
@@ -51,7 +51,7 @@ if recompute_QP ==1
         % initialise (with default, uniform, prior)
         QP.initialise(priors);
         
-        save([experiment_path, '/QPlikelihoods_', measure.task, '_', test], 'QP');
+        save([experiment_directory, '/QPlikelihoods_', measure.task, '_', test], 'QP');
         %QP.saveLikelihoods([experiment_directory, '/QPlikelihoods_', task, '_', test, '_QP'])
     end
     
@@ -82,13 +82,13 @@ b = p(2);
 %             stop_rule = 'entropy';
 %                 stop_criterion = 2.5;
 %             try
-%                 load([experiment_path, '/QPlikelihoods_', measure.task, '_', test], 'QP');
+%                 load([experiment_directory, '/QPlikelihoods_', measure.task, '_', test], 'QP');
 %             catch
 %                 QP = QuestPlus(F, measure.QP.stimDomain, paramDomain, measure.QP.respDomain, stop_rule, stop_criterion, measure.QP.minNTrials, measure.QP.maxNTrials);
 %                 % initialise (with default, uniform, prior)
 %                 QP.initialise(priors);
 %
-%                 save([experiment_path, '/QPlikelihoods_', measure.task, '_', test], 'QP');
+%                 save([experiment_directory, '/QPlikelihoods_', measure.task, '_', test], 'QP');
 %             endc(b)
 %
 %             for i = 1:size(x,2)

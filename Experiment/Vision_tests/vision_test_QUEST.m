@@ -73,13 +73,13 @@ stop_criterion = 2.5;
 minNTrials = 10;
 
 try
-    load([experiment_path, '/QPlikelihoods_', task, '_', test], 'QP');
+    load([experiment_directory, '/QPlikelihoods_', task, '_', test], 'QP');
 catch
     QP = QuestPlus(F, stimDomain, paramDomain, respDomain, stop_rule, stop_criterion, minNTrials, maxNTrials);
     % initialise (with default, uniform, prior)
     QP.initialise(priors);
     %     save([experiment_directory, '/QPlikelihoods_', task, '_', test], 'QP');
-    save([experiment_path, '/QPlikelihoods_', task, '_', test], 'QP');
+    save([experiment_directory, '/QPlikelihoods_', task, '_', test], 'QP');
 end
 
 %% Initialize the experiment

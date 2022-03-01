@@ -69,8 +69,8 @@ end
 % clear all
 % add_modules;
 % task = 'preference';
-% data_directory = [experiment_path,'/Data'];
-% figures_folder = [experiment_path,'/Figures'];
+% data_directory = [experiment_directory,'/Data'];
+% figures_folder = [experiment_directory,'/Figures'];
 % alpha =0.01;
 % T = load(data_table_file).T;
 % T = T(T.Subject ~= 'CL' & T.Subject ~= 'PC' & T.Subject ~= 'TFs',:);
