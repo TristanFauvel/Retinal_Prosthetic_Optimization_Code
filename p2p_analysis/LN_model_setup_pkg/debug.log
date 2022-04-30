@@ -1,0 +1,301 @@
+2019-01-24 22:27:31,765 [pulse2percept] [INFO] Welcome to pulse2percept
+2019-01-24 22:27:31,781 [pulse2percept.retina] [INFO] Generating new file '.\retina_RE_s100_a501_r801_6000x4000.npz'.
+2019-01-24 22:33:20,557 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-24 22:33:21,096 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 22:34:18,767 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 22:41:32,082 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:03:44,389 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-24 23:03:44,421 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-24 23:03:44,514 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:03:57,773 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:05:41,352 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:06:13,464 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-24 23:06:13,496 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-24 23:06:13,605 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:06:27,075 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:08:19,368 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:09:29,398 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:09:42,687 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:11:52,586 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:12:19,514 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:12:33,105 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:14:41,452 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:15:13,701 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:15:27,176 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:17:50,155 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:18:34,484 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:18:48,223 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:21:08,238 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:21:36,740 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:21:52,176 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:24:13,358 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:24:44,981 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:25:01,665 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:27:23,214 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:28:09,909 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:28:25,111 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:30:46,598 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:31:17,044 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:31:32,044 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:33:53,851 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:34:22,980 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:34:38,518 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:37:00,253 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:37:43,736 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:38:00,792 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:40:22,266 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:40:50,123 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:41:05,937 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:43:26,900 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:43:55,425 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:44:08,674 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:46:23,918 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:46:50,951 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:47:04,772 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:49:21,680 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:49:52,872 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:50:06,544 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:52:22,432 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:52:50,701 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:53:04,149 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:55:20,169 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:55:47,990 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:56:01,219 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-24 23:58:17,304 [pulse2percept.api] [INFO] Done.
+2019-01-24 23:58:44,584 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-24 23:58:58,041 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:01:12,056 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:01:39,906 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:01:53,226 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:04:08,841 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:04:37,023 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:04:50,391 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:07:06,610 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:07:35,083 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:07:48,377 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:10:03,012 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:10:33,054 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:10:46,474 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:13:02,543 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:13:32,406 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:13:46,023 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:16:02,918 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:16:33,893 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:16:47,313 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:19:01,761 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:19:33,057 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:19:46,497 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:22:02,109 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:22:33,855 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:22:47,275 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:25:02,886 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:25:43,389 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:25:56,750 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:28:16,595 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:28:50,906 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:29:04,339 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:31:18,872 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:31:49,717 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:32:03,305 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:34:20,209 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:34:54,342 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:35:07,749 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:37:23,373 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:38:00,661 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:38:14,170 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:40:28,296 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:41:13,626 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:41:27,174 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:43:44,360 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:44:45,186 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:44:58,529 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:47:14,502 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:48:39,000 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:48:52,405 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:51:08,061 [pulse2percept.api] [INFO] Done.
+2019-01-25 00:55:50,038 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 00:56:03,516 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 00:58:15,342 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:01:19,593 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:01:32,890 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:03:49,045 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:04:20,560 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:04:33,919 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:06:49,225 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:07:19,088 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:07:32,372 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:09:46,920 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:10:17,617 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:10:31,140 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:12:43,604 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:13:13,513 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:13:27,139 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:15:43,382 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:16:13,547 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:16:26,791 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:18:41,816 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:19:10,648 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:19:23,838 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:21:37,716 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:22:06,329 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:22:19,686 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:24:36,774 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:25:07,792 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:25:21,093 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:27:36,098 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:28:04,225 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:28:17,504 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:30:30,278 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:30:59,421 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:31:12,766 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:33:28,700 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:33:57,221 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:34:10,778 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:36:27,441 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:36:57,097 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:37:10,437 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:39:25,515 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:39:54,411 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:40:08,111 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:42:21,578 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:42:50,647 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:43:04,081 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:45:19,732 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:45:49,563 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:46:03,184 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:48:14,751 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:48:42,792 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:48:56,031 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:51:10,463 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:51:42,673 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:51:56,054 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:54:11,739 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:54:40,640 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:54:54,049 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 01:57:10,857 [pulse2percept.api] [INFO] Done.
+2019-01-25 01:57:46,457 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 01:57:59,984 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:00:15,152 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:00:46,640 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:01:00,137 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:03:13,471 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:03:42,160 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:03:55,564 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:06:11,819 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:06:41,875 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:06:55,835 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:09:11,646 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:09:40,788 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:09:54,559 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:12:09,249 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:12:38,676 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:12:52,150 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:15:08,569 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:15:37,321 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:15:50,586 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:18:05,787 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:18:36,536 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:18:49,818 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:21:03,500 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:21:39,214 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:21:52,597 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:24:09,906 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:24:43,610 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:24:56,822 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:27:12,169 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:27:46,031 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:27:59,336 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:30:14,327 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:30:45,634 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:30:58,991 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:33:11,946 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:33:44,541 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:33:57,871 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:36:14,012 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:36:43,613 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:36:57,141 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:39:11,404 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:39:41,495 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:39:54,732 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:42:09,765 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:42:40,540 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:42:53,932 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:45:09,889 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:45:39,622 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:45:52,980 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:48:08,960 [pulse2percept.api] [INFO] Done.
+2019-01-25 02:49:05,302 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 02:49:18,860 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 02:51:32,504 [pulse2percept.api] [INFO] Done.
+2019-01-25 10:39:04,132 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-25 10:39:04,272 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-25 10:39:38,874 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-25 10:39:38,906 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-25 10:40:01,791 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-25 10:40:01,822 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-25 10:51:41,100 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 10:51:54,506 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 10:52:57,091 [pulse2percept.api] [INFO] Done.
+2019-01-25 10:53:14,956 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-25 10:53:14,987 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-25 10:53:15,034 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 10:53:28,430 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 10:54:33,543 [pulse2percept.api] [INFO] Done.
+2019-01-25 10:57:27,179 [pulse2percept.retina] [INFO] Loading file ".\retina_RE_s100_a501_r801_6000x4000.npz".
+2019-01-25 10:57:27,508 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2019-01-25 10:57:27,555 [pulse2percept.api] [INFO] Starting pulse2percept...
+2019-01-25 10:57:41,181 [pulse2percept.api] [INFO] tol=10.0%, 2432/2501 px selected
+2019-01-25 10:58:48,149 [pulse2percept.api] [INFO] Done.
+2019-01-25 16:09:56,511 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:09:56,527 [matplotlib.font_manager] [DEBUG] findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('C:\\Users\\Tristan\\Anaconda3\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans.ttf') with score of 0.050000.
+2019-01-25 16:09:57,652 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:11:01,911 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:11:01,958 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:11:44,887 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:12:47,016 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:23,029 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:35,865 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:35,896 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:40,731 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:41,465 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:42,293 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:43,012 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:49,769 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:49,800 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:13:58,687 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:16:12,477 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:16:14,695 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:16:15,399 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:16:16,055 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:21:11,199 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:21:11,246 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:23:50,883 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:26:59,420 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:26:59,466 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:27:51,360 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:27:51,407 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:29:08,935 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:29:09,056 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:30:23,323 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:30:23,354 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:32:47,420 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:32:47,451 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:34:32,675 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:34:32,706 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:35:12,259 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 16:35:12,306 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:32:32,509 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:32:33,540 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:33:01,292 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:33:01,339 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:33:03,586 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:37:32,177 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:37:32,206 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:37:33,799 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:37:51,265 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:37:51,374 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 17:38:10,121 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 21:48:15,294 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 21:48:16,379 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 21:50:49,268 [matplotlib.axes._base] [DEBUG] update_title_pos
+2019-01-25 21:50:49,299 [matplotlib.axes._base] [DEBUG] update_title_pos

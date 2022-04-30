@@ -1,4 +1,4 @@
-function matrix_visualization(A, varargin)
+function h = matrix_visualization(A, varargin)
 
 
 if nargin == 1
@@ -10,9 +10,17 @@ else
     experiment = varargin{1};
 end
 
-h = figure();
+mr = experiment.implant_size(1);
+mc = experiment.implant_size(2);
+i = 0;
+k=1;
+
+h=figure('units','centimeters','outerposition',1+[0 0 16 0.5*16]);
+
+
+tiledlayout(mr,mc, 'TileSpacing', 'tight', 'padding','compact');
+
 h.Color =  [1 1 1];
-h.Name = 'Projective fields';
 bottom=min(min(A));
 top=max(max(A));
 if bottom<0 && 0<top
@@ -26,11 +34,21 @@ if size(A,2) ~= experiment.n_electrodes
     A=A';
 end
 
-for i=1:experiment.n_electrodes
-    subplot(experiment.implant_size(1),experiment.implant_size(2),i)
-    imagesc(reshape(A(:,i), experiment.ny, experiment.nx),  Clim)
-    %imagesc(reshape(A(:,i)/max(A(:,i)), 41, 61))
-    set(gca,'YDir','normal')
-    colormap('gray')
+mapping = [6,5,4,3,2,1];
+k = 0;
+for i = 1:experiment.implant_size(1)
+    for j=1:experiment.implant_size(2)
+        k = k+1;
+        ii= mapping(i);
+        p= j + (ii-1)*experiment.implant_size(2);
+        %subplot(experiment.implant_size(1),experiment.implant_size(2),p)
+        nexttile(p);
+        imagesc(reshape(A(:,k), experiment.ny, experiment.nx),  Clim)
+        set(gca,'YDir','normal')
+        colormap('gray')
+        set(gca,'xtick',[],'ytick',[],'title',[],'ylabel',[],'dataAspectRatio',[1 1 1])
+
+    end
 end
-return
+
+ return

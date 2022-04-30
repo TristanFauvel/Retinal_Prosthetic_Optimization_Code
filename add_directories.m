@@ -12,6 +12,7 @@ latest_perceptual_models_directory = [experiment_directory, f,'Perceptual_Models
 stable_perceptual_model_table_file = [code_directory, f, 'stable_perceptual_model_table.mat'];
 latest_perceptual_model_table_file = [code_directory, f, 'latest_perceptual_model_table.mat'];
 Stimuli_folder =  [code_directory, f, 'Stimuli'];
+Letters_folder = [Stimuli_folder, '/letters'];
 figures_folder = [experiment_directory, f, 'Figures'];
 experiment_directory = [code_directory, f, 'Experiment'];
 paper_figures_folder = figures_folder;
@@ -20,3 +21,4 @@ paper_figures_folder = figures_folder;
 if ~exist(figures_folder ,'dir')
     mkdir(figures_folder)
 end
+

@@ -223,10 +223,10 @@ i=i+1;
  
 
 figname  = ['Figure',num2str(id)];
-folder = ['C:\Users\tfauvel\Documents\PhD\Figures\Paper_figures\',figname];
-savefig(fig, [folder,'\', figname, '.fig'])
-exportgraphics(fig, [folder,'\' , figname, '.pdf']);
-exportgraphics(fig, [folder,'\' , figname, '.png'], 'Resolution', 300);
+folder = [[figures_folder, '/'],figname];
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 )
 colormap('gray')
  
@@ -245,7 +245,7 @@ i=i+1;
  
 
 figname  = ['Figure',num2str(id)];
-folder = ['C:\Users\tfauvel\Documents\PhD\Figures\Paper_figures\',figname];
-savefig(fig, [folder,'\', figname, '.fig'])
-exportgraphics(fig, [folder,'\' , figname, '.pdf']);
-exportgraphics(fig, [folder,'\' , figname, '.png'], 'Resolution', 300);
+folder = [[figures_folder, '/'],figname];
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);

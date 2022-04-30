@@ -56,7 +56,7 @@ model.build()
 #plot_axon_map(eye='RE', loc_od=(15.5, 1.5), n_bundles=100, ax=None,upside_down=False, annotate=False, xlim=None, ylim=None)
 model.plot(use_dva=False, annotate=False, autoscale=True, ax=None)
     
-plt.savefig('/home/tfauvel/Documents/PhD/Figures/Paper_figures/correct_model.jpg', dpi = 300)  
+plt.savefig('figures_folder/correct_model.jpg', dpi = 300)  
 plt.close('all')
 #With misspecification
 beta_sup=-2.5 #-2.5,-1.3
@@ -75,12 +75,12 @@ model.build()
   
 #plot_axon_map(eye='RE', loc_od=(15.5, 1.5), n_bundles=100, ax=None,upside_down=False, annotate=False, xlim=None, ylim=None)
 model.plot(use_dva=False, annotate=False, autoscale=True, ax=None)
-plt.savefig('/home/tfauvel/Documents/PhD/Figures/Paper_figures/misspecified_model.jpg', dpi = 300)  
+plt.savefig('figures_folder/misspecified_model.jpg', dpi = 300)  
 
   
     
 # plot_implant_on_axon_map(implant, loc_od=(15.5, 1.5), n_bundles=100,ax=None, upside_down=False, annotate_implant=False, annotate_quadrants=False)
-# plt.savefig('/home/tfauvel/Documents/PhD/Figures/Paper_figures/correct_model')
+# plt.savefig('figures_folder/correct_model')
 
 
 
@@ -93,4 +93,4 @@ plt.savefig('/home/tfauvel/Documents/PhD/Figures/Paper_figures/misspecified_mode
 # percept.data.max()
 #plot_axon_map(eye='RE', loc_od=(15.5, 1.5), n_bundles=100, ax=None, upside_down=False, beta_sup = beta_sup, beta_inf = beta_inf)
 #plt.savefig('/media/sf_Documents/Retinal_prosthetic_optimization/drawing_misspecification')
-plt.savefig('/home/tfauvel/Documents/PhD/Figures/Paper_figures/correct_model')
+plt.savefig('figures_folder/correct_model')

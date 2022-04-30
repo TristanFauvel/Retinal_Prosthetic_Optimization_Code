@@ -1,7 +1,7 @@
 add_modules;
 
 
-reload = 1; %whether you want to reload the subjects (1) data or use preprocessed ones (0); 
+reload = 0; %whether you want to reload the subjects (1) data or use preprocessed ones (0); 
 pref  = load_preferences(reload,data_directory, data_table_file);
 VA  = load_VA_results(reload,data_directory, data_table_file);
 

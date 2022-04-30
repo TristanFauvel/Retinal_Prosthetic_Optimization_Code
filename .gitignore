@@ -1,5 +1,8 @@
 *.asv
+*.npy
 Data/
 Raw_Data/
 Perceptual_Models_latest_p2p/
 Perceptual_Models_stable_p2p/
+*/Experiment/QPlikelihoods_E_VA.mat
+*/Experiment/QPlikelihoods_Snellen_VA.mat

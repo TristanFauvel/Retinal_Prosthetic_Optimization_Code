@@ -1,0 +1,58 @@
+2022-04-30 22:18:39,320 [pulse2percept] [INFO] Welcome to pulse2percept
+2022-04-30 22:18:39,320 [pulse2percept.implants] [WARNING] Distance to fovea=3596 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,321 [pulse2percept.implants] [WARNING] Distance to fovea=3145 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,321 [pulse2percept.implants] [WARNING] Distance to fovea=3378 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,321 [pulse2percept.implants] [WARNING] Distance to fovea=3231 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,321 [pulse2percept.implants] [WARNING] Distance to fovea=3165 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,321 [pulse2percept.implants] [WARNING] Distance to fovea=3186 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,321 [pulse2percept.implants] [WARNING] Distance to fovea=3292 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:18:39,322 [pulse2percept.retina] [INFO] Loading file "./retina_RE_s100_a501_r801_5600x4000.npz".
+2022-04-30 22:18:39,342 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2022-04-30 22:18:39,382 [pulse2percept.api] [INFO] Starting pulse2percept...
+2022-04-30 22:18:53,640 [pulse2percept.api] [INFO] tol=10.0%, 2211/2337 px selected
+2022-04-30 22:19:12,458 [pulse2percept.api] [INFO] Done.
+2022-04-30 22:26:35,894 [pulse2percept.implants] [WARNING] Distance to fovea=3596 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,894 [pulse2percept.implants] [WARNING] Distance to fovea=3145 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,894 [pulse2percept.implants] [WARNING] Distance to fovea=3378 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,894 [pulse2percept.implants] [WARNING] Distance to fovea=3231 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,895 [pulse2percept.implants] [WARNING] Distance to fovea=3165 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,895 [pulse2percept.implants] [WARNING] Distance to fovea=3186 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,895 [pulse2percept.implants] [WARNING] Distance to fovea=3292 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:35,895 [pulse2percept.retina] [INFO] Loading file "./retina_RE_s100_a501_r801_5600x4000.npz".
+2022-04-30 22:26:35,957 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2022-04-30 22:26:35,999 [pulse2percept.api] [INFO] Starting pulse2percept...
+2022-04-30 22:26:51,051 [pulse2percept.implants] [WARNING] Distance to fovea=3596 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,051 [pulse2percept.implants] [WARNING] Distance to fovea=3145 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,052 [pulse2percept.implants] [WARNING] Distance to fovea=3378 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,052 [pulse2percept.implants] [WARNING] Distance to fovea=3231 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,052 [pulse2percept.implants] [WARNING] Distance to fovea=3165 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,052 [pulse2percept.implants] [WARNING] Distance to fovea=3186 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,052 [pulse2percept.implants] [WARNING] Distance to fovea=3292 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:26:51,053 [pulse2percept.retina] [INFO] Loading file "./retina_RE_s100_a501_r801_5600x4000.npz".
+2022-04-30 22:26:51,075 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2022-04-30 22:26:51,122 [pulse2percept.api] [INFO] Starting pulse2percept...
+2022-04-30 22:27:05,002 [pulse2percept.api] [INFO] tol=10.0%, 2211/2337 px selected
+2022-04-30 22:27:23,996 [pulse2percept.api] [INFO] Done.
+2022-04-30 22:27:24,088 [pulse2percept.implants] [WARNING] Distance to fovea=4396 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,088 [pulse2percept.implants] [WARNING] Distance to fovea=3908 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,088 [pulse2percept.implants] [WARNING] Distance to fovea=3431 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=4243 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3735 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3232 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=4151 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3630 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3110 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=4124 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3599 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3074 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=4163 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3644 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,089 [pulse2percept.implants] [WARNING] Distance to fovea=3127 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,090 [pulse2percept.implants] [WARNING] Distance to fovea=4268 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,090 [pulse2percept.implants] [WARNING] Distance to fovea=3763 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,090 [pulse2percept.implants] [WARNING] Distance to fovea=3265 > 3000 um, assuming same layer thicknesses as for 1550-3000 um distance.
+2022-04-30 22:27:24,090 [pulse2percept.retina] [INFO] Loading file "./retina_RE_s100_a501_r801_5600x4500.npz".
+2022-04-30 22:27:24,136 [pulse2percept.api] [DEBUG] Setting up Nanduri (2012) model.
+2022-04-30 22:27:24,178 [pulse2percept.api] [INFO] Starting pulse2percept...
+2022-04-30 22:27:40,528 [pulse2percept.api] [INFO] tol=10.0%, 2037/2622 px selected
+2022-04-30 22:28:00,269 [pulse2percept.api] [INFO] Done.

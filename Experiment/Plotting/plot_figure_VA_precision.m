@@ -94,9 +94,9 @@ text(legend_pos(1), legend_pos(2),['$\bf{', letters(i), '}$'],'Units','normalize
 
 figname  = ['Figure',num2str(id)];
 folder = [paper_figures_folder, figname];
-savefig(fig, [folder,'\', figname, '.fig'])
-exportgraphics(fig, [folder,'\' , figname, '.pdf']);
-exportgraphics(fig, [folder,'\' , figname, '.png'], 'Resolution', 300);
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
 % fig=figure('units','centimeters','outerposition',1+f*[0 0 16 1.4/2*16]);
 % fig.Color =  [1 1 1];
 % fig.Name = "subject_to_subject_optimization_variability";

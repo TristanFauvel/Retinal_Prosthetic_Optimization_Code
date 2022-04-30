@@ -67,7 +67,7 @@ text(-0.18,1.15,'$\bf{E}$','Units','normalized','Fontsize', letter_font)
 
 
 figname  = ['Figure',num2str(id)];
-folder = ['C:\Users\tfauvel\Documents\PhD\Figures\Paper_figures\',figname];
-savefig(fig, [folder,'\', figname, '.fig'])
-exportgraphics(fig, [folder,'\' , figname, '.pdf']);
-exportgraphics(fig, [folder,'\' , figname, '.png'], 'Resolution', 300);
+folder = [[figures_folder, '/'],figname];
+savefig(fig, [folder,'/', figname, '.fig'])
+exportgraphics(fig, [folder,'/' , figname, '.pdf']);
+exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);

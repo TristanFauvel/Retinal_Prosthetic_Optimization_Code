@@ -25,7 +25,7 @@ if ~exist(figure_directory)
     mkdir(figure_directory)
 end
 
-Stimuli_folder =  '/home/tfauvel/Documents/Retinal_Prosthetic_Optimization/Retinal_Prosthetic_Optimization_Code/Stimuli/letters';
+Stimuli_folder =  Letters_folder;
 
 
 
@@ -96,7 +96,7 @@ box off
 
 
 figname  = 'Optimality';
-folder = '/home/tfauvel/Documents/PhD/Figures/Paper_figures/';
+folder = figures_folder;
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
@@ -142,7 +142,7 @@ exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
     colormap('gray')
     title('$W_\phi$')
     figname  = 'Optimality_percepts';
-folder = '/home/tfauvel/Documents/PhD/Figures/Paper_figures/';
+folder = figures_folder;
 savefig(fig, [folder,'/', figname, '.fig'])
 exportgraphics(fig, [folder,'/' , figname, '.pdf']);
 exportgraphics(fig, [folder,'/' , figname, '.png'], 'Resolution', 300);
